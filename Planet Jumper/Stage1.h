@@ -1,0 +1,48 @@
+﻿#pragma once
+#include "Main.h"
+#include "Ground.h"
+#include "Player.h"
+#include "Icon.h"
+#include "MyTime.h"
+#include "Draw.h"
+#include "E_Police.h"
+#include "Block.h"
+#include "GameOver.h"
+#include "Clear.h"
+#include "Status.h"
+#include "FirstClear.h"
+#include "TicketPlayGame.h"
+
+class STAGE1 {	//簡単にチュートリアルをなぞるように
+private:
+	BLOCK block[10];
+	I_VECTOR2 block_size[10];
+
+protected:	//継承する変数	敵のみ宣言すればよいようにする
+	PLAYER* pplayer;
+	POLICE police;
+	ICON icon;
+	DRAW* pdraw;
+	GROUND ground;
+	GAMEOVER gameover;
+	CLEAR clear;
+	FirstClear f_clear;
+	Ticket ticket;
+	Ticket* pticket;
+	unsigned short int state;	//ステージ上での状態
+	float camera;	//カメラ
+	float now;	//時間
+	float meter_time;	//メーターで使う時間
+	float rot;	//回転
+	float time;	//時間変数
+	bool meter_anm;	//メーターのアニメーションで用いる
+	bool bullet_hit;	//銃弾がヒットしたか
+
+public:
+	STAGE1();	//コンストラクタ
+	void PointerInit(DRAW* pdraw,PLAYER* pplayer);	//ポインタの初期化
+	void Update(float now,GAME_STATUS* pstatus);	//アップデート関数
+	void Draw();	//描画関数
+	void Init(float now,GAME_STATUS* pstatus);	//初期化関数
+	bool GetMap();	//マップに戻るか
+};
