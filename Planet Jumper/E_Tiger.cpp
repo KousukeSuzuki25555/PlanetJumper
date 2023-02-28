@@ -1,5 +1,6 @@
 ﻿#include "E_Tiger.h"
 #include <Math.h>
+#include <stdlib.h>
 
 #define JUMP_GROUND	(Y_MAX - 64)
 #define NOT_JUMP_GROUND	(Y_MAX/2-64)
@@ -211,7 +212,7 @@ void TIGER::BulletHit(float now) {		//銃弾との当たり判定
 				hp -= pplayer->GetBulletPower(e);
 				if (hp <= 0) {
 					exist = false;
-					TicketGet();
+					pticket->SetTicket();
 				}
 				else {
 					HitSet(now);
@@ -261,7 +262,8 @@ void TIGER:: Draw() {
 }
 
 void TIGER::TicketGet() {	//チケットを入手するかの関数
-	int ticket = rand() % 2;
+	int ticket = 0;
+	ticket = rand() % 2;
 	if (ticket == 0) {
 		pticket->SetTicket();
 	}
