@@ -13,12 +13,16 @@
 #include "FirstClear.h"
 #include "TicketPlayGame.h"
 
+#define TIGER_MAX	(6)	//虎の出現数
+#define CROW_MAX	(3)	//カラスの出現数
+#define BLOCK_MAX	(17)	//ブロックの出現数
+
 class STAGE2:public STAGE1 {
 private:
-	CROW crow[3];
-	TIGER tiger[5];
-	BLOCK block[17];
-	I_VECTOR2 block_size[17];
+	CROW crow[CROW_MAX];
+	TIGER tiger[TIGER_MAX];
+	BLOCK block[BLOCK_MAX];
+	I_VECTOR2 block_size[BLOCK_MAX];
 	Ticket* pticket = new Ticket;
 
 public:

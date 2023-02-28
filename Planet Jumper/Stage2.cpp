@@ -30,13 +30,13 @@ void STAGE2::PointerInit(DRAW* pdraw, PLAYER* pplayer) {	//ポインタの初期
 	icon.PointerInit(pdraw);
 	ground.PointerInit(pdraw);
 	f_clear.PointerInit(pdraw);
-	for (int e = 0; e < 3; e++) {
+	for (int e = 0; e < CROW_MAX; e++) {
 		crow[e].PointerInit(pdraw, pplayer,pticket);
 	}
-	for (int e = 0; e < 17; e++) {
+	for (int e = 0; e < BLOCK_MAX; e++) {
 		block[e].PointerInit(pdraw, pplayer);
 	}
-	for (int e = 0; e < 5; e++) {
+	for (int e = 0; e < TIGER_MAX; e++) {
 		tiger[e].PointerInit(pdraw, pplayer,pticket);
 	}
 	clear.Init(pticket);
@@ -71,6 +71,7 @@ void STAGE2::Init(float now, GAME_STATUS* pstatus) {
 	tiger[2].Init(2.5f, now, pstatus->GetBulletsNum());
 	tiger[3].Init(3.0f, now, pstatus->GetBulletsNum());
 	tiger[4].Init(3.4f, now, pstatus->GetBulletsNum());
+	tiger[5].Init(2.7f, now, pstatus->GetBulletsNum());
 
 	crow[0].Init(1.9f, now, pstatus->GetBulletsNum());
 	crow[1].Init(2.6f, now, pstatus->GetBulletsNum());
@@ -112,7 +113,7 @@ void  STAGE2::Update(float now, GAME_STATUS* pstatus) {
 		/******************************************************************************
 		BLOCKの処理
 		*******************************************************************************/
-		for (int e = 0; e < 17; e++) {
+		for (int e = 0; e < BLOCK_MAX; e++) {
 			block[e].SetSpeed(icon.GetSpeedValue());
 			block[e].Update(rot);
 		}
@@ -120,7 +121,7 @@ void  STAGE2::Update(float now, GAME_STATUS* pstatus) {
 		/******************************************************************************
 		虎の処理
 		*******************************************************************************/
-		for (int e = 0; e < 5; e++) {
+		for (int e = 0; e < TIGER_MAX; e++) {
 			if (tiger[e].GetExist() == true) {
 				tiger[e].Update(now);
 			}
@@ -129,7 +130,7 @@ void  STAGE2::Update(float now, GAME_STATUS* pstatus) {
 		/******************************************************************************
 		カラスの処理
 		*******************************************************************************/
-		for (int e = 0; e < 3; e++) {
+		for (int e = 0; e < CROW_MAX; e++) {
 			if (crow[e].GetExist() == true) {
 				crow[e].Update(now);
 			}
@@ -231,15 +232,15 @@ void  STAGE2::Draw() {
 	ground.Draw(camera);
 	pplayer->Draw(camera);
 	police.Draw(camera);
-	for (int e = 0; e < 17; e++) {
+	for (int e = 0; e < BLOCK_MAX; e++) {
 		block[e].Draw(camera);
 	}
-	for (int e = 0; e < 5; e++) {
+	for (int e = 0; e < TIGER_MAX; e++) {
 		if (tiger[e].GetExist() == true) {
 			tiger[e].Draw(camera);
 		}
 	}
-	for (int e = 0; e < 3; e++) {
+	for (int e = 0; e < CROW_MAX; e++) {
 		if (crow[e].GetExist() == true) {
 			crow[e].Draw(camera);
 		}
