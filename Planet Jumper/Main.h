@@ -26,6 +26,8 @@
 #define CENTER_Y	(1278)	//円の中心y
 #define D_GRA_SIZE	(64)	//ドラゴンの描画に使う
 #define MAPSTAGE_GAP (16)	//マップのタイトル戸の隙間
+#define HP_MAX		(6)		//PLAYERのHP最大値
+#define BULLETS_MAX	(5)		//銃弾の最大値
 
 
 enum SCENE_STATE {		//ゲームのどの状態にあるか

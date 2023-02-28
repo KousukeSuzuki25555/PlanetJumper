@@ -18,7 +18,7 @@ private:
 	CLOCK2 anm_time;	//アニメーションに用いる時間変数
 	CLOCK2 attack_time;	//攻撃アニメーションに用いる時間変数
 	DRAW* pdraw;	
-	BULLET bullet[5];	//銃弾　上限:5
+	BULLET bullet[BULLETS_MAX];	//銃弾　上限:5
 	GAME_STATUS* pstatus;
 	float power;	//攻撃力　銃弾に渡す
 	int ground;	//地面の高さ

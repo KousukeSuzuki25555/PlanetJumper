@@ -54,7 +54,7 @@ void STORE::BuyAct() {	//購入を実行する関数
 				pstatus->SetTicket(pstatus->GetTicket() - 1);
 				break;
 			case BULLET_NUM:
-				if (pstatus->GetBulletsNum() == 5) {
+				if (pstatus->GetBulletsNum() == BULLETS_MAX) {
 					font32(U"これ以上は購入できません").draw(SENTENCE_X, SENTENCE);
 				}
 				else {
@@ -63,7 +63,7 @@ void STORE::BuyAct() {	//購入を実行する関数
 				}
 				break;
 			case PLAYER_HP:
-				if (pstatus->GetBulletsNum() == 6) {
+				if (pstatus->GetHp() == HP_MAX) {
 					font32(U"これ以上は購入できません").draw(SENTENCE_X, SENTENCE);
 				}
 				else {
