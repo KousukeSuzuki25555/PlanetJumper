@@ -66,15 +66,15 @@ void STAGE2::Init(float now, GAME_STATUS* pstatus) {
 	block[15].Init(SPEED_NOR, 1.2f, block_size[15], 0, 0, pstatus->GetBulletsNum());
 	block[16].Init(SPEED_NOR, 1.4f, block_size[16], 0, 0, pstatus->GetBulletsNum());
 
-	tiger[0].Init(1.8f, now, pstatus->GetBulletsNum());
-	tiger[1].Init(0.0f, now, pstatus->GetBulletsNum());
-	tiger[2].Init(0.5f, now, pstatus->GetBulletsNum());
-	tiger[3].Init(0.9f, now, pstatus->GetBulletsNum());
-	tiger[4].Init(1.2f, now, pstatus->GetBulletsNum());
+	tiger[0].Init(1.7f, now, pstatus->GetBulletsNum());
+	tiger[1].Init(2.0f, now, pstatus->GetBulletsNum());
+	tiger[2].Init(2.5f, now, pstatus->GetBulletsNum());
+	tiger[3].Init(3.0f, now, pstatus->GetBulletsNum());
+	tiger[4].Init(3.4f, now, pstatus->GetBulletsNum());
 
 	crow[0].Init(1.9f, now, pstatus->GetBulletsNum());
-	crow[1].Init(0.6, now, pstatus->GetBulletsNum());
-	crow[2].Init(0.8f, now, pstatus->GetBulletsNum());
+	crow[1].Init(2.6f, now, pstatus->GetBulletsNum());
+	crow[2].Init(3.0f, now, pstatus->GetBulletsNum());
 	state = PLAY;
 	pticket->Init();
 	icon.Init();

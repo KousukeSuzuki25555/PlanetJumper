@@ -24,8 +24,8 @@ TIGER::TIGER() {
 
 	hit = false;
 
-	move_speed[0] = 30;
-	move_speed[1] = 25;
+	move_speed[0] = 20;	//値を小さくすると歩く速度が速くなる
+	move_speed[1] = 15;
 	move_pt = 0;
 
 	bullet_pos = { 0.0f,0.0f };
