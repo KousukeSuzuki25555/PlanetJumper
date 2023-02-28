@@ -211,6 +211,7 @@ void TIGER::BulletHit(float now) {		//銃弾との当たり判定
 				hp -= pplayer->GetBulletPower(e);
 				if (hp <= 0) {
 					exist = false;
+					TicketGet();
 				}
 				else {
 					HitSet(now);
