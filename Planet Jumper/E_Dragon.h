@@ -43,6 +43,7 @@ private:
 	VECTOR2 hitPos[4];	//頂点座標
 	VECTOR2 p_vertex[4];	//プレイヤーの頂点座標
 	VECTOR2 ppos;	//プレイヤーの座標
+	VECTOR2 norm;	//attack1で使う移動距離の正規化された値を入れておく
 	DRAW* pdraw;	
 	SPINE spine[9];	//DragnSpineのclassを9個持つ
 	Ticket* pticket;	
@@ -65,6 +66,7 @@ private:
 	float rotMs;	//回転の毎秒の移動量
 	float timeMs;	//時間の毎秒の移動量
 	float moveMs;	//毎秒の移動量
+	float timeGoal;	//攻撃などに使う攻撃の終了までの時間
 	bool d_vertex[4];	//当たったかの判定に使う
 	bool playerHit;	//プレイヤーがヒットしたか
 	bool attackFlag;	//攻撃中か
@@ -87,7 +89,7 @@ public:
 	void DetectReset();	//d_vertex[4]を初期化する
 	void SetSpeed(float speed);	//スピードをセット
 	void Attack1Set(float now);	//攻撃１をセット
-	void Attack1TrdSet();	//攻撃１を次の状態にセット
+	void Attack1TrdSet(float now);	//攻撃１を次の状態にセット
 	void Attack2TrdSet();	//攻撃１を次の状態にセット
 	void Attack1Act(float now);	//攻撃１の実働部
 	void Attack1Uninit(float now);	//攻撃１の状態から抜ける

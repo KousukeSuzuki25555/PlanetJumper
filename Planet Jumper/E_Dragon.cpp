@@ -8,6 +8,8 @@
 #define ATTACK2_ROT	(0.2f)
 #define DRAGON_HP	(30)
 #define DRFON_RADIUS	(RADIUS +95.0f)
+#define PLAYER_FOOT_X	(440)
+#define PLAYER_FOOT_Y	(220)
 
 Dragon::Dragon() {
 	for (int e = 0; e < 11; e++) {	//DragonBoxの配列に値を入れる
@@ -62,7 +64,7 @@ Dragon::Dragon() {
 	}
 	atk = 3.0f;	//攻撃力
 	camera = { 0.0f,0.0f };
-	ppos = { 440,220 };
+	ppos = { PLAYER_FOOT_X,PLAYER_FOOT_Y };
 	attackFlag = false;
 	attackTradition = false;
 	moveMs = 0.0f;
@@ -300,7 +302,7 @@ void Dragon::Draw(VECTOR2 camera) {
 	}
 }
 
-void Dragon::Anm(float now) {
+void Dragon::Anm(float now) {	//アニメーション
 	//それぞれのBOXにposを入れる
 	addRot = rot;	//ドラゴン自体の回転
 	radius += sinf(now)/3;
@@ -459,9 +461,11 @@ void Dragon::Attack1Set(float now) {	//空高く上がってplayerめがけて�
 	}
 }
 
-void Dragon::Attack1TrdSet() {
+void Dragon::Attack1TrdSet(float now) {
 	attackTradition = true;
 	timeMs = attack_time + ATTACK1_TIME/2.5f;
+	norm = VacNormalize(d_box[attack1FirstBox].pos, ppos);
+	timeGoal = now + ATTACK1_TIME;
 }
 
 void Dragon::Attack2TrdSet() {
@@ -494,7 +498,7 @@ void Dragon::Attack1Act(float now) {
 			}
 			break;
 		case false:
-			Attack1TrdSet();
+			Attack1TrdSet(now);
 			
 			break;
 		}
@@ -502,10 +506,12 @@ void Dragon::Attack1Act(float now) {
 	case DST3:	//playerの場所までの距離から正規化して近づく
 		switch (attackTradition) {
 		case true:
-			d_box[attack1FirstBox].pos = d_box[attack1FirstBox].pos+VacNormalize(d_box[attack1FirstBox].pos, ppos)* (now - attack_time)*500;
+
+			d_box[attack1FirstBox].pos = d_box[attack1FirstBox].pos+norm* (now - attack_time)*500;
 			d_box[attack1FirstBox].rot = atan2f(d_box[attack1FirstBox].pos.y - ppos.y, d_box[attack1FirstBox].pos.x - ppos.y);
 			attack_time = now;
-			if (Diagonal(d_box[attack1FirstBox].pos, ppos) < 2.0f) {
+
+			if (timeGoal<attack_time) {	//playerとの距離が一定以下になったら攻撃から抜ける処理へ移動
 				Attack1Uninit(now);
 			}
 			break;

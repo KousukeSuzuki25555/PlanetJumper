@@ -23,17 +23,19 @@ void Main()
 	GAME_TITLE title;
 	MY_TIME time;
 	DRAW* pdraw = new DRAW;
-	//PLAYER player;
 	PLAYER* pplayer = new PLAYER;
-	GROUND ground;
-	GROUND* pground = &ground;
-	bool gameContinue = true;
-	bool* pgameContinue = &gameContinue;
-	gamemanager.PointerSet(pstatus,pdraw,pplayer,pground,pgameContinue);
-	title.PointerSet(pdraw, pplayer, pground);
-	ground.PointerInit(pdraw);
-	unsigned short int scene_state=SCENE_TITLE;
+	GROUND* pground = new GROUND;
+	bool* pgameContinue = new bool;
+	pground->PointerInit(pdraw);
+	int scene_state=SCENE_TITLE;
 	float now;
+
+	/******************************************************************
+	変数の初期化作業
+	******************************************************************/
+	*pgameContinue = true;
+	title.PointerSet(pdraw, pplayer, pground);
+	gamemanager.PointerSet(pstatus, pdraw, pplayer, pground, pgameContinue);
 
 	/******************************************************************
 	ゲームループ
@@ -55,7 +57,7 @@ void Main()
 
 			break;
 		}
-		if (gameContinue == false) {
+		if (*pgameContinue == false) {
 			break;
 		}
 	}
