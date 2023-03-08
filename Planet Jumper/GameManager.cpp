@@ -20,6 +20,7 @@ void GAMEMANAGER::PointerSet(GAME_STATUS* pstatus, DRAW* pdraw,PLAYER* pplayer,G
 	tutorial.PointerInit(pstatus,pdraw, pplayer,ptime);
 	stage1.PointerInit(pdraw, pplayer,ptime,pstatus);
 	stage2.PointerInit(pdraw, pplayer,ptime,pstatus);
+	stage3.PointerInit(pdraw, pplayer, ptime, pstatus);
 	stageBoss.PointerInit(pdraw, pplayer, pground,ptime,pstatus);
 	guide.PointerInit(pstatus,pdraw, pplayer,ptime);
 	this->pgameContinue = pgameContinue;
@@ -53,6 +54,13 @@ void GAMEMANAGER:: Update() {
 
 	case ST2:
 		stage2.Update();
+		if (stage2.GetMap() == true) {
+			select = MAP;
+		}
+		break;
+
+	case ST3:
+		stage3.Update();
 		if (stage2.GetMap() == true) {
 			select = MAP;
 		}
@@ -104,6 +112,12 @@ void GAMEMANAGER:: Update() {
 
 		case ST2:
 			stage2.Init();
+			st_start = true;
+			perf_time = ptime->GetTime() + 2.0f;
+			break;
+
+		case ST3:
+			stage3.Init();
 			st_start = true;
 			perf_time = ptime->GetTime() + 2.0f;
 			break;

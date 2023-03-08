@@ -29,6 +29,8 @@ protected:
 	const Texture g_ticket{ Resource(U"rom/ticket32_16.png") };
 	const Texture g_ticketGame{ Resource(U"rom/ticketSmall.png") };
 	const Texture g_bulletDisp{ Resource(U"rom/bullet20_32.png" )};
+	const Texture g_Ufo{ Resource(U"rom/Ufo.png") };
+	const Texture g_Laser{ Resource(U"rom/Laser.png") };
 
 public:
 	void PoliceDraw(I_VECTOR2 uv,VECTOR2 pos);
@@ -59,4 +61,6 @@ public:
 	void TicketDraw(VECTOR2 pos,bool shop);
 	void TicketSmallDraw(bool boss);
 	void BulletDisp(int num);
+	void UfoDraw(int num, VECTOR2 pos);
+	void LaserDraw(int num, VECTOR2 pos);
 };

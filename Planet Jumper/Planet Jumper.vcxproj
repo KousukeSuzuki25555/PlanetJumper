@@ -123,11 +123,13 @@
     <ClCompile Include="E_Crow.cpp" />
     <ClCompile Include="E_Dragon.cpp" />
     <ClCompile Include="E_Tiger.cpp" />
+    <ClCompile Include="E_Ufo.cpp" />
     <ClCompile Include="FirstClear.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Icon.cpp" />
+    <ClCompile Include="Laser.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapAct.cpp" />
     <ClCompile Include="MyTime.cpp" />
@@ -135,6 +137,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Stage2.cpp" />
     <ClCompile Include="Stage1.cpp" />
+    <ClCompile Include="Stage3.cpp" />
     <ClCompile Include="StageBoss.cpp" />
     <ClCompile Include="Status.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -356,6 +359,7 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Icon.h" />
+    <ClInclude Include="Laser.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MapAct.h" />
     <ClInclude Include="MyTime.h" />

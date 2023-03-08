@@ -95,6 +95,68 @@ void BLOCK::Init(float speed, float rotate,I_VECTOR2 size,int u,int v,int bullet
 	this->bulletNum = bulletNum;
 }
 
+void BLOCK::Init(float speed, float rotate, I_VECTOR2 size, int bulletNum) {	//初期化をより楽に　uv値を入れなくても使用できるようにする
+	switch (size.u) {
+	case 128:
+		switch (size.v) {
+		case 128:
+			uv.u = 0;
+			uv.v = 0;
+			break;
+		case 64:
+			int randam = rand() % 2;
+			switch (randam) {
+			case 0:
+				uv.u = 128;
+				uv.v = 0;
+				break;
+
+			case 1:
+				uv.u = 128;
+				uv.v = 64;
+				break;
+			}
+			break;
+		}
+		break;
+
+	case 64:
+		uv.u = 256;
+		uv.v = 0;
+		break;
+
+	case 32:
+		int randam = rand() % 4;
+		switch (randam) {
+		case 0:
+			uv.u = 256;
+			uv.v = 64;
+			break;
+
+		case 1:
+			uv.u = 288;
+			uv.v = 64;
+			break;
+
+		case 2:
+			uv.u = 256;
+			uv.v = 96;
+			break;
+
+		case 3:
+			uv.u = 288;
+			uv.v = 96;
+			break;
+		}
+		break;
+	}
+	this->speed = speed;
+	rotate_gap = rotate;
+	this->size = size;
+	radius = size.v / 2 + 1020;
+	this->bulletNum = bulletNum;
+}
+
 void BLOCK::SetSpeed(float speed) {
 	this->speed = speed;
 }

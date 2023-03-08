@@ -19,9 +19,11 @@ STAGE2::STAGE2() {	//初期化
 	block_size[15] = { 128,128 };
 	block_size[16] = { 128,128 };
 }
+
 STAGE2::~STAGE2() {
 	delete pticket;
 }
+
 void STAGE2::PointerInit(DRAW* pdraw, PLAYER* pplayer,MY_TIME* ptime,GAME_STATUS* pstatus) {	//ポインタの初期化
 	this->pplayer = pplayer;
 	this->pdraw = pdraw;

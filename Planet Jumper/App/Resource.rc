@@ -144,6 +144,8 @@ Resource(rom/EdogSeat.png)
 	Resource(rom/ticket32_16.png)
 	Resource(rom/ticketSmall.png)
 	Resource(rom/bullet20_32.png)
+	Resource(rom/Ufo.png)
+	Resource(rom/Laser.png)
 
 /* examples 
 

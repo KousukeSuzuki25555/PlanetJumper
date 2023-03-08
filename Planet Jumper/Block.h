@@ -25,6 +25,7 @@ protected:
 public:
 	BLOCK();	//コンストラクタ
 	void Init(float speed, float rotate, I_VECTOR2 size, int u, int v, int bulletNum);	//初期化
+	void Init(float speed, float rotate, I_VECTOR2 size, int bulletNum);	//初期化をより楽に　uv値を入れなくても使用できるようにする
 	void PointerInit(DRAW* pdraw,PLAYER* pplayer);	//Pointerの初期化
 	void Draw(float camera);	//描画
 	void Update(float now);	//アップデート関数

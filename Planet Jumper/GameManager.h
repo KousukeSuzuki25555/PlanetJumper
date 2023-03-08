@@ -3,6 +3,7 @@
 #include "Tutorial.h"
 #include "Stage1.h"
 #include "Stage2.h"
+#include "Stage3.h"
 #include "StageBoss.h"
 #include "GameOver.h"
 #include "Status.h"
@@ -17,6 +18,7 @@ private:
 	TUTORIAL tutorial;
 	STAGE1 stage1;
 	STAGE2 stage2;
+	STAGE3 stage3;
 	MAP_ACT map;
 	BossSt stageBoss;
 	UserGuide guide;
