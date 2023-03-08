@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Block.h"
 #include "TicketPlayGame.h"
+#include "MyTime.h"
 
 struct VECTOR3 {
 	VECTOR2 p1;
@@ -14,6 +15,7 @@ private:
 	VECTOR2 bullet_pos;		//座標
 	VECTOR2 camera;			//cameraのpos
 	VECTOR2 p_vertex[4];	//playerの中心からの座標
+	MY_TIME* ptime;
 	Ticket* pticket;
 	int move_speed[2];		//移動スピード
 	int move_pt;			//歩いているかは知っているか　0=歩き　1=走り
@@ -26,17 +28,17 @@ private:
 
 public:
 	TIGER();				//コンストラクタ
-	void PointerInit(DRAW* pdraw, PLAYER* pplayer);
-	void PointerInit(DRAW* pdraw, PLAYER* pplayer,Ticket* pticket);
-	void GuideInit(float now,bool jump);	//Guideで使う際の初期化
-	void Update(float now);	//虎のアップデート関数
-	void GuideUpdate(float now);	//ガイドで使うアップデート関数
-	void HitSet(float now);	//Hitの動作に関する変数の初期化
+	void PointerInit(DRAW* pdraw, PLAYER* pplayer,MY_TIME* ptime);
+	void PointerInit(DRAW* pdraw, PLAYER* pplayer,Ticket* pticket,MY_TIME* ptime);
+	void GuideInit(bool jump);	//Guideで使う際の初期化
+	void Update();	//虎のアップデート関数
+	void GuideUpdate();	//ガイドで使うアップデート関数
+	void HitSet();	//Hitの動作に関する変数の初期化
 	void HitUninit();		//Hitの抜け出す処理
 	bool GetExist();		//existのゲッター
 	void PlayerHit();		//playerとの当たり判定
-	void BulletHit(float now);		//銃弾との当たり判定
-	void Init(float rotate,float now,int bulletNum);	//使う際の初期化
+	void BulletHit();		//銃弾との当たり判定
+	void Init(float rotate,int bulletNum);	//使う際の初期化
 	float GetRotate();		//回転のゲッター	
 	VECTOR2 GetPos();		//posのゲッター
 	I_VECTOR2 GetUv();		//uv値のゲッター

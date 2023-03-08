@@ -21,7 +21,7 @@ void Main()
 	******************************************************************/
 	GAMEMANAGER gamemanager;
 	GAME_TITLE title;
-	MY_TIME time;
+	MY_TIME* ptime = new MY_TIME;
 	DRAW* pdraw = new DRAW;
 	PLAYER* pplayer = new PLAYER;
 	GROUND* pground = new GROUND;
@@ -34,26 +34,26 @@ void Main()
 	変数の初期化作業
 	******************************************************************/
 	*pgameContinue = true;
-	title.PointerSet(pdraw, pplayer, pground);
-	gamemanager.PointerSet(pstatus, pdraw, pplayer, pground, pgameContinue);
+	title.PointerSet(pdraw, pplayer, pground,ptime);
+	gamemanager.PointerSet(pstatus, pdraw, pplayer, pground,ptime, pgameContinue);
 
 	/******************************************************************
 	ゲームループ
 	******************************************************************/
 	while (System::Update())
 	{
-		time.Update();
-		now = time.GetTime();
+		ptime->Update();
+		now = ptime->GetTime();
 		switch (scene_state) {
 		case SCENE_TITLE:	//タイトル画面
-			title.Update(now);
+			title.Update();
 			if (title.GetTitleFlag() == true) {
 				scene_state = SCENE_STAGESELECT;
 			}
 			break;
 
 		case SCENE_STAGESELECT:	//ステージセレクト画面
-			gamemanager.Update(now);
+			gamemanager.Update();
 
 			break;
 		}

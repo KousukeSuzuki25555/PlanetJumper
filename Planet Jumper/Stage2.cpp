@@ -22,31 +22,33 @@ STAGE2::STAGE2() {	//初期化
 STAGE2::~STAGE2() {
 	delete pticket;
 }
-void STAGE2::PointerInit(DRAW* pdraw, PLAYER* pplayer) {	//ポインタの初期化
+void STAGE2::PointerInit(DRAW* pdraw, PLAYER* pplayer,MY_TIME* ptime,GAME_STATUS* pstatus) {	//ポインタの初期化
 	this->pplayer = pplayer;
 	this->pdraw = pdraw;
+	this->ptime = ptime;
+	this->pstatus = pstatus;
 	pplayer->DrawPointerInit(pdraw);
-	police.PointerInit(pdraw, pplayer);
+	police.PointerInit(pdraw, pplayer,ptime);
 	icon.PointerInit(pdraw);
 	ground.PointerInit(pdraw);
 	f_clear.PointerInit(pdraw);
 	for (int e = 0; e < CROW_MAX; e++) {
-		crow[e].PointerInit(pdraw, pplayer,pticket);
+		crow[e].PointerInit(pdraw, pplayer,pticket,ptime);
 	}
 	for (int e = 0; e < BLOCK_MAX; e++) {
 		block[e].PointerInit(pdraw, pplayer);
 	}
 	for (int e = 0; e < TIGER_MAX; e++) {
-		tiger[e].PointerInit(pdraw, pplayer,pticket);
+		tiger[e].PointerInit(pdraw, pplayer,pticket,ptime);
 	}
 	clear.Init(pticket);
 }
-void STAGE2::Init(float now, GAME_STATUS* pstatus) {
-	time = now;
-	meter_time = now;
+void STAGE2::Init() {
+	time = ptime->GetTime();
+	meter_time = ptime->GetTime();
 	pplayer->Init(pstatus);
 	pticket->PointerInit(pdraw, pstatus);
-	police.Init(now);
+	police.Init();
 	rot = 0.0f;
 	block[0].Init(SPEED_NOR, 1.7f, block_size[0], 128, 0, pstatus->GetBulletsNum());
 	block[1].Init(SPEED_NOR, 1.8f, block_size[1], 256, 64, pstatus->GetBulletsNum());
@@ -66,21 +68,21 @@ void STAGE2::Init(float now, GAME_STATUS* pstatus) {
 	block[15].Init(SPEED_NOR, 1.2f, block_size[15], 0, 0, pstatus->GetBulletsNum());
 	block[16].Init(SPEED_NOR, 1.4f, block_size[16], 0, 0, pstatus->GetBulletsNum());
 
-	tiger[0].Init(1.7f, now, pstatus->GetBulletsNum());
-	tiger[1].Init(2.0f, now, pstatus->GetBulletsNum());
-	tiger[2].Init(2.5f, now, pstatus->GetBulletsNum());
-	tiger[3].Init(3.0f, now, pstatus->GetBulletsNum());
-	tiger[4].Init(3.4f, now, pstatus->GetBulletsNum());
-	tiger[5].Init(2.7f, now, pstatus->GetBulletsNum());
+	tiger[0].Init(1.7f,pstatus->GetBulletsNum());
+	tiger[1].Init(2.0f, pstatus->GetBulletsNum());
+	tiger[2].Init(2.5f, pstatus->GetBulletsNum());
+	tiger[3].Init(3.0f, pstatus->GetBulletsNum());
+	tiger[4].Init(3.4f, pstatus->GetBulletsNum());
+	tiger[5].Init(2.7f, pstatus->GetBulletsNum());
 
-	crow[0].Init(1.9f, now, pstatus->GetBulletsNum());
-	crow[1].Init(2.6f, now, pstatus->GetBulletsNum());
-	crow[2].Init(3.0f, now, pstatus->GetBulletsNum());
+	crow[0].Init(1.9f, pstatus->GetBulletsNum());
+	crow[1].Init(2.6f, pstatus->GetBulletsNum());
+	crow[2].Init(3.0f, pstatus->GetBulletsNum());
 	state = PLAY;
 	pticket->Init();
 	icon.Init();
 }
-void  STAGE2::Update(float now, GAME_STATUS* pstatus) {
+void  STAGE2::Update() {
 	switch (state) {
 	case PLAY: {
 		if (KeyEnter.down()) {
@@ -90,8 +92,8 @@ void  STAGE2::Update(float now, GAME_STATUS* pstatus) {
 		フレームごとのステージの標準的な処理
 		*******************************************************************************/
 
-		rot -= (now - time) / icon.GetSpeedValue();		//ステージで使う回転の基準
-		time = now;
+		rot -= (ptime->GetTime() - time) / icon.GetSpeedValue();		//ステージで使う回転の基準
+		time = ptime->GetTime();
 		/******************************************************************************
 		ICONの処理
 		*******************************************************************************/
@@ -101,7 +103,7 @@ void  STAGE2::Update(float now, GAME_STATUS* pstatus) {
 		*******************************************************************************/
 		police.SetGravity(icon.GetGravity());
 		police.SetPpos(pplayer->GetPos_y());
-		police.Update(now, icon.GetSpeedValue());
+		police.Update(icon.GetSpeedValue());
 
 		/******************************************************************************
 		PLAYERの処理
@@ -109,7 +111,7 @@ void  STAGE2::Update(float now, GAME_STATUS* pstatus) {
 		pplayer->SetGravity(icon.GetGravity());		//playerに重力をセット
 		pplayer->SetJumpLimit(icon.GetJump());		//playerにジャンプをセット
 		pplayer->SetWeaponPower(icon.GetWeapon());
-		pplayer->Update(now);				//playerのアップデート
+		pplayer->Update(ptime->GetTime());				//playerのアップデート
 		/******************************************************************************
 		BLOCKの処理
 		*******************************************************************************/
@@ -123,7 +125,7 @@ void  STAGE2::Update(float now, GAME_STATUS* pstatus) {
 		*******************************************************************************/
 		for (int e = 0; e < TIGER_MAX; e++) {
 			if (tiger[e].GetExist() == true) {
-				tiger[e].Update(now);
+				tiger[e].Update();
 			}
 		}
 
@@ -132,14 +134,14 @@ void  STAGE2::Update(float now, GAME_STATUS* pstatus) {
 		*******************************************************************************/
 		for (int e = 0; e < CROW_MAX; e++) {
 			if (crow[e].GetExist() == true) {
-				crow[e].Update(now);
+				crow[e].Update();
 			}
 		}
 
 		/******************************************************************************
 		WINDOWの処理
 		*******************************************************************************/
-		if (now - meter_time > 0.5f) {
+		if (ptime->GetTime() - meter_time > 0.5f) {
 			switch (meter_anm) {
 			case true:
 				meter_anm = false;
@@ -149,7 +151,7 @@ void  STAGE2::Update(float now, GAME_STATUS* pstatus) {
 				meter_anm = true;
 				break;
 			}
-			meter_time = now;
+			meter_time = ptime->GetTime();
 		}
 		/******************************************************************************
 		GameOver,Clearか
@@ -177,7 +179,7 @@ void  STAGE2::Update(float now, GAME_STATUS* pstatus) {
 			switch (go_state) {
 			case true:
 				state = PLAY;
-				Init(now, pstatus);
+				Init();
 				break;
 			case false:
 				state = ST_MAP;
@@ -195,7 +197,7 @@ void  STAGE2::Update(float now, GAME_STATUS* pstatus) {
 			switch (go_state) {
 			case true:
 				state = PLAY;
-				Init(now, pstatus);
+				Init();
 				break;
 			case false:
 				if (pstatus->GetStageFlag(2) == false) {	//初クリアならチケットを獲得する

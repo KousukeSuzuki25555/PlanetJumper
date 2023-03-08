@@ -3,6 +3,7 @@
 #include "Draw.h"
 #include "Bullet.h"
 #include "player.h"
+#include "MyTime.h"
 
 class POLICE {
 	VECTOR2 pos;	//座標
@@ -11,7 +12,8 @@ class POLICE {
 	I_VECTOR2 bust_uv;	//上体のuv値
 	DRAW* pdraw;	
 	PLAYER* pplayer;	
-	BULLET bullet;	
+	BULLET bullet;
+	MY_TIME* ptime;
 	bool attack_flag;	//攻撃中か
 	bool bullet_hit;	//銃弾が当たったか
 	float gravity;	//重力
@@ -22,12 +24,12 @@ class POLICE {
 	float ppos;	//プレイヤーの座標
 public:
 	POLICE();	//コンストラクタ
-	void PointerInit(DRAW* pdraw,PLAYER* pplayer);	//ポインタの初期化
-	void Update(float now,float speed);	//アップデート関数
-	void Init(float now);	//初期化
+	void PointerInit(DRAW* pdraw,PLAYER* pplayer,MY_TIME* ptime);	//ポインタの初期化
+	void Update(float speed);	//アップデート関数
+	void Init();	//初期化
 	void AttackSet();	//攻撃への移行関数
-	void AttackFin(float now);	//攻撃終了関数
-	void Anm(float now);	//アニメーション
+	void AttackFin();	//攻撃終了関数
+	void Anm();	//アニメーション
 	void SetGravity(unsigned short int strength);	//重力のセッター
 	void Draw(float camera);	//描画関数
 	void SetPpos(float ppos);	//player座標をセット	

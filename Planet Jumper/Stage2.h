@@ -28,8 +28,8 @@ private:
 public:
 	STAGE2();	//コンストラクタ
 	~STAGE2();	//デストラクタ
-	void PointerInit(DRAW* pdraw, PLAYER* pplayer);	//ポインタの初期化
-	void Init(float now, GAME_STATUS* pstatus);	//初期化関数
-	void Update(float now, GAME_STATUS* pstatus);	//アップデート関数
+	void PointerInit(DRAW* pdraw, PLAYER* pplayer,MY_TIME* ptime,GAME_STATUS* pstatus);	//ポインタの初期化
+	void Init();	//初期化関数
+	void Update();	//アップデート関数
 	void Draw();	//描画関数
 };

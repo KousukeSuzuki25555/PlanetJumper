@@ -941,5 +941,11 @@
     <ClInclude Include="TicketPlayGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Stage3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E_Ufo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

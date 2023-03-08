@@ -41,7 +41,7 @@ TIGER::TIGER() {
 	uv = { 0,1 };
 }
 
-void TIGER::GuideInit(float now,bool jump) {
+void TIGER::GuideInit(bool jump) {
 	if (jump == true) {
 		pos = { 800,JUMP_GROUND-10 };
 	}
@@ -49,24 +49,26 @@ void TIGER::GuideInit(float now,bool jump) {
 		pos = { 800,NOT_JUMP_GROUND-10 };
 	}
 	rotate = 1.5f;
-	time = now;
+	time = ptime->GetTime();
 	hp = 3;
 	uv = { 0,1 };
 }
 
-void TIGER::PointerInit(DRAW* pdraw, PLAYER* pplayer) {
+void TIGER::PointerInit(DRAW* pdraw, PLAYER* pplayer,MY_TIME* ptime) {
 	this->pdraw = pdraw;
 	this->pplayer = pplayer;
+	this->ptime = ptime;
 }
 
-void TIGER::PointerInit(DRAW* pdraw, PLAYER* pplayer, Ticket* pticket) {
+void TIGER::PointerInit(DRAW* pdraw, PLAYER* pplayer, Ticket* pticket,MY_TIME* ptime) {
 	this->pdraw = pdraw;
 	this->pplayer = pplayer;
 	this->pticket = pticket;
+	this->ptime = ptime;
 }
 
-void TIGER::Update(float now) {
-	rotate -= (now - time) / move_speed[move_pt];
+void TIGER::Update() {
+	rotate -= (ptime->GetTime() - time) / move_speed[move_pt];
 	if (rotate < 1.65f) {
 		uv.v = 0;
 		move_pt = 1;
@@ -76,18 +78,18 @@ void TIGER::Update(float now) {
 	//アニメーションの移行
 	switch (uv.v) {
 	case 0:
-		if (now - anm_time > 0.1) {
+		if (ptime->GetTime()  - anm_time > 0.1) {
 			uv.u++;
-			anm_time = now;
+			anm_time = ptime->GetTime();
 			if (uv.u == 10) {
 				uv.u = 0;
 			}
 		}
 		break;
 	case 1:
-		if (now-anm_time > 0.1) {
+		if (ptime->GetTime() -anm_time > 0.1) {
 			uv.u++;
-			anm_time = now;
+			anm_time = ptime->GetTime();
 			if (uv.u == 5) {
 				uv.u = 0;
 			}
@@ -99,18 +101,18 @@ void TIGER::Update(float now) {
 	********************************************************************/
 	if (exist == true) {
 		PlayerHit();
-		BulletHit(now);
+		BulletHit();
 	}
 	
 	if (hit == true) {
-		if (hit_time - now < 0) {
+		if (hit_time - ptime->GetTime() < 0) {
 			HitUninit();
 		}
 	}
-	time = now;
+	time = ptime->GetTime();
 }
 
-void TIGER::GuideUpdate(float now) {
+void TIGER::GuideUpdate() {
 	VECTOR2 ppos = pplayer->GetPos();
 	if (pos.x - ppos.x < 300.0f) {
 		uv.v = 0;
@@ -118,20 +120,20 @@ void TIGER::GuideUpdate(float now) {
 
 	switch (uv.v) {
 	case 0:
-		pos.x -= (now - time) * 100;
-		if (now - anm_time > 0.1) {
+		pos.x -= (ptime->GetTime() - time) * 100;
+		if (ptime->GetTime() - anm_time > 0.1) {
 			uv.u++;
-			anm_time = now;
+			anm_time = ptime->GetTime();
 			if (uv.u == 10) {
 				uv.u = 0;
 			}
 		}
 		break;
 	case 1:
-		pos.x -= (now - time) * 50;
-		if (now - anm_time > 0.1) {
+		pos.x -= (ptime->GetTime() - time) * 50;
+		if (ptime->GetTime() - anm_time > 0.1) {
 			uv.u++;
-			anm_time = now;
+			anm_time = ptime->GetTime();
 			if (uv.u == 5) {
 				uv.u = 0;
 			}
@@ -144,22 +146,22 @@ void TIGER::GuideUpdate(float now) {
 	********************************************************************/
 	if (exist == true) {
 		PlayerHit();
-		BulletHit(now);
+		BulletHit();
 	}
 	
 
 
 	if (hit == true) {
-		if (hit_time - now < 0) {
+		if (hit_time - ptime->GetTime() < 0) {
 			HitUninit();
 		}
 	}
-	time = now;
+	time = ptime->GetTime();
 }
 
-void TIGER::HitSet(float now) {
+void TIGER::HitSet() {
 	hit = true;
-	hit_time = now += 0.1f;
+	hit_time = ptime->GetTime() + 0.1f;
 }
 
 void TIGER::HitUninit() {
@@ -197,7 +199,7 @@ void TIGER::PlayerHit() {		//playerとの当たり判定
 		DetectReset();
 	}
 }
-void TIGER::BulletHit(float now) {		//銃弾との当たり判定
+void TIGER::BulletHit() {		//銃弾との当たり判定
 	for (int e = 0; e < bulletNum; e++) {
 		if (pplayer->GetBulletUse(e) == true) {
 			bullet_pos = pplayer->GetBulletPos(e);
@@ -215,7 +217,7 @@ void TIGER::BulletHit(float now) {		//銃弾との当たり判定
 					pticket->SetTicket();
 				}
 				else {
-					HitSet(now);
+					HitSet();
 				}
 			}
 			DetectReset();
@@ -224,14 +226,14 @@ void TIGER::BulletHit(float now) {		//銃弾との当たり判定
 	}
 }
 
-void TIGER::Init(float rotate,float now,int bulletNum) {
+void TIGER::Init(float rotate,int bulletNum) {
 	this->rotate = rotate;
 	exist = true;
 	uv = { 0,1 };
 	move_pt = 0;
 	hp = 3;
-	time = now;
-	anm_time = now;
+	time = ptime->GetTime();
+	anm_time = ptime->GetTime();
 	this->bulletNum = bulletNum;
 }
 

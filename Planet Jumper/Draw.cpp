@@ -167,3 +167,11 @@ void DRAW::BulletDisp(int num) {
 		g_bulletDisp(0, 0, 20, 32).draw(32+32*e, Y_MAX - 150);
 	}
 }
+
+void DRAW::UfoDraw(int num, VECTOR2 pos) {
+	g_Ufo(num * 64, 0, 64, 64).drawAt(pos.x, pos.y);
+}
+
+void DRAW::LaserDraw(int num, VECTOR2 pos) {
+	g_Laser(num * 32, 0, 32, 32).drawAt(pos.x, pos.y);
+}

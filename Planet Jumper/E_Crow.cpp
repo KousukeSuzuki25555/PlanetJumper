@@ -10,22 +10,24 @@ CROW::CROW() {
 	radius = 0;
 }
 
-void CROW::Init(float rot,float time,int bulletNum) {
+void CROW::Init(float rot,int bulletNum) {
 	rotate = rot;
-	this->time = time;
+	this->time = ptime->GetTime();
 	this->bulletNum = bulletNum;
+
 	radius = RADIUS + 75.0f;
 	exist = true;
 }
 
-void CROW::PointerInit(DRAW* pdraw, PLAYER* pplayer, Ticket* pticket) {
+void CROW::PointerInit(DRAW* pdraw, PLAYER* pplayer, Ticket* pticket,MY_TIME* ptime) {
 	this->pdraw = pdraw;
 	this->pplayer = pplayer;
 	this->pticket = pticket;
+	this->ptime = ptime;
 }
 
-void CROW::Update(float now) {
-	rotate -= (now - time) / 25.0f;
+void CROW::Update() {
+	rotate -= (ptime->GetTime() - time) / 25.0f;
 	//radius += cosf(now);
 	pos.x = cosf(rotate * PI) * (radius)+440;
 	pos.y = sinf(rotate * PI) * (radius)+1278;
@@ -79,7 +81,7 @@ void CROW::Update(float now) {
 		}
 	}
 
-	time = now;
+	time = ptime->GetTime();
 }
 
 bool CROW::GetExist() {

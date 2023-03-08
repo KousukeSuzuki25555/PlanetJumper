@@ -33,7 +33,7 @@ public:
 	PLAYER* pplayer;
 	POLICE police;
 	ICON icon;
-	MY_TIME time;
+	MY_TIME* ptime;
 	TIGER tiger;
 	DRAW* pdraw;
 	BLOCK block;
@@ -62,7 +62,7 @@ public:
 
 public:
 	TUTORIAL();	//コンストラクタ
-	void PointerInit(GAME_STATUS* pstatus,DRAW* pdraw,PLAYER* pplayer);	//ポインタの初期化
+	void PointerInit(GAME_STATUS* pstatus,DRAW* pdraw,PLAYER* pplayer,MY_TIME* ptime);	//ポインタの初期化
 	void Init();	//初期化
 	void Update();	//アップデート関数
 	void Draw();	//描画関数

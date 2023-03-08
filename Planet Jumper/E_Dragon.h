@@ -5,6 +5,8 @@
 #include "Draw.h"
 #include "Status.h"
 #include "TicketPlayGame.h"
+#include "MyTime.h"
+#include "Player.h"
 
 #define D_SIZE		(32)
 
@@ -46,7 +48,10 @@ private:
 	VECTOR2 norm;	//attack1で使う移動距離の正規化された値を入れておく
 	DRAW* pdraw;	
 	SPINE spine[9];	//DragnSpineのclassを9個持つ
-	Ticket* pticket;	
+	Ticket* pticket;
+	MY_TIME* ptime;
+	GAME_STATUS* pstatus;
+	PLAYER* pplayer;
 	unsigned short int state;	//状態
 	unsigned short int attackState;	//攻撃中の状態
 	unsigned short int form;	//形態
@@ -78,25 +83,25 @@ private:
 
 public:
 	Dragon();	//コンストラクタ
-	void PointerInit(DRAW* pdraw, Ticket* pticket);	//ポインタの初期化
-	void Init(float now,int bulletNum);	//初期化
+	void PointerInit(DRAW* pdraw, Ticket* pticket,PLAYER* pplayer,MY_TIME* ptime,GAME_STATUS* pstatus);	//ポインタの初期化
+	void Init(int bulletNum);	//初期化
 	void State2Init();	//状態２の初期化
-	void Update(PLAYER* pplayer,float now, GAME_STATUS* pstatus);	//アップデート関数
+	void Update();	//アップデート関数
 	void Draw(VECTOR2 camera);	//描画関数
-	void Anm(float now);	//アニメーション関数
-	void PlayerHit(PLAYER* pplayer);	//プレイヤーとの当たり判定
-	void BulletHit(PLAYER* pplayer, GAME_STATUS* pstatus);	//銃弾との当たり判定
+	void Anm();	//アニメーション関数
+	void PlayerHit();	//プレイヤーとの当たり判定
+	void BulletHit();	//銃弾との当たり判定
 	void DetectReset();	//d_vertex[4]を初期化する
 	void SetSpeed(float speed);	//スピードをセット
-	void Attack1Set(float now);	//攻撃１をセット
-	void Attack1TrdSet(float now);	//攻撃１を次の状態にセット
+	void Attack1Set();	//攻撃１をセット
+	void Attack1TrdSet();	//攻撃１を次の状態にセット
 	void Attack2TrdSet();	//攻撃１を次の状態にセット
-	void Attack1Act(float now);	//攻撃１の実働部
-	void Attack1Uninit(float now);	//攻撃１の状態から抜ける
-	void Attack2Set(float now);	//攻撃２をセット
-	void Attack2Act(float now);	//攻撃２の実働部
-	void Attack2Uninit(float now);	//攻撃２から抜ける
-	void SpineUpdate(float now,PLAYER* pplayer);	//棘のアップデート
+	void Attack1Act();	//攻撃１の実働部
+	void Attack1Uninit();	//攻撃１の状態から抜ける
+	void Attack2Set();	//攻撃２をセット
+	void Attack2Act();	//攻撃２の実働部
+	void Attack2Uninit();	//攻撃２から抜ける
+	void SpineUpdate();	//棘のアップデート
 	VECTOR2 CameraPos();	//カメラを返す
 	float GetHp();	//Hpを取得
 	unsigned short int GetForm();	//状態を返す

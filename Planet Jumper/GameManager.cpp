@@ -12,21 +12,22 @@ GAMEMANAGER::GAMEMANAGER() {
 	pstatus = 0;
 }
 
-void GAMEMANAGER::PointerSet(GAME_STATUS* pstatus, DRAW* pdraw,PLAYER* pplayer,GROUND* pground, bool* pgameContinue) {
+void GAMEMANAGER::PointerSet(GAME_STATUS* pstatus, DRAW* pdraw,PLAYER* pplayer,GROUND* pground, MY_TIME* ptime,bool* pgameContinue) {
 	this->pdraw = pdraw;
 	this->pplayer = pplayer;
 	this->pground = pground;
-	tutorial.PointerInit(pstatus,pdraw, pplayer);
-	stage1.PointerInit(pdraw, pplayer);
-	stage2.PointerInit(pdraw, pplayer);
-	stageBoss.PointerInit(pdraw, pplayer, pground);
-	guide.PointerInit(pstatus,pdraw, pplayer);
+	this->ptime = ptime;
+	tutorial.PointerInit(pstatus,pdraw, pplayer,ptime);
+	stage1.PointerInit(pdraw, pplayer,ptime,pstatus);
+	stage2.PointerInit(pdraw, pplayer,ptime,pstatus);
+	stageBoss.PointerInit(pdraw, pplayer, pground,ptime,pstatus);
+	guide.PointerInit(pstatus,pdraw, pplayer,ptime);
 	this->pgameContinue = pgameContinue;
 	this->pstatus = pstatus;
 	store.PointerInit(pstatus,pdraw);
 }
 
-void GAMEMANAGER:: Update(float now) {
+void GAMEMANAGER:: Update() {
 
 	switch (select) {
 	case MAP:
@@ -44,21 +45,21 @@ void GAMEMANAGER:: Update(float now) {
 		break;
 
 	case ST1:
-		stage1.Update(now,pstatus);
+		stage1.Update();
 		if (stage1.GetMap() == true) {
 			select = MAP;
 		}
 		break;
 
 	case ST2:
-		stage2.Update(now, pstatus);
+		stage2.Update();
 		if (stage2.GetMap() == true) {
 			select = MAP;
 		}
 		break;
 
 	case ST_BOSS:
-		stageBoss.Update(pstatus,now);
+		stageBoss.Update(pstatus, ptime->GetTime());
 		if (stageBoss.GetMap() == true) {
 			select = MAP;
 		}
@@ -72,7 +73,7 @@ void GAMEMANAGER:: Update(float now) {
 		break;
 
 	case ST_GUIDE:
-		guide.Update(now);
+		guide.Update();
 		if (KeyEnter.down()) {
 			select = MAP;
 		}
@@ -96,19 +97,19 @@ void GAMEMANAGER:: Update(float now) {
 	if (old_select != select) {
 		switch (select) {
 		case ST1:
-			stage1.Init(now, pstatus);
+			stage1.Init();
 			st_start = true;
-			perf_time = now + 2.0f;
+			perf_time = ptime->GetTime() + 2.0f;
 			break;
 
 		case ST2:
-			stage2.Init(now, pstatus);
+			stage2.Init();
 			st_start = true;
-			perf_time = now + 2.0f;
+			perf_time = ptime->GetTime() + 2.0f;
 			break;
 
 		case ST_BOSS:
-			stageBoss.Init(now, pstatus);
+			stageBoss.Init();
 			break;
 
 		case ST_TUTORIAL:
@@ -120,7 +121,7 @@ void GAMEMANAGER:: Update(float now) {
 			break;
 
 		case ST_GUIDE:
-			guide.Init(now);
+			guide.Init();
 			break;
 
 		case MAP:
@@ -133,7 +134,7 @@ void GAMEMANAGER:: Update(float now) {
 		stageBoss.Uninit();
 	}
 	if (st_start == true) {
-		StageStartPerf(now,select);
+		StageStartPerf(select);
 	}
 	old_select = select;
 }
@@ -142,8 +143,8 @@ void GAMEMANAGER::MapInit() {	//stage変数をリセットする
 	map.Init();
 }
 
-void GAMEMANAGER::StageStartPerf(float now,int select) {	//stage1の文字をスタート時に流す
-	perf_x = X_MAX * (perf_time - now) / 2.0f;
+void GAMEMANAGER::StageStartPerf(int select) {	//stage1の文字をスタート時に流す
+	perf_x = X_MAX * (perf_time - ptime->GetTime()) / 2.0f;
 	pdraw->StageSt(perf_x);
 	if (perf_x < X_MAX / 2 - 32 * 3) {
 		switch (select) {

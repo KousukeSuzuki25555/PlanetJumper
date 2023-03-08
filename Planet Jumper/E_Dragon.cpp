@@ -88,9 +88,12 @@ Dragon::Dragon() {
 	witchAttack = false;
 }
 
-void Dragon::PointerInit(DRAW* pdraw, Ticket* pticket) {
+void Dragon::PointerInit(DRAW* pdraw, Ticket* pticket, PLAYER* pplayer, MY_TIME* ptime, GAME_STATUS* pstatus) {
 	this->pdraw = pdraw;
 	this->pticket = pticket;
+	this->pplayer = pplayer;
+	this->ptime = ptime;
+	this->pstatus = pstatus;
 	for (int e = 0; e < 9; e++) {
 		spine[e].PointerInit(pdraw);
 	}
@@ -136,7 +139,7 @@ void Dragon::State2Init() {
 	}
 }
 
-void Dragon::Init(float now,int bulletNum) {
+void Dragon::Init(int bulletNum) {
 	for (int e = 0; e < 11; e++) {	//DragonBoxの配列に値を入れる
 		switch (e) {
 		case 0:
@@ -179,7 +182,7 @@ void Dragon::Init(float now,int bulletNum) {
 	attackTradition = false;
 	playerHit = false;
 	cameraFlag = false;
-	time = now;
+	time = ptime->GetTime();
 	DetectReset();
 	for (int e = 0; e < 9; e++) {
 		spine[e].Reset();
@@ -188,13 +191,13 @@ void Dragon::Init(float now,int bulletNum) {
 	dragonState = false;
 	state2Init = false;
 	witchAttack = false;
-	anm_time = now;
-	attack_time = now;
+	anm_time = ptime->GetTime();
+	attack_time = ptime->GetTime();
 	radius = DRFON_RADIUS;		//ステージの中心からの距離(ステージからの高さになる)
 	state = DST_NORMAL;
 }
 
-void Dragon::Update(PLAYER* pplayer,float now, GAME_STATUS* pstatus) {
+void Dragon::Update() {
 	//角度の処理
 	if (state == DST_NORMAL) {
 		if (speed == SPEED_FAST) {
@@ -211,22 +214,22 @@ void Dragon::Update(PLAYER* pplayer,float now, GAME_STATUS* pstatus) {
 	case DST_ATTACK1:
 		switch (attackFlag) {
 		case true:
-			Attack1Act(now);
+			Attack1Act();
 			break;
 
 		case false:
-			Attack1Set(now);
+			Attack1Set();
 			break;
 		}
 		break;
 	case DST_ATTACK2:
 		switch (attackFlag) {
 		case true:
-			Attack2Act(now);
+			Attack2Act();
 			break;
 
 		case false:
-			Attack2Set(now);
+			Attack2Set();
 			break;
 		}
 		break;
@@ -234,19 +237,19 @@ void Dragon::Update(PLAYER* pplayer,float now, GAME_STATUS* pstatus) {
 
 	//攻撃
 	if (dragonState == false) {
-		if (now - attack_time > 6.0f) {
+		if (ptime->GetTime() - attack_time > 6.0f) {
 			state = DST_ATTACK1;
 		}
 	}
 	else {
 		if (witchAttack == true) {
-			if (now - attack_time > 6.0f) {
+			if (ptime->GetTime() - attack_time > 6.0f) {
 				state = DST_ATTACK1;
 				witchAttack = false;
 			}
 		}
 		else {
-			if (now - attack_time > 5.0f) {
+			if (ptime->GetTime() - attack_time > 5.0f) {
 				state = DST_ATTACK2;
 				witchAttack = true;
 			}
@@ -260,18 +263,18 @@ void Dragon::Update(PLAYER* pplayer,float now, GAME_STATUS* pstatus) {
 			break;
 		}
 	}
-	Anm(now);
+	Anm();
 	//当たり判定(player)
-	PlayerHit(pplayer);
+	PlayerHit();
 	//当たり判定(bullet)
 	for (int e = 0; e < bulletNum; e++) {
 		if (pplayer->GetBulletUse(e) == true) {	//bulletが使われていたら当たり判定を行う
-			BulletHit(pplayer, pstatus);
+			BulletHit();
 		}
 	}
 
 	//とげの管理
-	SpineUpdate(now,pplayer);
+	SpineUpdate();
 
 	//hpの管理 hp=すべてのboxのhpの合計
 	/*hp = 0;
@@ -281,7 +284,7 @@ void Dragon::Update(PLAYER* pplayer,float now, GAME_STATUS* pstatus) {
 		}
 	}*/
 
-	time = now;
+	time = ptime->GetTime();
 }
 
 void Dragon::Draw(VECTOR2 camera) {
@@ -302,17 +305,17 @@ void Dragon::Draw(VECTOR2 camera) {
 	}
 }
 
-void Dragon::Anm(float now) {	//アニメーション
+void Dragon::Anm() {	//アニメーション
 	//それぞれのBOXにposを入れる
 	addRot = rot;	//ドラゴン自体の回転
-	radius += sinf(now)/3;
+	radius += sinf(ptime->GetTime())/3;
 	if (state == DST_NORMAL || (state == DST_ATTACK1 && (attackState == DST1 || attackState == DST2))||state==DST_ATTACK2) {
 		d_box[firstBox].pos.x = cosf(rot * PI) * radius + CENTER_X;	//先頭ボックスのposを作成
 		d_box[firstBox].pos.y = sinf(rot * PI) * radius + CENTER_Y;
 	}
 	if (state != DST_ATTACK2) {
 		for (int e = firstBox + 1; e < 11; e++) {
-			d_box[e].rot = sinf(now + 2 / e) / e / WAVE_DIV;	//逓減するsin波で波打つアニメーションを作る
+			d_box[e].rot = sinf(ptime->GetTime() + 2 / e) / e / WAVE_DIV;	//逓減するsin波で波打つアニメーションを作る
 		}
 	}
 	for (int e = firstBox+1; e < 11; e++) {
@@ -345,7 +348,7 @@ void Dragon::Anm(float now) {	//アニメーション
 	}
 }
 
-void Dragon::PlayerHit(PLAYER* pplayer) {	//当たり判定を行う　playerの頂点をboxの角度に移動して行う
+void Dragon::PlayerHit() {	//当たり判定を行う　playerの頂点をboxの角度に移動して行う
 	addRot = rot;
 	for (int e = 0; e < 11; e++) {
 		addRot += d_box[e].rot;
@@ -385,7 +388,7 @@ void Dragon::PlayerHit(PLAYER* pplayer) {	//当たり判定を行う　playerの
 	}
 }
 
-void Dragon::BulletHit(PLAYER* pplayer, GAME_STATUS* pstatus) {		//bulletとの当たり判定
+void Dragon::BulletHit() {		//bulletとの当たり判定
 	addRot = rot;
 	for (int e = 0; e < 11; e++) {
 		if (d_box[e].exist == true) {
@@ -441,10 +444,10 @@ void Dragon::SetSpeed(float speed) {
 	this->speed = speed;
 }
 
-void Dragon::Attack1Set(float now) {	//空高く上がってplayerめがけて突撃する攻撃
+void Dragon::Attack1Set() {	//空高く上がってplayerめがけて突撃する攻撃
 	state = DST_ATTACK1;
 	attackState = DST1;
-	attack_time = now;
+	attack_time = ptime->GetTime();
 	for (int e = 0; e < 11; e++) {
 		if (d_box[e].exist == true) {
 			attack1FirstBox = (unsigned short)e;
@@ -461,11 +464,11 @@ void Dragon::Attack1Set(float now) {	//空高く上がってplayerめがけて�
 	}
 }
 
-void Dragon::Attack1TrdSet(float now) {
+void Dragon::Attack1TrdSet() {
 	attackTradition = true;
 	timeMs = attack_time + ATTACK1_TIME/2.5f;
 	norm = VacNormalize(d_box[attack1FirstBox].pos, ppos);
-	timeGoal = now + ATTACK1_TIME;
+	timeGoal = ptime->GetTime() + ATTACK1_TIME;
 }
 
 void Dragon::Attack2TrdSet() {
@@ -473,14 +476,14 @@ void Dragon::Attack2TrdSet() {
 	moveMs = (radius - RADIUS) / ATTACK1_TIME;
 }
 
-void Dragon::Attack1Act(float now) {
+void Dragon::Attack1Act() {
 	switch (attackState) {
 	case DST1:
 		
-		radius += moveMs * (now - attack_time);
+		radius += moveMs * (ptime->GetTime() - attack_time);
 		
-		d_box[attack1FirstBox].rot += rotMs * (now - attack_time);
-		attack_time = now;
+		d_box[attack1FirstBox].rot += rotMs * (ptime->GetTime() - attack_time);
+		attack_time = ptime->GetTime();
 		if (radius>RADIUS+ D_Y_MAX) {
 			radius = radiusGoal;
 			d_box[attack1FirstBox].rot = 0.5f;
@@ -491,14 +494,14 @@ void Dragon::Attack1Act(float now) {
 		switch (attackTradition) {
 		case true:
 			float remainder;
-			d_box[attack1FirstBox].rot -= rotMs * (now - attack_time)*2.5f;
-			attack_time = now;
-			if (now>timeMs) {
+			d_box[attack1FirstBox].rot -= rotMs * (ptime->GetTime() - attack_time)*2.5f;
+			attack_time = ptime->GetTime();
+			if (ptime->GetTime() >timeMs) {
 				attackState = DST3;
 			}
 			break;
 		case false:
-			Attack1TrdSet(now);
+			Attack1TrdSet();
 			
 			break;
 		}
@@ -507,12 +510,12 @@ void Dragon::Attack1Act(float now) {
 		switch (attackTradition) {
 		case true:
 
-			d_box[attack1FirstBox].pos = d_box[attack1FirstBox].pos+norm* (now - attack_time)*500;
+			d_box[attack1FirstBox].pos = d_box[attack1FirstBox].pos+norm* (ptime->GetTime() - attack_time)*500;
 			d_box[attack1FirstBox].rot = atan2f(d_box[attack1FirstBox].pos.y - ppos.y, d_box[attack1FirstBox].pos.x - ppos.y);
-			attack_time = now;
+			attack_time = ptime->GetTime();
 
 			if (timeGoal<attack_time) {	//playerとの距離が一定以下になったら攻撃から抜ける処理へ移動
-				Attack1Uninit(now);
+				Attack1Uninit();
 			}
 			break;
 		case false:
@@ -523,7 +526,7 @@ void Dragon::Attack1Act(float now) {
 	}
 }
 
-void Dragon::Attack1Uninit(float now) {
+void Dragon::Attack1Uninit() {
 	d_box[0].rot = 0.0f;
 	state = DST_NORMAL;
 	rot = 1.6f;
@@ -538,15 +541,15 @@ void Dragon::Attack1Uninit(float now) {
 			d_box[e].hp = 3;
 		}
 	}
-	attack_time = now;
+	attack_time = ptime->GetTime();
 	attackState = DST1;
 	attackFlag = false;
 }
 
-void Dragon::Attack2Set(float now) {	//回転しながらとげを飛ばす攻撃
+void Dragon::Attack2Set() {	//回転しながらとげを飛ばす攻撃
 	state = DST_ATTACK2;
 	attackState = DST1;
-	attack_time = now;
+	attack_time = ptime->GetTime();
 	for (int e = 0; e < 11; e++) {
 		if (d_box[e].exist == true) {
 			attack1FirstBox = (unsigned short)e;
@@ -563,16 +566,16 @@ void Dragon::Attack2Set(float now) {	//回転しながらとげを飛ばす攻�
 	}
 }
 
-void Dragon::Attack2Act(float now) {
+void Dragon::Attack2Act() {
 	switch (attackState) {
 	case DST1:	//3秒で384まで上昇し、rotを0.5にする
-		radius += moveMs * (now - attack_time);
+		radius += moveMs * (ptime->GetTime() - attack_time);
 
 		for (int e = attack1FirstBox + 1; e < 11; e++) {
-			d_box[e].rot += rotMs * (now - attack_time);
+			d_box[e].rot += rotMs * (ptime->GetTime() - attack_time);
 		}
 
-		attack_time = now;
+		attack_time = ptime->GetTime();
 		if (radius > RADIUS + D_Y_MAX) {
 			radius = radiusGoal;
 			for (int e = attack1FirstBox + 1; e < 11; e++) {
@@ -582,31 +585,31 @@ void Dragon::Attack2Act(float now) {
 		}
 		break;
 	case DST2:
-		d_box[attack1FirstBox].rot -= rotMs * (now - attack_time)*3;
+		d_box[attack1FirstBox].rot -= rotMs * (ptime->GetTime() - attack_time)*3;
 		for (int e=attack1FirstBox + 1; e < 11; e++) {
-			d_box[e].rot -= rotMs * (now - attack_time)*0.8f;
+			d_box[e].rot -= rotMs * (ptime->GetTime() - attack_time)*0.8f;
 		}
-		attack_time = now;
+		attack_time = ptime->GetTime();
 		if (d_box[attack1FirstBox+1].rot < 0.0f) {
 			for (int e = attack1FirstBox+1; e < 10; e++) {
 				if (d_box[e].exist == true) {
-					spine[e - 1].Init(d_box[e].pos,now);
+					spine[e - 1].Init(d_box[e].pos, ptime->GetTime());
 				}
 			}
-			Attack2Uninit(now);
+			Attack2Uninit();
 		}
 		break;
 	}
 }
 
-void Dragon::Attack2Uninit(float now) {
+void Dragon::Attack2Uninit() {
 	state = DST_NORMAL;
 	attackState = DST1;
 	d_box[attack1FirstBox].rot = 0.0f;
 	attackFlag = false;
 	rot = 1.6f;
 	radius = DRFON_RADIUS;
-	attack_time = now;
+	attack_time = ptime->GetTime();
 	for (int e = 0; e < 11; e++) {
 		if (dragonState == false) {
 			d_box[e].g_v = 0;
@@ -619,10 +622,10 @@ void Dragon::Attack2Uninit(float now) {
 	}
 }
 
-void Dragon::SpineUpdate(float now,PLAYER* pplayer) {
+void Dragon::SpineUpdate() {
 	for (int e = 0; e < 9; e++) {
 		if (spine[e].GetExist() == true) {
-			spine[e].Update(now,pplayer);
+			spine[e].Update(ptime->GetTime(),pplayer);
 		}
 	}
 }

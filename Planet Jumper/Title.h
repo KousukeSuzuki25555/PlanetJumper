@@ -3,11 +3,13 @@
 #include "Player.h"
 #include "Draw.h"
 #include "Ground.h"
+#include "MyTime.h"
 
 class GAME_TITLE {
 	DRAW* pdraw;
 	PLAYER* pplayer;
 	GROUND* pground;
+	MY_TIME* ptime;
 	VECTOR2 camera;
 	float rot;	//回転
 	float time;	//回転量に使う時間関数
@@ -19,8 +21,8 @@ class GAME_TITLE {
 
 public:
 	GAME_TITLE();	//コンストラクタ
-	void PointerSet(DRAW* pdraw,PLAYER* pplayer,GROUND* pground);	//ポインタのセッター
-	void Update(float now);	//アップデート関数
+	void PointerSet(DRAW* pdraw,PLAYER* pplayer,GROUND* pground,MY_TIME* ptime);	//ポインタのセッター
+	void Update();	//アップデート関数
 	bool GetTitleFlag();	//タイトルフラグのゲッター
 	void Draw();	//描画関数
 };

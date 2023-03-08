@@ -9,26 +9,28 @@ BossSt::BossSt() {	//コンストラクタ
 	pdraw = 0;
 	pplayer = 0;
 	pground = 0;
-	pticket = &ticket;
 }
 
-void BossSt::PointerInit(DRAW* pdraw,PLAYER* pplayer,GROUND* pground) {
+void BossSt::PointerInit(DRAW* pdraw,PLAYER* pplayer,GROUND* pground,MY_TIME* ptime,GAME_STATUS* pstatus) {
 	this->pdraw = pdraw;
 	this->pplayer = pplayer;
 	this->pground = pground;
+	this->ptime = ptime;
+	this->pstatus = pstatus;
+	//this->pstatus = pstatus;
 	pplayer->DrawPointerInit(pdraw);
+	pticket->PointerInit(pdraw, pstatus);
 	icon.PointerInit(pdraw);
 	clear.Init(pticket);
-	dragon.PointerInit(pdraw,pticket);
+	dragon.PointerInit(pdraw,pticket,pplayer,ptime,pstatus);
 }
 
-void BossSt::Init(float now, GAME_STATUS* pstatus) {		//ステージに入る際の初期化処理
+void BossSt::Init() {		//ステージに入る際の初期化処理
 	pplayer->Init(pstatus);
 	pplayer->BossInit();
-	dragon.Init(now, pstatus->GetBulletsNum());
+	dragon.Init(pstatus->GetBulletsNum());
 	state = PLAY;
-	ticket.PointerInit(pdraw, pstatus);
-	ticket.Init();
+	pticket->Init();
 }
 
 void BossSt::Uninit() {		//ステージから抜けるときの処理
@@ -62,7 +64,7 @@ void BossSt::Update(GAME_STATUS* pstatus,float now) {
 		pplayer->Update(now);				//playerのアップデート
 
 		dragon.SetSpeed(speed_value);
-		dragon.Update(pplayer, now,pstatus);
+		dragon.Update();
 
 		/******************************************************************************
 		TICKETの処理
@@ -85,7 +87,7 @@ void BossSt::Update(GAME_STATUS* pstatus,float now) {
 		*******************************************************************************/
 		if (dragon.GetHp() <= 0 ) {
 			state = ST_CLEAR;
-			ticket.SetStatus();
+			pticket->SetStatus();
 		}
 
 		break;
@@ -102,8 +104,8 @@ void BossSt::Update(GAME_STATUS* pstatus,float now) {
 			switch (go_state) {
 			case true:
 				state = PLAY;
-				Init(now,pstatus);
-				dragon.Init(now, pstatus->GetBulletsNum());
+				Init();
+				dragon.Init(pstatus->GetBulletsNum());
 				break;
 			case false:
 				state = ST_MAP;
@@ -124,8 +126,8 @@ void BossSt::Update(GAME_STATUS* pstatus,float now) {
 			switch (go_state) {
 			case true:
 				state = PLAY;
-				Init(now,pstatus);
-				dragon.Init(now, pstatus->GetBulletsNum());
+				Init();
+				dragon.Init(pstatus->GetBulletsNum());
 				break;
 			case false:
 				state = ST_MAP;
@@ -152,7 +154,7 @@ void BossSt::Draw() {	//描画処理関数
 	dragon.Draw(camera);
 	pplayer->HartDrawBoss();
 	icon.Draw();
-	ticket.Draw(true);
+	pticket->Draw(true);
 	pdraw->BulletDisp(pplayer->BulletNotUse());
 }
 

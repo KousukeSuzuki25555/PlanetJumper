@@ -9,22 +9,23 @@ GAME_TITLE::GAME_TITLE() {
 	enterFlag = true;
 }
 
-void GAME_TITLE::PointerSet(DRAW* pdraw,PLAYER* pplayer,GROUND* pground) {
+void GAME_TITLE::PointerSet(DRAW* pdraw,PLAYER* pplayer,GROUND* pground,MY_TIME* ptime) {
 	this->pdraw = pdraw;
 	this->pplayer = pplayer;
 	this->pground = pground;
+	this->ptime = ptime;
 	pplayer->DrawPointerInit(pdraw);
 }
 
-void GAME_TITLE::Update(float now) {
-	rot -= (now - time)/10;
-	pplayer->Update(now);
+void GAME_TITLE::Update() {
+	rot -= (ptime->GetTime() - time) / 10;
+	pplayer->Update(ptime->GetTime());
 
 	if (KeyEnter.down()) {
 		titleFlag = true;
 	}
 
-	if (now - enterTime > 0.5f) {
+	if (ptime->GetTime() - enterTime > 0.5f) {
 		switch (enterFlag) {
 		case true:
 			enterFlag = false;
@@ -34,9 +35,9 @@ void GAME_TITLE::Update(float now) {
 			enterFlag = true;
 			break;
 		}
-		enterTime = now;
+		enterTime = ptime->GetTime();
 	}
-	time = now;
+	time = ptime->GetTime();
 	Draw();
 }
 

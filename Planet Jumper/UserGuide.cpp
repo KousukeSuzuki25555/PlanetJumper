@@ -17,18 +17,19 @@ UserGuide::UserGuide() {
 	pstatus = 0;
 }
 
-void UserGuide::PointerInit(GAME_STATUS* pstatus,DRAW* pdraw, PLAYER* pplayer) {
+void UserGuide::PointerInit(GAME_STATUS* pstatus,DRAW* pdraw, PLAYER* pplayer,MY_TIME* ptime) {
 	this->pdraw = pdraw;
 	this->pplayer = pplayer;
+	this->ptime = ptime;
 	pplayer->DrawPointerInit(pdraw);
-	tiger.PointerInit(pdraw,pplayer);
+	tiger.PointerInit(pdraw,pplayer,ptime);
 	this->pstatus = pstatus;
 	icon.PointerInit(pdraw);
 }
 
-void UserGuide::Init(float now) {
+void UserGuide::Init() {
 	pplayer->GuideInit(guideJump);
-	time = now;
+	time = ptime->GetTime();
 	pplayer->Init(pstatus);
 	pplayer->GuideInit(true);
 	icon.Init();
@@ -36,7 +37,7 @@ void UserGuide::Init(float now) {
 	cursor = U_JUMP;
 }
 
-void UserGuide::Update(float now) {
+void UserGuide::Update() {
 
 	switch (cursor) {
 	case U_JUMP:			//ジャンプ
@@ -101,7 +102,7 @@ void UserGuide::Update(float now) {
 		break;
 
 	case DODGE_ENEMY:	//敵をよける
-		tiger.GuideUpdate(now);
+		tiger.GuideUpdate();
 		font32(U"敵をよけてみよう").draw(SENTENCE_X, DODGE_ENEMY);
 		if (KeyDown.down()) {
 			cursor = ATTACK;
@@ -142,7 +143,7 @@ void UserGuide::Update(float now) {
 		break;
 
 	case SHOT_ENEMY:	//敵を打つ
-		tiger.GuideUpdate(now);
+		tiger.GuideUpdate();
 		font32(U"敵を撃つ").draw(SENTENCE_X, SHOT_ENEMY);
 		if (KeyDown.down()) {
 			cursor = U_RUN;
@@ -183,7 +184,7 @@ void UserGuide::Update(float now) {
 		break;
 	}
 
-	pplayer->Update(now);
+	pplayer->Update(ptime->GetTime());
 
 	if (cursor < ATTACK) {
 		guideJump = true;
@@ -196,8 +197,8 @@ void UserGuide::Update(float now) {
 		pplayer->GuideInit(guideJump);
 
 		if (cursor == DODGE_ENEMY ||cursor == SHOT_ENEMY) {
-			tiger.Init(0.0f, 0.0f, pstatus->GetBulletsNum());
-			tiger.GuideInit(now, guideJump);
+			tiger.Init(0.0f, 0.0f);
+			tiger.GuideInit(guideJump);
 		}
 	}
 

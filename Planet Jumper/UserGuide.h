@@ -4,6 +4,7 @@
 #include "E_Tiger.h"
 #include "Status.h"
 #include "Icon.h"
+#include "MyTime.h"
 
 enum USERGUIDE {	//表示部分の座標
 	TITLE = 16,
@@ -30,6 +31,7 @@ class UserGuide {	//ガイドのclass
 	ICON icon;
 	DRAW* pdraw;
 	GAME_STATUS* pstatus;
+	MY_TIME* ptime;
 	const Font font64{ 64 };
 	const Font font32{ 32 };
 	int cursor;					//カーソルの場所
@@ -39,9 +41,9 @@ class UserGuide {	//ガイドのclass
 
 public:
 	UserGuide();	//コンストラクタ
-	void PointerInit(GAME_STATUS* pstatus,DRAW* pdraw,PLAYER* pplayer);	//ポインタの初期化
-	void Init(float now);	//初期化
-	void Update(float now);	//アップデート関数
+	void PointerInit(GAME_STATUS* pstatus,DRAW* pdraw,PLAYER* pplayer,MY_TIME* ptime);	//ポインタの初期化
+	void Init();	//初期化
+	void Update();	//アップデート関数
 	void GetCursor();	//カーソルの位置のゲッター
 	void Draw();	//描画関数
 };

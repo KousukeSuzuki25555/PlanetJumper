@@ -12,6 +12,7 @@
 #include "Status.h"
 #include "FirstClear.h"
 #include "TicketPlayGame.h"
+#include "MyTime.h"
 
 class STAGE1 {	//簡単にチュートリアルをなぞるように
 private:
@@ -29,9 +30,11 @@ protected:	//継承する変数	敵のみ宣言すればよいようにする
 	FirstClear f_clear;
 	Ticket ticket;
 	Ticket* pticket;
+	GAME_STATUS* pstatus;
+	MY_TIME* ptime;
 	unsigned short int state;	//ステージ上での状態
 	float camera;	//カメラ
-	float now;	//時間
+	//float now;	//時間
 	float meter_time;	//メーターで使う時間
 	float rot;	//回転
 	float time;	//時間変数
@@ -40,9 +43,9 @@ protected:	//継承する変数	敵のみ宣言すればよいようにする
 
 public:
 	STAGE1();	//コンストラクタ
-	void PointerInit(DRAW* pdraw,PLAYER* pplayer);	//ポインタの初期化
-	void Update(float now,GAME_STATUS* pstatus);	//アップデート関数
+	void PointerInit(DRAW* pdraw,PLAYER* pplayer,MY_TIME* ptime, GAME_STATUS* pstatus);	//ポインタの初期化
+	void Update();	//アップデート関数
 	void Draw();	//描画関数
-	void Init(float now,GAME_STATUS* pstatus);	//初期化関数
+	void Init();	//初期化関数
 	bool GetMap();	//マップに戻るか
 };

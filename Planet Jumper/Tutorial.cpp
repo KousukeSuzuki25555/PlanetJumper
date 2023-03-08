@@ -25,13 +25,14 @@ TUTORIAL::TUTORIAL() {		//チュートリアルのコンストラクタ
 	//cloud.Init(1, 1200, 1.6);
 }
 
-void TUTORIAL::PointerInit(GAME_STATUS* pstatus,DRAW* pdraw,PLAYER* pplayer) {
+void TUTORIAL::PointerInit(GAME_STATUS* pstatus,DRAW* pdraw,PLAYER* pplayer,MY_TIME* ptime) {
 	this->pplayer = pplayer;
 	this->pdraw = pdraw;
 	this->pstatus = pstatus;
+	this->ptime = ptime;
 	icon.PointerInit(pdraw);
 	block.PointerInit(pdraw,pplayer);
-	tiger.PointerInit(pdraw,pplayer);
+	tiger.PointerInit(pdraw,pplayer,ptime);
 	ground.PointerInit(pdraw);
 	pplayer->Init(pstatus);
 }
@@ -73,7 +74,7 @@ void TUTORIAL::Update() {
 	police.SetGravity(icon.GetGravity());
 	police.SetPpos(pplayer->GetPos_y());
 	if (use_police == true) {
-		police.Update(now,speed_value);
+		police.Update(speed_value);
 	}
 	bullet_hit=police.GetBulletHit();
 	if (bullet_hit == true) {
@@ -86,9 +87,9 @@ void TUTORIAL::Update() {
 	/******************************************************************************
 	フレームごとのステージの標準的な処理
 	*******************************************************************************/
-	time.Update();				//時間の更新
-	rot -= (time.GetTime() - now) / speed_value;		//ステージで使う回転の基準
-	now = time.GetTime();		//変数に今の時間を保存
+	ptime->Update();				//時間の更新
+	rot -= (ptime->GetTime() - now) / speed_value;		//ステージで使う回転の基準
+	now = ptime->GetTime();		//変数に今の時間を保存
 
 	/******************************************************************************
 	WINDOWの処理
@@ -127,7 +128,7 @@ void TUTORIAL::T_BlockInit2() {
 
 void TUTORIAL::T_EnemyInit() {
 	enemy_time = now;
-	tiger.Init(1.65f,now-enemy_time, pstatus->GetBulletsNum());
+	tiger.Init(1.65f/*,now-enemy_time*/, pstatus->GetBulletsNum());
 	enemy_init_flag = true;
 	use_tiger = true;
 	//tdraw.TigerUse();
@@ -242,7 +243,7 @@ void TUTORIAL::TutorialAct() {
 
 			case true:
 				if (tiger.GetExist() == true) {
-					tiger.Update(now - enemy_time);
+					tiger.Update(/*now - enemy_time*/);
 				}
 			}
 			if (tiger.GetRotate() < 1.45) {
@@ -312,7 +313,7 @@ void TUTORIAL::TutorialAct() {
 
 			case true:
 				if (tiger.GetExist() == true) {
-					tiger.Update(now - enemy_time);
+					tiger.Update(/*now - enemy_time*/);
 					/*tdraw.SetTigerPos(tiger.GetPos());
 					tdraw.SetTigerUv(tiger.GetUv());
 					tdraw.SetTigerRot(tiger.GetRotate());
@@ -501,7 +502,7 @@ void TUTORIAL::TutorialAct() {
 				font(U"後ろから追いかけてくる敵から逃げてみよう").draw(0, 0);
 				use_police = true;
 				//tdraw.PoliceUse();
-				police.PointerInit(pdraw, pplayer);
+				police.PointerInit(pdraw, pplayer,ptime);
 				police.RotInit();
 			}
 			else {

@@ -2,8 +2,8 @@
 
 STAGE1::STAGE1() {
 	camera = 0.0f;
-	now = (float)clock() / 1000;
-	meter_time = now;
+	//now = (float)clock() / 1000;
+	meter_time = 0.0f;
 	rot = 0.0f;
 	time = 0.0f;
 	meter_anm = false;
@@ -32,25 +32,27 @@ STAGE1::STAGE1() {
 	pticket = &ticket;
 }
 
-void STAGE1::PointerInit(DRAW* pdraw,PLAYER* pplayer) {
+void STAGE1::PointerInit(DRAW* pdraw,PLAYER* pplayer,MY_TIME* ptime, GAME_STATUS* pstatus) {
 	this->pplayer = pplayer;
 	this->pdraw = pdraw;
+	this->ptime = ptime;
+	this->pstatus = pstatus;
 	pplayer->DrawPointerInit(pdraw);
 	for (int e = 0; e < 10; e++) {
 		block[e].PointerInit(pdraw,pplayer);
 	}
-	police.PointerInit(pdraw,pplayer);
+	police.PointerInit(pdraw,pplayer,ptime);
 	icon.PointerInit(pdraw);
 	ground.PointerInit(pdraw);
 	f_clear.PointerInit(pdraw);
 	clear.Init(pticket);
 }
 
-void STAGE1::Init(float now, GAME_STATUS* pstatus) {
-	time = now;
-	meter_time = now;
+void STAGE1::Init() {
+	time = ptime->GetTime();
+	meter_time = ptime->GetTime();
 	pplayer->Init(pstatus);
-	police.Init(now);
+	police.Init();
 	ticket.PointerInit(pdraw,pstatus);
 	rot = 0.0f;
 	block[0].Init(SPEED_NOR, 1.7f, block_size[0], 256, 64,pstatus->GetBulletsNum());
@@ -67,7 +69,7 @@ void STAGE1::Init(float now, GAME_STATUS* pstatus) {
 	icon.Init();
 }
 
-void STAGE1::Update(float now,GAME_STATUS* pstatus) {
+void STAGE1::Update() {
 	switch (state) {
 	case PLAY: {
 		if (KeyEnter.down()) {
@@ -77,8 +79,8 @@ void STAGE1::Update(float now,GAME_STATUS* pstatus) {
 		フレームごとのステージの標準的な処理
 		*******************************************************************************/
 
-		rot -= (now - time) / icon.GetSpeedValue();		//ステージで使う回転の基準
-		time = now;
+		rot -= (ptime->GetTime() - time) / icon.GetSpeedValue();		//ステージで使う回転の基準
+		time = ptime->GetTime();
 		/******************************************************************************
 		ICONの処理
 		*******************************************************************************/
@@ -88,7 +90,7 @@ void STAGE1::Update(float now,GAME_STATUS* pstatus) {
 		*******************************************************************************/
 		police.SetGravity(icon.GetGravity());
 		police.SetPpos(pplayer->GetPos_y());
-		police.Update(now, icon.GetSpeedValue());
+		police.Update(icon.GetSpeedValue());
 
 		/******************************************************************************
 		PLAYERの処理
@@ -96,7 +98,7 @@ void STAGE1::Update(float now,GAME_STATUS* pstatus) {
 		pplayer->SetGravity(icon.GetGravity());		//playerに重力をセット
 		pplayer->SetJumpLimit(icon.GetJump());		//playerにジャンプをセット
 		pplayer->SetWeaponPower(icon.GetWeapon());
-		pplayer->Update(now);				//playerのアップデート
+		pplayer->Update(ptime->GetTime());				//playerのアップデート
 		/******************************************************************************
 		BLOCKの処理
 		*******************************************************************************/
@@ -107,7 +109,7 @@ void STAGE1::Update(float now,GAME_STATUS* pstatus) {
 		/******************************************************************************
 		WINDOWの処理
 		*******************************************************************************/
-		if (now - meter_time > 0.5f) {
+		if (ptime->GetTime() - meter_time > 0.5f) {
 			switch (meter_anm) {
 			case true:
 				meter_anm = false;
@@ -117,7 +119,7 @@ void STAGE1::Update(float now,GAME_STATUS* pstatus) {
 				meter_anm = true;
 				break;
 			}
-			meter_time = now;
+			meter_time = ptime->GetTime();
 		}
 
 		/******************************************************************************
@@ -145,7 +147,7 @@ void STAGE1::Update(float now,GAME_STATUS* pstatus) {
 			switch (go_state) {
 			case true:
 				state = PLAY;
-				Init(now, pstatus);
+				Init();
 				break;
 			case false:
 				state = ST_MAP;
@@ -163,7 +165,7 @@ void STAGE1::Update(float now,GAME_STATUS* pstatus) {
 			switch (go_state) {
 			case true:
 				state = PLAY;
-				Init(now, pstatus);
+				Init();
 				break;
 			case false:
 				if (pstatus->GetStageFlag(1) == false) {	//初クリアならチケットを獲得する

@@ -15,27 +15,31 @@ POLICE::POLICE() {
 	bullet_hit = false;		//bulletがplayerと当たったらtrue
 	gravity = GRAVITY_NOR;	//ジャンプの抵抗
 	ppos = 0.0f;
+	pdraw = 0;
+	pplayer = 0;
+	ptime = 0;
 }
 
-void POLICE::PointerInit(DRAW* pdraw,PLAYER* pplayer) {
+void POLICE::PointerInit(DRAW* pdraw,PLAYER* pplayer,MY_TIME* ptime) {
 	this->pdraw = pdraw;
 	bullet.PointerInit(pdraw);
 	this->pplayer = pplayer;
+	this->ptime = ptime;
 }
 
-void POLICE::Init(float now) {
+void POLICE::Init() {
 	rotate = 1.4f;
 	pos.x = cosf(rotate * PI) * (16 + 1024) + X_MAX / 2 - 200;
 	pos.y = sinf(rotate * PI) * (16 + 1024) + 240 + 16 + 2048 / 2;
-	attack_time = now;
+	attack_time = ptime->GetTime();
 	anm_time = attack_time;
 }
 
-void POLICE::Update(float now,float speed) {
+void POLICE::Update(float speed) {
 	/************************************************************************
 	攻撃をするかどうか
 	*************************************************************************/
-	if (now - attack_time > 3.0f) {
+	if (ptime->GetTime() - attack_time > 3.0f) {
 		attack_flag = true;
 		AttackSet();
 	}
@@ -46,18 +50,18 @@ void POLICE::Update(float now,float speed) {
 	if (speed - 30.0f != 0.0f) {	//スピードが通常時のスピードでないとき前後に移動する
 		if (speed - 30.0f < 0) {	//後ろ
 			if (rotate > 1.3) {		//rotateが1.3より小さくなる場合それ以下にならないようにする
-				rotate -= (now - run_time) / (200.0f);
+				rotate -= (ptime->GetTime() - run_time) / (200.0f);
 			}
 		}
 		else if(speed - 30.0f > 0) {	//前
 			if (rotate < 1.5) {		//rotateが1.5より大きくなる場合それ以上にならないようにする
-				rotate += (now - run_time) / (200.0f);
+				rotate += (ptime->GetTime() - run_time) / (200.0f);
 			}
 		}
 		pos.x = cosf(rotate * PI) * (16 + 1024) + X_MAX / 2 - 200;			//前後移動
 		pos.y = sinf(rotate * PI) * (16 + 1024) + 240 + 16 + 2048 / 2;
 	}
-	run_time = now;		//時間の経過を入れることで次のフレームで計算できるようにする
+	run_time = ptime->GetTime();		//時間の経過を入れることで次のフレームで計算できるようにする
 
 
 	/************************************************************************
@@ -70,7 +74,7 @@ void POLICE::Update(float now,float speed) {
 	*************************************************************************/
 	if (bullet.GetUse() == true) {		//銃弾が使われている場合銃弾のアップデート処理をする
 		bullet.SetPpos(ppos);
-		bullet.Update(now);
+		bullet.Update(ptime->GetTime());
 		if (bullet.GetHit() == true) {
 			pplayer->Hit(1);
 		}
@@ -79,21 +83,21 @@ void POLICE::Update(float now,float speed) {
 	/************************************************************************
 	アニメーション
 	*************************************************************************/
-	Anm(now);
+	Anm();
 	//Draw();
 }
 
-void POLICE::Anm(float now) {
+void POLICE::Anm() {
 	switch (attack_flag) {
 	case true:
-		if (now - anm_time > 0.1) {
+		if (ptime->GetTime() - anm_time > 0.1) {
 			uv.u++;
 			if (uv.u == 8) {
 				uv.u = 0;
 			}
-			anm_time = now;
+			anm_time = ptime->GetTime();
 		}
-		if (now - attack_time > 0.5) {
+		if (ptime->GetTime() - attack_time > 0.5) {
 			bust_uv.u++;
 			if (bust_uv.u == 4) {
 				if (bullet.GetUse() == false)
@@ -102,28 +106,28 @@ void POLICE::Anm(float now) {
 				}
 			}
 			if (bust_uv.u == 5) {
-				AttackFin(now);
+				AttackFin();
 			}
-			attack_time = now;
+			attack_time = ptime->GetTime();
 		}
 		break;
 	case false:
-		if (now - anm_time > 0.1) {
+		if (ptime->GetTime() - anm_time > 0.1) {
 			uv.u++;
 			if (uv.u == 8) {
 				uv.u = 0;
 			}
 			bust_uv.u = uv.u;
-			anm_time = now;
+			anm_time = ptime->GetTime();
 		}
 		break;
 	}
 }
 
-void POLICE::AttackFin(float now) {		//攻撃の終了処理
+void POLICE::AttackFin() {		//攻撃の終了処理
 	bust_uv = { uv.u,2 };		//胸の位置を体と同じにする
 	attack_flag = false;
-	attack_time = now;
+	attack_time = ptime->GetTime();
 }
 
 void POLICE::AttackSet() {	//攻撃の開始処理

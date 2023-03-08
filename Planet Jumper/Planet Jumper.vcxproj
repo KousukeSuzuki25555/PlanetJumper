@@ -350,6 +350,7 @@
     <ClInclude Include="E_Police.h" />
     <ClInclude Include="E_Crow.h" />
     <ClInclude Include="E_Tiger.h" />
+    <ClInclude Include="E_Ufo.h" />
     <ClInclude Include="FirstClear.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameOver.h" />
@@ -362,6 +363,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Stage1.h" />
     <ClInclude Include="Stage2.h" />
+    <ClInclude Include="Stage3.h" />
     <ClInclude Include="StageBoss.h" />
     <ClInclude Include="Status.h" />
     <ClInclude Include="stdafx.h" />

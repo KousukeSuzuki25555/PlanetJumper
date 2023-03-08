@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Ground.h"
 #include "Store.h"
+#include "MyTime.h"
 
 class GAMEMANAGER {	//ゲームマネージャーclass
 private:
@@ -22,6 +23,7 @@ private:
 	DRAW* pdraw;
 	PLAYER* pplayer;	//PLAYERはここのみで生成し、ポインタを渡して扱う
 	GROUND* pground;
+	MY_TIME* ptime;
 	STORE store;
 	GAME_STATUS* pstatus;
 	bool* pgameContinue;
@@ -34,8 +36,8 @@ private:
 
 public:
 	GAMEMANAGER();	//コンストラクタ
-	void PointerSet(GAME_STATUS* pstatus,DRAW* pdraw,PLAYER* pplayer,GROUND* pground, bool* pgameContinue);	//ポインタのセッター
-	void Update(float now);	//アップデート関数
+	void PointerSet(GAME_STATUS* pstatus,DRAW* pdraw,PLAYER* pplayer,GROUND* pground,MY_TIME* ptime, bool* pgameContinue);	//ポインタのセッター
+	void Update();	//アップデート関数
 	void MapInit();	//マップの初期化
-	void StageStartPerf(float now,int select);	//stage開始演出を行う関数
+	void StageStartPerf(int select);	//stage開始演出を行う関数
 };
