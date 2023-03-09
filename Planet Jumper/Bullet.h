@@ -8,7 +8,7 @@ protected:
 	VECTOR2 pos;	//座標
 	VECTOR2 ppos;	//playerの座標
 	VECTOR2 camera;	//カメラ
-	I_VECTOR2 p_size;	//playerのサイズ
+	I_VECTOR2 pSize;	//playerのサイズ
 	DRAW* pdraw;
 	int power;	//銃の威力
 	int ground;	//地面の距離
@@ -17,9 +17,9 @@ protected:
 	float rotate;	//回転
 	float jstrength;	//重力の加算値
 	float haight;	//地面からの高さ
-	float st_haight;	//スタート時の高さ
+	float stHaight;	//スタート時の高さ
 	bool use;	//使っているか
-	bool use_colision;	//playerとの当たり判定を行うか
+	bool useColision;	//playerとの当たり判定を行うか
 	bool guideFlag;	//guideで使っているか
 	//bool d_vertex[4];
 	bool hit;	//当たったかどうか

@@ -41,8 +41,9 @@ void GAME_STATUS::Init() {					//初めてセーブデータを生成すると�
 	status.speed = 20.0f;					//スピード
 	status.bullets_num = 1;					//playerが打つことができる弾の数
 	status.bullets_power = 1;
+	status.cursorGun = false;			//カーソル銃が解放されているか
 	map_status.tutorial_flag = false;		//チュートリアルが終わっているかのフラグ
-	for (int e = 0; e < 6; e++) {
+	for (int e = 0; e < STAGE_MAX; e++) {
 		map_status.stage_flag[e] = false;		//ステージが解放されているかのフラグ
 	}
 	map_status.money = 0;					//所持金変数
@@ -83,6 +84,15 @@ int GAME_STATUS::GetBulletsNum() {			//弾数のゲッター
 void GAME_STATUS::SetBulletPower(float power) {
 	status.bullets_power = power;
 }
+
+void GAME_STATUS::SetCursorGun() {	//呼び出されたら銃をゲットできる
+	status.cursorGun = true;
+}
+
+bool GAME_STATUS::GetCursorGun() {	//カーソル銃のゲッター
+	return status.cursorGun;
+}
+
 
 float GAME_STATUS::GetBulletPower() {
 	return status.bullets_power;

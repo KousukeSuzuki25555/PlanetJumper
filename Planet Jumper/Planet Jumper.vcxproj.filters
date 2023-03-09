@@ -142,11 +142,17 @@
     <Filter Include="Header Files\Stage">
       <UniqueIdentifier>{c6c1aa8d-943a-4aa4-b5da-fe984f04c88e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Stage">
-      <UniqueIdentifier>{9f6fd1c2-30e5-4ad1-8eaa-ab918b8b78ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Enemy">
       <UniqueIdentifier>{0a987ac8-619b-4302-86ca-8925227432e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Weapon">
+      <UniqueIdentifier>{096b8892-7c8b-4eaf-b7ff-e767a199abcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Weapon">
+      <UniqueIdentifier>{48175204-1281-445c-a1b7-954b179ee728}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Stage">
+      <UniqueIdentifier>{9f6fd1c2-30e5-4ad1-8eaa-ab918b8b78ca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -174,37 +180,16 @@
     <ClCompile Include="MyTime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tutorial.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MapAct.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Status.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DragonSpine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MyType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Clear.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Title.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UserGuide.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FirstClear.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Store.cpp">
@@ -244,6 +229,36 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Block.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Source Files\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="NewBullet.cpp">
+      <Filter>Source Files\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source Files\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Cursor.cpp">
+      <Filter>Source Files\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Tutorial.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="UserGuide.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="FirstClear.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Clear.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOver.cpp">
+      <Filter>Source Files\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="DragonSpine.cpp">
       <Filter>Source Files\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
@@ -899,37 +914,16 @@
     <ClInclude Include="MyTime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tutorial.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MapAct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Status.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DragonSpine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MyType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Clear.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Title.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UserGuide.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FirstClear.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Store.h">
@@ -970,6 +964,36 @@
     </ClInclude>
     <ClInclude Include="Block.h">
       <Filter>Header Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Header Files\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Header Files\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="NewBullet.h">
+      <Filter>Header Files\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Cursor.h">
+      <Filter>Header Files\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="UserGuide.h">
+      <Filter>Header Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Tutorial.h">
+      <Filter>Header Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstClear.h">
+      <Filter>Header Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Clear.h">
+      <Filter>Header Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOver.h">
+      <Filter>Header Files\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="DragonSpine.h">
+      <Filter>Header Files\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

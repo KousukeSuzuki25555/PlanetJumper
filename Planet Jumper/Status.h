@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#define STAGE_MAX	(4)
 
 struct STATUS {				//セーブする項目の構造体
 	int player_hp;			//playerのhp
@@ -7,11 +8,12 @@ struct STATUS {				//セーブする項目の構造体
 	float speed;			//スピード
 	float bullets_power;	//銃弾の攻撃力
 	int bullets_num;		//playerが打つことができる弾の数
+	bool cursorGun;			//カーソル銃が解放されているか
 };
 
 struct MAP_STATUS {			//Map上で用いる変数の構造体
 	bool tutorial_flag;		//チュートリアルが終わっているかのフラグ
-	bool stage_flag[4];		//ステージが解放されているかのフラグ
+	bool stage_flag[STAGE_MAX];		//ステージが解放されているかのフラグ
 	int money;				//所持金変数
 };
 
@@ -41,6 +43,8 @@ public:
 	int GetBulletsNum();	//弾数のゲッター
 	void SetBulletPower(float power);	//銃弾の強さのセッター
 	float GetBulletPower();	//銃弾の強さのゲッター
+	void SetCursorGun();	//呼び出されたら銃をゲットできる
+	bool GetCursorGun();	//カーソル銃のゲッター
 	void SetTicket(int money);	//所持チケット数のセッター
 	int GetTicket();	//所持チケット数のゲッター
 	void SetTutorialFlag(bool tutorial_flag);	//チュートリアルをクリアしたかセッター

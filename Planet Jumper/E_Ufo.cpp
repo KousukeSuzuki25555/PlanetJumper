@@ -25,7 +25,7 @@ UFO::UFO() {	//コンストラクタ
 }
 
 void UFO::Init(int bulletNum) {	//初期化関数
-	pos = { X_MAX - G_SIZE / 0,0 + G_SIZE / 2 };
+	pos = { X_MAX - G_SIZE / 2,10.0 + G_SIZE / 2 };
 	//hp = 1.0f;
 	time = ptime->GetTime();
 	exist = true;
@@ -69,7 +69,7 @@ void UFO::Move() {	//移動関数
 
 void UFO::Attack() {	//攻撃関数
 	if (attackTime < ptime->GetTime()) {
-		pos = { PLAYER_POS_X,0 + G_SIZE / 2 };
+		pos = { PLAYER_POS_X,10.0f + G_SIZE / 2 };
 		moveTime = ptime->GetTime() + 1.5f;
 		//描画を攻撃描画に変更する
 		drawNum = 2;

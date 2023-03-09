@@ -10,6 +10,8 @@ GAMEMANAGER::GAMEMANAGER() {
 	pplayer = 0;
 	pground = 0;
 	pstatus = 0;
+	ptime = 0;
+	pgameContinue = 0;
 }
 
 void GAMEMANAGER::PointerSet(GAME_STATUS* pstatus, DRAW* pdraw,PLAYER* pplayer,GROUND* pground, MY_TIME* ptime,bool* pgameContinue) {
@@ -61,7 +63,7 @@ void GAMEMANAGER:: Update() {
 
 	case ST3:
 		stage3.Update();
-		if (stage2.GetMap() == true) {
+		if (stage3.GetMap() == true) {
 			select = MAP;
 		}
 		break;

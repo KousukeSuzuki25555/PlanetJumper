@@ -25,6 +25,7 @@ void Main()
 	DRAW* pdraw = new DRAW;
 	PLAYER* pplayer = new PLAYER;
 	GROUND* pground = new GROUND;
+	const Font font32{ 32 };
 	bool* pgameContinue = new bool;
 	pground->PointerInit(pdraw);
 	int scene_state=SCENE_TITLE;
@@ -47,6 +48,10 @@ void Main()
 		switch (scene_state) {
 		case SCENE_TITLE:	//タイトル画面
 			title.Update();
+			font32(U"F1:Siv3Dライセンス").drawAt(X_MAX - 150, Y_MAX - 32);
+			if (*pgameContinue == false) {
+				break;
+			}
 			if (title.GetTitleFlag() == true) {
 				scene_state = SCENE_STAGESELECT;
 			}
@@ -55,9 +60,6 @@ void Main()
 		case SCENE_STAGESELECT:	//ステージセレクト画面
 			gamemanager.Update();
 
-			break;
-		}
-		if (*pgameContinue == false) {
 			break;
 		}
 	}

@@ -9,16 +9,16 @@ BULLET::BULLET() {
 	pos = { 0.0f,0.0f };
 	camera = { 0.0f,0.0f };	//cameraのpos
 	ppos = { 440,0 };		//playerのpos
-	p_size = { 20,G_SIZE };	//playerのboxのサイズ
+	pSize = { 20,G_SIZE };	//playerのboxのサイズ
 	time = 0.0f;			//移動などに使う時間変数
 	gravity = GRAVITY_NOR;	//弾の落ち方にかかわる変数
 	use = false;			//使っているか
-	use_colision = false;	//playerとの当たり判定をつけるかどうか
+	useColision = false;	//playerとの当たり判定をつけるかどうか
 	hit = false;			//playerに当たったらtrue
 	rotate = 1.5f;			//回転
 	jstrength = 0.0f;		//重力の実数値
 	haight = 0.0f;			//地面からの高さ
-	st_haight = 0.0f;		//撃ち出し時の地面からの高さ
+	stHaight = 0.0f;		//撃ち出し時の地面からの高さ
 	power = 0;
 	pdraw = 0;
 	ground = 0;
@@ -67,7 +67,7 @@ void BULLET::Update(float now) {	//銃弾のアップデート
 	/****************************************************************************
 	ENEMYから呼び出された場合PLAYERとの当たり判定を行う
 	****************************************************************************/
-	if (use_colision == true) {	//use_colisionがtrueならplayerとの当たり判定を行う
+	if (useColision == true) {	//use_colisionがtrueならplayerとの当たり判定を行う
 		PlayerHit();
 	}
 	//Draw();
@@ -80,7 +80,7 @@ void BULLET::Init(VECTOR2 pos,float gravity,int power) {
 	rotate = 1.5f;
 	this->pos = pos;
 	jstrength = 0.0f;
-	st_haight = pos.y;
+	stHaight = pos.y;
 	this->gravity = gravity;
 	this->power = power;
 	if (pos.x != PLAYER_POS_X) {
@@ -105,16 +105,16 @@ void BULLET::Init(VECTOR2 pos, float gravity, float rotate) {	//enemyから使�
 	this->pos = pos;
 	jstrength = 0.0f;
 	haight = 16;	//ここを変える
-	st_haight = 16;
+	stHaight = 16;
 	this->gravity = gravity;
 	this->rotate = rotate;
-	use_colision = true;
+	useColision = true;
 	hit = false;
 	ground = GROUND;
 }
 
 void BULLET::PlayerHit() {		//playerとの当たり判定
-	if (PlayerHitDetection(ppos, pos, p_size) == true) {
+	if (PlayerHitDetection(ppos, pos, pSize) == true) {
 		hit = true;
 		use = false;
 	}
