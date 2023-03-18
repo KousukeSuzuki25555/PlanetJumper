@@ -7,6 +7,7 @@
 #include "TicketPlayGame.h"
 #include "MyTime.h"
 #include "Player.h"
+#include "Weapon.h"
 
 #define D_SIZE		(32)
 
@@ -52,6 +53,7 @@ private:
 	MY_TIME* ptime;
 	GAME_STATUS* pstatus;
 	PLAYER* pplayer;
+	WEAPON* pweapon;
 	unsigned short int state;	//状態
 	unsigned short int attackState;	//攻撃中の状態
 	unsigned short int form;	//形態
@@ -83,7 +85,7 @@ private:
 
 public:
 	Dragon();	//コンストラクタ
-	void PointerInit(DRAW* pdraw, Ticket* pticket,PLAYER* pplayer,MY_TIME* ptime,GAME_STATUS* pstatus);	//ポインタの初期化
+	void PointerInit(DRAW* pdraw, Ticket* pticket,PLAYER* pplayer,MY_TIME* ptime,GAME_STATUS* pstatus, WEAPON* pweapon);	//ポインタの初期化
 	void Init(int bulletNum);	//初期化
 	void State2Init();	//状態２の初期化
 	void Update();	//アップデート関数

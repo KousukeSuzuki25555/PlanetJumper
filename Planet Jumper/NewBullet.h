@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Main.h"
 #include "Draw.h"
-#include "Player.h"
+//#include "Player.h"
 #include "MyTime.h"
 
 class NEW_BULLET {
@@ -9,7 +9,7 @@ class NEW_BULLET {
 	VECTOR2 camera;
 	MY_TIME* ptime;
 	DRAW* pdraw;
-	PLAYER* pplayer;
+	//PLAYER* pplayer;
 	int power;
 	float time;
 	float rot;		//回転
@@ -18,12 +18,12 @@ class NEW_BULLET {
 	float gravity;	//かかる重力
 	float gravityAdd;	//加算される重力
 	bool exist;	//使用されているか
-	bool useColision;	//playerとの当たり判定を行うか
+	//bool useColision;	//playerとの当たり判定を行うか
 
 public:
 	NEW_BULLET();
 	void PointerInit(DRAW* pdraw, MY_TIME* ptime);	//playerから呼び出すとき
-	void PointerInit(DRAW* pdraw, PLAYER* pplayer, MY_TIME* ptime);	//敵から呼ぶとき
+	//void PointerInit(DRAW* pdraw,/* PLAYER* pplayer,*/ MY_TIME* ptime);	//敵から呼ぶとき
 	void Init(VECTOR2 pos, float gravity, int power, float rot);	//playerからの初期化関数
 	void Init(VECTOR2 pos, float gravity);	//enemyからの初期化
 	void Update();
@@ -34,6 +34,7 @@ public:
 	void LandHit();	//地面に接したかどうか
 	VECTOR2 GetPos();	//ほかのclassから銃弾の座標を求めるときに使う
 	bool GetExist();	//existのゲッター
+	void SetExist(bool state);	//existが変化するとき
 	int GetPower();	//powerのゲッター
 	void Draw(float camera);	//描画(float)
 };

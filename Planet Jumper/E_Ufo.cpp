@@ -36,13 +36,14 @@ void UFO::Init(int bulletNum) {	//初期化関数
 	speed = SPEED_NOR;
 }
 
-void UFO::PointerInit(PLAYER* pplayer, Ticket* pticket, MY_TIME* ptime,GAME_STATUS* pstatus,DRAW* pdraw) {	//ポインターの初期化
+void UFO::PointerInit(PLAYER* pplayer, Ticket* pticket, MY_TIME* ptime,GAME_STATUS* pstatus,DRAW* pdraw, WEAPON* pweapon) {	//ポインターの初期化
 	this->pplayer = pplayer;	//playerのポインタ
 	this->pticket = pticket;	//チケットのポインタ
 	this->ptime = ptime;
 	this->pstatus = pstatus;
 	this->pdraw = pdraw;
 	laser.PointerInit(pplayer, pdraw, ptime);
+	this->pweapon = pweapon;
 }
 
 void UFO::Update() {	//アップデート関数
@@ -140,15 +141,15 @@ void UFO::PlayerHit() {	//プレイヤー小野当たり判定
 
 void UFO::BulletHit() {		//銃弾との当たり判定
 	for (int e = 0; e < bulletNum; e++) {
-		if (pplayer->GetBulletUse(e) == true) {
-			bulletPos = pplayer->GetBulletPos(e);
+		if (pweapon->GetBulletUse(e) == true) {
+			bulletPos = pweapon->GetBulletPos(e);
 
 			d_vertex[0] = HitDetection(n_vertex[0], n_vertex[1], bulletPos);
 			d_vertex[1] = HitDetection(n_vertex[1], n_vertex[2], bulletPos);
 			d_vertex[2] = HitDetection(n_vertex[2], n_vertex[0], bulletPos);
 			//外積で求めたflagを用いて当たり判定を行う
 			if (d_vertex[0] == true && d_vertex[1] == true && d_vertex[2] == true) {
-				pplayer->SetBulletUse(e);
+				pweapon->SetBulletUnuse(e);
 				exist = false;
 				pticket->SetTicket();
 			}

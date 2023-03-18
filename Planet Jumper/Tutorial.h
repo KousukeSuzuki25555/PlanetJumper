@@ -8,6 +8,7 @@
 #include "E_Police.h"
 #include "Block.h"
 #include "Status.h"
+#include "Weapon.h"
 
 enum TUTORIAL_TEXT {	//チュートリアルに用いるテキストの座標
 	START,
@@ -38,6 +39,7 @@ public:
 	DRAW* pdraw;
 	BLOCK block;
 	GAME_STATUS* pstatus;
+	WEAPON* pweapon;
 	I_VECTOR2 build_size[2];
 	int speed;	//スピード
 	float now;	//時間

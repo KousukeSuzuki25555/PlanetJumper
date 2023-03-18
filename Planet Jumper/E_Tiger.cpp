@@ -54,17 +54,19 @@ void TIGER::GuideInit(bool jump) {
 	uv = { 0,1 };
 }
 
-void TIGER::PointerInit(DRAW* pdraw, PLAYER* pplayer,MY_TIME* ptime) {
+void TIGER::PointerInit(DRAW* pdraw, PLAYER* pplayer,MY_TIME* ptime, WEAPON* pweapon) {
 	this->pdraw = pdraw;
 	this->pplayer = pplayer;
 	this->ptime = ptime;
+	this->pweapon = pweapon;
 }
 
-void TIGER::PointerInit(DRAW* pdraw, PLAYER* pplayer, Ticket* pticket,MY_TIME* ptime) {
+void TIGER::PointerInit(DRAW* pdraw, PLAYER* pplayer, Ticket* pticket,MY_TIME* ptime, WEAPON* pweapon) {
 	this->pdraw = pdraw;
 	this->pplayer = pplayer;
 	this->pticket = pticket;
 	this->ptime = ptime;
+	this->pweapon = pweapon;
 }
 
 void TIGER::Update() {
@@ -201,8 +203,8 @@ void TIGER::PlayerHit() {		//playerとの当たり判定
 }
 void TIGER::BulletHit() {		//銃弾との当たり判定
 	for (int e = 0; e < bulletNum; e++) {
-		if (pplayer->GetBulletUse(e) == true) {
-			bullet_pos = pplayer->GetBulletPos(e);
+		if (pweapon->GetBulletUse(e) == true) {
+			bullet_pos = pweapon->GetBulletPos(e);
 			bullet_pos = MakeVirtualPos(pos, bullet_pos, rotate);
 
 			d_vertex[0] = HitDetection(n_vertex[0], n_vertex[1], bullet_pos);
@@ -210,8 +212,8 @@ void TIGER::BulletHit() {		//銃弾との当たり判定
 			d_vertex[2] = HitDetection(n_vertex[2], n_vertex[0], bullet_pos);
 			//外積で求めたflagを用いて当たり判定を行う
 			if (d_vertex[0] == true && d_vertex[1] == true && d_vertex[2] == true) {
-				pplayer->SetBulletUse(e);
-				hp -= pplayer->GetBulletPower(e);
+				pweapon->SetBulletUnuse(e);
+				hp -= pweapon->GetBulletPower(e);
 				if (hp <= 0) {
 					exist = false;
 					pticket->SetTicket();

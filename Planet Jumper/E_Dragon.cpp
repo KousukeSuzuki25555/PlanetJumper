@@ -88,7 +88,7 @@ Dragon::Dragon() {
 	witchAttack = false;
 }
 
-void Dragon::PointerInit(DRAW* pdraw, Ticket* pticket, PLAYER* pplayer, MY_TIME* ptime, GAME_STATUS* pstatus) {
+void Dragon::PointerInit(DRAW* pdraw, Ticket* pticket, PLAYER* pplayer, MY_TIME* ptime, GAME_STATUS* pstatus, WEAPON* pweapon) {
 	this->pdraw = pdraw;
 	this->pticket = pticket;
 	this->pplayer = pplayer;
@@ -97,6 +97,7 @@ void Dragon::PointerInit(DRAW* pdraw, Ticket* pticket, PLAYER* pplayer, MY_TIME*
 	for (int e = 0; e < 9; e++) {
 		spine[e].PointerInit(pdraw);
 	}
+	this->pweapon = pweapon;
 }
 
 void Dragon::State2Init() {
@@ -268,7 +269,7 @@ void Dragon::Update() {
 	PlayerHit();
 	//当たり判定(bullet)
 	for (int e = 0; e < bulletNum; e++) {
-		if (pplayer->GetBulletUse(e) == true) {	//bulletが使われていたら当たり判定を行う
+		if (pweapon->GetBulletUse(e) == true) {	//bulletが使われていたら当たり判定を行う
 			BulletHit();
 		}
 	}
@@ -394,7 +395,7 @@ void Dragon::BulletHit() {		//bulletとの当たり判定
 		if (d_box[e].exist == true) {
 			addRot += d_box[e].rot;
 			for (int f = 0; f < bulletNum; f++) {
-				VECTOR2 bullet_pos = pplayer->GetBulletPos(f);
+				VECTOR2 bullet_pos = pweapon->GetBulletPos(f);
 				bullet_pos = MakeVirtualPos(d_box[e].pos, bullet_pos, addRot);
 
 				hitPos[0] = { d_box[e].pos.x - (float)d_box[e].size.u / 2,d_box[e].pos.y - (float)d_box[e].size.v / 2 };
@@ -408,10 +409,10 @@ void Dragon::BulletHit() {		//bulletとの当たり判定
 				d_vertex[3] = HitDetection(hitPos[3], hitPos[0], bullet_pos);
 				//外積で求めたflagを用いて当たり判定を行う
 				if (d_vertex[0] == true && d_vertex[1] == true && d_vertex[2] == true && d_vertex[3] == true) {
-					pplayer->SetBulletUse(f);
+					pweapon->SetBulletUnuse(f);
 
 					if (state == DST_NORMAL) {
-						d_box[e].hp -= Damage(pplayer->GetBulletPower(f), pstatus);
+						d_box[e].hp -= Damage(pweapon->GetBulletPower(f), pstatus);
 						if (d_box[e].hp <= 1.5 && (d_box[e].g_v == 0||d_box[e].g_v==1)) {
 							d_box[e].g_v += 2;
 						}
@@ -420,7 +421,7 @@ void Dragon::BulletHit() {		//bulletとの当たり判定
 						d_box[e].exist = false;
 						pticket->SetTicket();
 					}
-					hp -= Damage(pplayer->GetBulletPower(f), pstatus);
+					hp -= Damage(pweapon->GetBulletPower(f), pstatus);
 					if (hp < DRAGON_HP / 2 && state2Init == false) {	//hpが半分を切ったら怒り状態になる
 						state2Init = true;
 						dragonState = true;

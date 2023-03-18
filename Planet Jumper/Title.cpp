@@ -9,12 +9,12 @@ GAME_TITLE::GAME_TITLE() {
 	enterFlag = true;
 }
 
-void GAME_TITLE::PointerSet(DRAW* pdraw,PLAYER* pplayer,GROUND* pground,MY_TIME* ptime) {
+void GAME_TITLE::PointerSet(DRAW* pdraw,PLAYER* pplayer,GROUND* pground,MY_TIME* ptime, GAME_STATUS* pstatus) {
 	this->pdraw = pdraw;
 	this->pplayer = pplayer;
 	this->pground = pground;
 	this->ptime = ptime;
-	pplayer->DrawPointerInit(pdraw);
+	pplayer->PointerInit(pstatus, pdraw, ptime);
 }
 
 void GAME_TITLE::Update() {

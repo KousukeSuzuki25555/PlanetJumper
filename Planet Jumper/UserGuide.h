@@ -5,6 +5,7 @@
 #include "Status.h"
 #include "Icon.h"
 #include "MyTime.h"
+#include "Weapon.h"
 
 enum USERGUIDE {	//表示部分の座標
 	TITLE = 16,
@@ -32,6 +33,7 @@ class UserGuide {	//ガイドのclass
 	DRAW* pdraw;
 	GAME_STATUS* pstatus;
 	MY_TIME* ptime;
+	WEAPON* pweapon;
 	const Font font64{ 64 };
 	const Font font32{ 32 };
 	int cursor;					//カーソルの場所

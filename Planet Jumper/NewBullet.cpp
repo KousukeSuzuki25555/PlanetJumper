@@ -7,7 +7,7 @@ NEW_BULLET::NEW_BULLET() {
 	pos = { 0.0f,0.0f };
 	camera = { 0.0f,0.0f };
 	pdraw = 0;
-	pplayer = 0;
+	//pplayer = 0;
 	power = 0;
 	time = 0.0f;
 	rot = 0.0f;		//回転
@@ -16,28 +16,30 @@ NEW_BULLET::NEW_BULLET() {
 	gravity = 0.0f;	//かかる重力
 	gravityAdd = 0.0f;	//加算される重力
 	exist = false;	//使用されているか
-	useColision = false;	//playerとの当たり判定を行うか
+	//useColision = false;	//playerとの当たり判定を行うか
 }
 
 void NEW_BULLET::PointerInit(DRAW* pdraw, MY_TIME* ptime) {	//playerから呼び出すとき
 	this->pdraw = pdraw;
 	this->ptime = ptime;
-	useColision = false;
+	//useColision = false;
 }
 
-void NEW_BULLET::PointerInit(DRAW* pdraw, PLAYER* pplayer, MY_TIME* ptime) {	//敵から呼ぶとき
-	this->pdraw = pdraw;
-	this->pplayer = pplayer;
-	this->ptime = ptime;
-	useColision = true;
-}
+//void NEW_BULLET::PointerInit(DRAW* pdraw, PLAYER* pplayer, MY_TIME* ptime) {	//敵から呼ぶとき
+//	this->pdraw = pdraw;
+//	this->pplayer = pplayer;
+//	this->ptime = ptime;
+//	useColision = true;
+//}
 
 void NEW_BULLET::Init(VECTOR2 pos, float gravity, int power,float rot) {	//playerからの初期化関数
 	this->pos = pos;
 	this->gravity = gravity;
 	this->power = power;
-	MakeRotMs(rot);	//発射角が渡されると毎秒どのくらい角度を更新するかを求める関数
+	//MakeRotMs(rot);	//発射角が渡されると毎秒どのくらい角度を更新するかを求める関数
+	rotMs = 1.0f;
 	this->rot = 1.5f;	//playerから呼ばれるときはrotが固定
+	exist = true;
 }
 
 void NEW_BULLET::Init(VECTOR2 pos, float gravity) {	//enemyからの初期化
@@ -50,15 +52,17 @@ void NEW_BULLET::Init(VECTOR2 pos, float gravity) {	//enemyからの初期化
 
 void NEW_BULLET::Update() {
 	Move();	//移動
-	if (useColision == true) {
-		PlayerHit();	//playerとの当たり判定
-	}
+	//if (useColision == true) {
+	//	PlayerHit();	//playerとの当たり判定
+	//}
 	LandHit();	//地面についたか
+	time = ptime->GetTime();
 }
 
 void NEW_BULLET::Move() {	//移動の実働部
 	rot += rotMs * (time - ptime->GetTime());
 	GravityAct();
+	pos={cosf(rot*PI)*}
 }
 
 void NEW_BULLET::MakeRotMs(float rot) {	//発射角が渡されると毎秒どのくらい角度を更新するかを求める関数
@@ -77,13 +81,13 @@ void NEW_BULLET::GravityAct() {		//重力の実働部
 	}
 }
 
-void NEW_BULLET::PlayerHit() {	//playerとの当たり判定
-	I_VECTOR2 size = { PLAYER_SIZE_X,PLAYER_SIZE_Y };
-	if (PlayerHitDetection(pplayer->GetPos(), pos, size)==true) {
-		pplayer->Hit(3);
-		exist = false;
-	}
-}
+//void NEW_BULLET::PlayerHit() {	//playerとの当たり判定
+//	I_VECTOR2 size = { PLAYER_SIZE_X,PLAYER_SIZE_Y };
+//	if (PlayerHitDetection(pplayer->GetPos(), pos, size)==true) {
+//		pplayer->Hit(3);
+//		exist = false;
+//	}
+//}
 
 void NEW_BULLET::LandHit() {	//地面に接したかどうか
 	VECTOR2 start = { CENTER_X,CENTER_Y };
@@ -98,6 +102,10 @@ VECTOR2 NEW_BULLET::GetPos() {	//ほかのclassから銃弾の座標を求める
 
 bool NEW_BULLET::GetExist() {	//existのゲッター
 	return exist;
+}
+
+void NEW_BULLET::SetExist(bool state) {	//existが変化するとき
+	exist = state;
 }
 
 int NEW_BULLET::GetPower() {	//powerのゲッター

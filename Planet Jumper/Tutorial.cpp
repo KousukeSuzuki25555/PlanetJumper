@@ -30,11 +30,13 @@ void TUTORIAL::PointerInit(GAME_STATUS* pstatus,DRAW* pdraw,PLAYER* pplayer,MY_T
 	this->pdraw = pdraw;
 	this->pstatus = pstatus;
 	this->ptime = ptime;
+	pplayer->PointerInit(pstatus, pdraw/*, pplayer*/, ptime);
+	pweapon = pplayer->GetPweapon();
 	icon.PointerInit(pdraw);
-	block.PointerInit(pdraw,pplayer);
-	tiger.PointerInit(pdraw,pplayer,ptime);
+	block.PointerInit(pdraw,pplayer,pweapon);
+	tiger.PointerInit(pdraw,pplayer,ptime,pweapon);
 	ground.PointerInit(pdraw);
-	pplayer->Init(pstatus);
+	pplayer->Init(0);
 }
 
 void TUTORIAL::Update() {
@@ -162,7 +164,7 @@ void TUTORIAL::Draw() {
 }
 
 void TUTORIAL::Init() {
-	pplayer->Init(pstatus);
+	pplayer->Init(0);
 }
 
 void TUTORIAL::TutorialAct() {

@@ -21,8 +21,9 @@ void UserGuide::PointerInit(GAME_STATUS* pstatus,DRAW* pdraw, PLAYER* pplayer,MY
 	this->pdraw = pdraw;
 	this->pplayer = pplayer;
 	this->ptime = ptime;
-	pplayer->DrawPointerInit(pdraw);
-	tiger.PointerInit(pdraw,pplayer,ptime);
+	pplayer->PointerInit(pstatus,pdraw/*,pplayer*/,ptime);
+	pweapon = pplayer->GetPweapon();
+	tiger.PointerInit(pdraw,pplayer,ptime,pweapon);
 	this->pstatus = pstatus;
 	icon.PointerInit(pdraw);
 }
@@ -30,7 +31,7 @@ void UserGuide::PointerInit(GAME_STATUS* pstatus,DRAW* pdraw, PLAYER* pplayer,MY
 void UserGuide::Init() {
 	pplayer->GuideInit(guideJump);
 	time = ptime->GetTime();
-	pplayer->Init(pstatus);
+	pplayer->Init(0);
 	pplayer->GuideInit(true);
 	icon.Init();
 	icon.GuideInit();

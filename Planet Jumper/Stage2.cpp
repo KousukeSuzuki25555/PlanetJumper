@@ -29,26 +29,27 @@ void STAGE2::PointerInit(DRAW* pdraw, PLAYER* pplayer,MY_TIME* ptime,GAME_STATUS
 	this->pdraw = pdraw;
 	this->ptime = ptime;
 	this->pstatus = pstatus;
-	pplayer->DrawPointerInit(pdraw);
+	pplayer->PointerInit(pstatus,pdraw/*,pplayer*/,ptime);
+	this->pweapon = pplayer->GetPweapon();
 	police.PointerInit(pdraw, pplayer,ptime);
 	icon.PointerInit(pdraw);
 	ground.PointerInit(pdraw);
 	f_clear.PointerInit(pdraw);
 	for (int e = 0; e < CROW_MAX; e++) {
-		crow[e].PointerInit(pdraw, pplayer,pticket,ptime);
+		crow[e].PointerInit(pdraw, pplayer,pticket,ptime,pweapon);
 	}
 	for (int e = 0; e < BLOCK_MAX; e++) {
-		block[e].PointerInit(pdraw, pplayer);
+		block[e].PointerInit(pdraw, pplayer,pweapon);
 	}
 	for (int e = 0; e < TIGER_MAX; e++) {
-		tiger[e].PointerInit(pdraw, pplayer,pticket,ptime);
+		tiger[e].PointerInit(pdraw, pplayer,pticket,ptime,pweapon);
 	}
 	clear.Init(pticket);
 }
 void STAGE2::Init() {
 	time = ptime->GetTime();
 	meter_time = ptime->GetTime();
-	pplayer->Init(pstatus);
+	pplayer->Init(0);
 	pticket->PointerInit(pdraw, pstatus);
 	police.Init();
 	rot = 0.0f;
@@ -254,5 +255,5 @@ void  STAGE2::Draw() {
 	pplayer->HartDraw();
 	icon.Draw();
 	pticket->Draw(false);
-	pdraw->BulletDisp(pplayer->BulletNotUse());
+	//pdraw->BulletDisp(pplayer->BulletNotUse());
 }

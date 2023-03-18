@@ -3,6 +3,10 @@
 WEAPON::WEAPON() {
 	weaponNum=0;	//何番の銃を使うか　NORMAL_GUN MACHINE_GUN CURSOR_GUN
 	bulletNum=0;	//使用できる銃弾の数
+	machineBulletNum = 0;
+	power = 0;		//MACHINE_GUNで用いる
+	gravity = 0;	//MACHINE_GUNで用いる
+	ptime = 0;
 }
 
 void WEAPON::Init(int weaponNum, int bulletNum) {	//初期化関数
@@ -13,11 +17,12 @@ void WEAPON::Init(int weaponNum, int bulletNum) {	//初期化関数
 	}
 }
 
-void WEAPON::PointerInit(PLAYER* pplayer, DRAW* pdraw,MY_TIME* ptime) {
+void WEAPON::PointerInit(/*PLAYER* pplayer, */DRAW* pdraw,MY_TIME* ptime) {
 	for (int e = 0; e < BULLETS_MAX; e++) {
 		bullet[e].PointerInit(pdraw, ptime);
 	}
 	this->ptime = ptime;
+	cursor.PointerInit(pdraw);
 }
 
 void WEAPON::Update(float posY) {
@@ -78,11 +83,39 @@ int WEAPON::SearchNotUseBullet() {	//使われていない銃弾を探す
 	return BULLETS_MAX;
 }
 
+VECTOR2 WEAPON::GetBulletPos(int num) {	//銃弾のposを返す
+	return bullet[num].GetPos();
+}
+
+void WEAPON::SetBulletUnuse(int num) {	//オブジェクトに当たった際に用いる
+	bullet[num].SetExist(false);
+}
+
 int WEAPON::NotUseBulletNum() {		//使われていない銃弾の数を返す
 	machineBulletNum = 0;
 	for (int e = 0; e < bulletNum; e++) {
 		if (bullet[e].GetExist() == true) {
 			machineBulletNum++;
+		}
+	}
+	return machineBulletNum;
+}
+
+bool WEAPON::GetBulletUse(int num) {	//その銃弾が使われているか
+	return bullet[num].GetExist();
+}
+
+float WEAPON::GetBulletPower(int num) {	//銃弾の攻撃力を取得できる
+	return bullet[num].GetPower();
+}
+
+void WEAPON::Draw(float camera) {
+	if (weaponNum == CURSOR_GUN) {
+		cursor.Draw(camera);
+	}
+	for (int e = 0; e < bulletNum; e++) {
+		if (bullet[e].GetExist() == true) {
+			bullet[e].Draw(camera);
 		}
 	}
 }

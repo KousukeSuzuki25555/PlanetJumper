@@ -31,6 +31,7 @@ protected:
 	const Texture g_bulletDisp{ Resource(U"rom/bullet20_32.png" )};
 	const Texture g_Ufo{ Resource(U"rom/Ufo.png") };
 	const Texture g_Laser{ Resource(U"rom/Laser.png") };
+	const Texture g_Cursor{ Resource(U"rom/Cursor.png") };
 
 public:
 	void PoliceDraw(I_VECTOR2 uv,VECTOR2 pos);
@@ -63,4 +64,5 @@ public:
 	void BulletDisp(int num);
 	void UfoDraw(int num, VECTOR2 pos);
 	void LaserDraw(int num, VECTOR2 pos);
+	void CursorDraw(float rot, VECTOR2 pos);
 };

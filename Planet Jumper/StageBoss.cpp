@@ -18,15 +18,16 @@ void BossSt::PointerInit(DRAW* pdraw,PLAYER* pplayer,GROUND* pground,MY_TIME* pt
 	this->ptime = ptime;
 	this->pstatus = pstatus;
 	//this->pstatus = pstatus;
-	pplayer->DrawPointerInit(pdraw);
+	pplayer->PointerInit(pstatus,pdraw/*,pplayer*/,ptime);
+	this->pweapon = pplayer->GetPweapon();
 	pticket->PointerInit(pdraw, pstatus);
 	icon.PointerInit(pdraw);
 	clear.Init(pticket);
-	dragon.PointerInit(pdraw,pticket,pplayer,ptime,pstatus);
+	dragon.PointerInit(pdraw,pticket,pplayer,ptime,pstatus,pweapon);
 }
 
 void BossSt::Init() {		//ステージに入る際の初期化処理
-	pplayer->Init(pstatus);
+	pplayer->Init(0);
 	pplayer->BossInit();
 	dragon.Init(pstatus->GetBulletsNum());
 	state = PLAY;
@@ -155,7 +156,7 @@ void BossSt::Draw() {	//描画処理関数
 	pplayer->HartDrawBoss();
 	icon.Draw();
 	pticket->Draw(true);
-	pdraw->BulletDisp(pplayer->BulletNotUse());
+	//pdraw->BulletDisp(pplayer->BulletNotUse());
 }
 
 bool BossSt::GetMap() {	//Mapに戻るかどうかを返す関数　true:mapへ　false:bossステージのまま

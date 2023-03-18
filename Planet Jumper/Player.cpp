@@ -34,14 +34,20 @@ PLAYER::PLAYER() {
 	power = 0.0f;
 }
 
-void PLAYER::DrawPointerInit(DRAW* pdraw) {
+void PLAYER::PointerInit(GAME_STATUS* pstatus,DRAW* pdraw/*,PLAYER* pplayer*/,MY_TIME* ptime) {
 	this->pdraw = pdraw;
-	for (int e = 0; e < 5; e++) {
+	this->pstatus = pstatus;
+	weapon.PointerInit(/*pplayer, */pdraw, ptime);
+	/*for (int e = 0; e < 5; e++) {
 		bullet[e].PointerInit(pdraw);
-	}
+	}*/
 }
 
-void PLAYER::Init(GAME_STATUS* pstatus) {
+WEAPON* PLAYER::GetPweapon() {	//武器クラスのゲッター
+	return &weapon;
+}
+
+void PLAYER::Init(int weaponNum) {
 	this->hp = (float)pstatus->GetHp();
 	gravity_source = pstatus->GetGravity();
 	bulletNum = (unsigned short)pstatus->GetBulletsNum();
@@ -49,8 +55,8 @@ void PLAYER::Init(GAME_STATUS* pstatus) {
 	pos = { PLAYER_POS_X,PLAYER_POS_Y };
 	ground = GROUND_Y;
 	draw_flag = true;
-	this->pstatus = pstatus;
 	power = 0.0f;
+	weapon.Init(weaponNum, pstatus->GetBulletsNum());
 }
 
 void PLAYER::BossInit() {
@@ -97,11 +103,12 @@ void PLAYER::Update(float now) {
 	else {
 		if (hit_flag == true) HitAct(now);
 	}
-	for (int e = 0; e < bulletNum; e++) {
-		if (bullet[e].GetUse() == true) {
-			bullet[e].Update(now);
-		}
-	}
+	//for (int e = 0; e < bulletNum; e++) {
+	//	if (bullet[e].GetUse() == true) {
+	//		bullet[e].Update(now);
+	//	}
+	//}
+	weapon.Update(pos.y);
 }
 
 void PLAYER::Draw() {
@@ -110,20 +117,21 @@ void PLAYER::Draw() {
 	case true:
 		pdraw->PlayerDraw(uv, pos);
 		pdraw->PlayerDraw(bust_uv, pos);
-
-		for (int e = 0; e < bulletNum; e++) {
+		weapon.Draw(tempCamera.y);
+		/*for (int e = 0; e < bulletNum; e++) {
 			if (bullet[e].GetUse() == true) {
 				bullet[e].Draw(tempCamera);
 			}
-		}
+		}*/
 		break;
 
 	case false:
-		for (int e = 0; e < bulletNum; e++) {
+		weapon.Draw(tempCamera.y);
+	/*	for (int e = 0; e < bulletNum; e++) {
 			if (bullet[e].GetUse() == true) {
 				bullet[e].Draw(tempCamera);
 			}
-		}
+		}*/
 	}
 }
 
@@ -134,19 +142,21 @@ void PLAYER::Draw(float camera) {
 		this->camera.y += camera;
 		pdraw->PlayerDraw(uv, this->camera);
 		pdraw->PlayerDraw(bust_uv, this->camera);
-		for (int e = 0; e < bulletNum; e++) {
+		weapon.Draw(camera);
+		/*for (int e = 0; e < bulletNum; e++) {
 			if (bullet[e].GetUse() == true) {
 				bullet[e].Draw(camera);
 			}
-		}
+		}*/
 		break;
 
 	case false:
-		for (int e = 0; e < bulletNum; e++) {
+		weapon.Draw(camera);
+		/*for (int e = 0; e < bulletNum; e++) {
 			if (bullet[e].GetUse() == true) {
 				bullet[e].Draw(camera);
 			}
-		}
+		}*/
 	}
 }
 
@@ -157,19 +167,21 @@ void PLAYER::Draw(VECTOR2 camera) {
 		this->camera = this->camera - camera;
 		pdraw->PlayerDraw(uv, this->camera);
 		pdraw->PlayerDraw(bust_uv, this->camera);
-		for (int e = 0; e < bulletNum; e++) {
+		weapon.Draw(camera.y);
+		/*for (int e = 0; e < bulletNum; e++) {
 			if (bullet[e].GetUse() == true) {
 				bullet[e].Draw(camera);
 			}
-		}
+		}*/
 		break;
 
 	case false:
-		for (int e = 0; e < bulletNum; e++) {
+		weapon.Draw(camera.y);
+		/*for (int e = 0; e < bulletNum; e++) {
 			if (bullet[e].GetUse() == true) {
 				bullet[e].Draw(camera);
 			}
-		}
+		}*/
 	}
 }
 
@@ -272,11 +284,14 @@ void PLAYER::AttackSet(float now) {
 	attack_time.t1 = now;
 	bust_uv.u = 3;
 	bust_uv.v = 3;
-	if (GetUnuseBullet() != -1) {
-		float a = power * 10 + pstatus->GetBulletPower() * 10;
-		bullet[GetUnuseBullet()].Init(pos, gravity, (int)a);
-		//attack_flag[GetUnuseBullet()] = true;
-	}
+	float a = power * 10 + pstatus->GetBulletPower() * 10;
+	weapon.Shot(pos, a, gravity);
+	//if (GetUnuseBullet() != -1) {
+	//	float a = power * 10 + pstatus->GetBulletPower() * 10;
+	//	weapon.Shot(pos, power, gravity);
+	//	//bullet[GetUnuseBullet()].Init(pos, gravity, (int)a);
+	//	//attack_flag[GetUnuseBullet()] = true;
+	//}
 }
 void PLAYER::AttackUninit() {
 	attack_flag[newBullet] = false;
@@ -466,9 +481,9 @@ void PLAYER::BossstHitAct(float now) {
 	}
 }
 
-VECTOR2 PLAYER::GetBulletPos(int e) {
-	return bullet[e].GetPos();
-}
+//VECTOR2 PLAYER::GetBulletPos(int e) {
+//	return bullet[e].GetPos();
+//}
 
 float PLAYER::GetPos_y() {
 	return pos.y;
@@ -478,40 +493,40 @@ bool PLAYER::GetHitFlag() {
 	return hit_flag;
 }
 
-int PLAYER::GetBulletPower(int e) {
-	return bullet[e].GetPower();
-}
+//int PLAYER::GetBulletPower(int e) {
+//	return bullet[e].GetPower();
+//}
 
 float PLAYER::GetHp() {
 	return hp;
 }
 
-int PLAYER::GetUnuseBullet() {	//使っていない銃弾を返す
- 	for (int e = 0; e < bulletNum; e++) {
-		if (bullet[e].GetUse() == false) {
-			attack_flag[e] = true;
-			newBullet = e;
-			return e;
-		}
-	}
-	//全部の銃弾を使用していたら0を返す
-	return -1;
-}
+//int PLAYER::GetUnuseBullet() {	//使っていない銃弾を返す
+// 	for (int e = 0; e < bulletNum; e++) {
+//		if (bullet[e].GetUse() == false) {
+//			attack_flag[e] = true;
+//			newBullet = e;
+//			return e;
+//		}
+//	}
+//	//全部の銃弾を使用していたら0を返す
+//	return -1;
+//}
 
-void PLAYER::SetBulletUse(int e) {		//弾が当たった際に呼ばれuseを解除する
-	bullet[e].SetUse();
-}
+//void PLAYER::SetBulletUse(int e) {		//弾が当たった際に呼ばれuseを解除する
+//	bullet[e].SetUse();
+//}
 
-bool PLAYER::GetBulletUse(int e) {	//その銃弾が使われているか
-	return bullet[e].GetUse();
-}
+//bool PLAYER::GetBulletUse(int e) {	//その銃弾が使われているか
+//	return bullet[e].GetUse();
+//}
 
-int PLAYER::BulletNotUse() {	//何個銃弾が使われていないか
-	int num=0;
-	for (int e = 0; e < bulletNum; e++) {
-		if (bullet[e].GetUse() == false) {
-			num++;
-		}
-	}
-	return num;
-}
+//int PLAYER::BulletNotUse() {	//何個銃弾が使われていないか
+//	int num=0;
+//	for (int e = 0; e < bulletNum; e++) {
+//		if (bullet[e].GetUse() == false) {
+//			num++;
+//		}
+//	}
+//	return num;
+//}

@@ -35,7 +35,7 @@ void Main()
 	変数の初期化作業
 	******************************************************************/
 	*pgameContinue = true;
-	title.PointerSet(pdraw, pplayer, pground,ptime);
+	title.PointerSet(pdraw, pplayer, pground,ptime,pstatus);
 	gamemanager.PointerSet(pstatus, pdraw, pplayer, pground,ptime, pgameContinue);
 
 	/******************************************************************

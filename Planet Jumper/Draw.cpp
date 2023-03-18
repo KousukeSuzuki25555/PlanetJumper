@@ -175,3 +175,7 @@ void DRAW::UfoDraw(int num, VECTOR2 pos) {
 void DRAW::LaserDraw(int num, VECTOR2 pos) {
 	g_Laser(num * 32, 0, 32, 32).drawAt(pos.x, pos.y);
 }
+
+void DRAW::CursorDraw(float rot, VECTOR2 pos) {
+	g_Cursor(0, 0, 32, 32).rotated(rot).drawAt(pos.x, pos.y);
+}

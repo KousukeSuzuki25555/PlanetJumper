@@ -11,6 +11,7 @@
 #include "Status.h"
 #include "TicketPlayGame.h"
 #include "MyTime.h"
+#include "Weapon.h"
 
 class BossSt {
 	//PLAYER player;
@@ -25,6 +26,7 @@ class BossSt {
 	Ticket* pticket = new Ticket;
 	GAME_STATUS* pstatus;
 	MY_TIME* ptime;
+	WEAPON* pweapon;
 	float speed_value;	//スピードの実数値
 	bool bullet_hit;	//銃弾がヒットしたか
 	unsigned short int state;	//ステージの状態

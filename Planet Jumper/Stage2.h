@@ -12,6 +12,7 @@
 #include "Clear.h"
 #include "FirstClear.h"
 #include "TicketPlayGame.h"
+#include "Weapon.h"
 
 #define TIGER_MAX	(6)	//虎の出現数
 #define CROW_MAX	(3)	//カラスの出現数
@@ -24,6 +25,7 @@ private:
 	BLOCK block[BLOCK_MAX];
 	I_VECTOR2 block_size[BLOCK_MAX];
 	Ticket* pticket = new Ticket;
+	WEAPON* pweapon;
 
 public:
 	STAGE2();	//コンストラクタ

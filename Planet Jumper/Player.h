@@ -3,6 +3,8 @@
 #include "Draw.h"
 #include "Bullet.h"
 #include "Status.h"
+#include "Weapon.h"
+#include "MyTime.h"
 
 enum ACTION {
 	RUN,
@@ -18,7 +20,8 @@ private:
 	CLOCK2 anm_time;	//アニメーションに用いる時間変数
 	CLOCK2 attack_time;	//攻撃アニメーションに用いる時間変数
 	DRAW* pdraw;	
-	BULLET bullet[BULLETS_MAX];	//銃弾　上限:5
+	//BULLET bullet[BULLETS_MAX];	//銃弾　上限:5
+	WEAPON weapon;
 	GAME_STATUS* pstatus;
 	float power;	//攻撃力　銃弾に渡す
 	int ground;	//地面の高さ
@@ -43,8 +46,9 @@ private:
 
 public:
 	PLAYER();	//コンストラクタ
-	void DrawPointerInit(DRAW* pdraw);	//ポインタの初期化
-	void Init(GAME_STATUS* pstatus);	//初期化
+	void PointerInit(GAME_STATUS* pstatus,DRAW* pdraw/*,PLAYER* pplayer*/,MY_TIME* ptime);	//ポインタの初期化
+	WEAPON* GetPweapon();	//武器クラスのゲッター
+	void Init(int weaponNum);	//初期化
 	void BossInit();	//ボスステージで使うとき
 	void BossUninit();	//簿p巣戦から抜けるとき
 	void GuideInit(bool jump);	//ガイドで使うとき
@@ -74,12 +78,12 @@ public:
 	void BossstHit(float atk,float now);	//ボス戦で当たったら
 	void HitAct(float now);	//hitの実働
 	void BossstHitAct(float now);	//ボス戦でのhitの実働
-	VECTOR2 GetBulletPos(int e);	//銃弾の座標のゲッター
+	//VECTOR2 GetBulletPos(int e);	//銃弾の座標のゲッター
 	bool GetHitFlag();	//ヒットしているかのゲッター
-	int GetBulletPower(int e);		//銃弾の攻撃力
-	void SetBulletUse(int e);		//弾が当たった際に呼ばれuseを解除する
+	//int GetBulletPower(int e);		//銃弾の攻撃力
+	//void SetBulletUse(int e);		//弾が当たった際に呼ばれuseを解除する
 	float GetHp();	//hpを返す
-	int GetUnuseBullet();	//使っていない銃弾を返す
-	bool GetBulletUse(int e);	//その銃弾が使われているか
-	int BulletNotUse();	//何個銃弾が使われていないか
+	//int GetUnuseBullet();	//使っていない銃弾を返す
+	//bool GetBulletUse(int e);	//その銃弾が使われているか
+	//int BulletNotUse();	//何個銃弾が使われていないか
 };

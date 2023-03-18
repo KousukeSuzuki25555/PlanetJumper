@@ -5,6 +5,7 @@
 #include "Status.h"
 #include "TicketPlayGame.h"
 #include "Laser.h"
+#include "Weapon.h"
 
 class UFO {
 	VECTOR2 pos;	//座標
@@ -18,6 +19,7 @@ class UFO {
 	VECTOR2 p_vertex[4];	//playerの中心からの座標
 	VECTOR2 bulletPos;		//銃弾の座標
 	LASER laser;
+	WEAPON* pweapon;
 	//float hp;					//hp
 	int bulletNum;			//銃弾の使用できる最大数
 	int drawNum;			//何番目の画像を表示するか
@@ -33,7 +35,7 @@ class UFO {
 public:
 	UFO();
 	void Init(int bulletNum);
-	void PointerInit(PLAYER* pplayer, Ticket* pticket,MY_TIME* ptime,GAME_STATUS* pstatus,DRAW* pdraw);
+	void PointerInit(PLAYER* pplayer, Ticket* pticket,MY_TIME* ptime,GAME_STATUS* pstatus,DRAW* pdraw, WEAPON* pweapon);
 	void Update();
 	void Move();	//移動関数
 	void Attack();	//攻撃関数

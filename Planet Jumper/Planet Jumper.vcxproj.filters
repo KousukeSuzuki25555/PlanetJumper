@@ -225,9 +225,6 @@
     <ClCompile Include="Laser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Stage3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Block.cpp">
       <Filter>Source Files\Enemy</Filter>
     </ClCompile>
@@ -260,6 +257,9 @@
     </ClCompile>
     <ClCompile Include="DragonSpine.cpp">
       <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage3.cpp">
+      <Filter>Source Files\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -19,11 +19,12 @@ void CROW::Init(float rot,int bulletNum) {
 	exist = true;
 }
 
-void CROW::PointerInit(DRAW* pdraw, PLAYER* pplayer, Ticket* pticket,MY_TIME* ptime) {
+void CROW::PointerInit(DRAW* pdraw, PLAYER* pplayer, Ticket* pticket,MY_TIME* ptime, WEAPON* pweapon) {
 	this->pdraw = pdraw;
 	this->pplayer = pplayer;
 	this->pticket = pticket;
 	this->ptime = ptime;
+	this->pweapon = pweapon;
 }
 
 void CROW::Update() {
@@ -65,15 +66,15 @@ void CROW::Update() {
 	//弾との当たり判定
 
 	for (int e = 0; e < bulletNum; e++) {
-		if (pplayer->GetBulletUse(e) == true) {
-			VECTOR2 bullet_pos = pplayer->GetBulletPos(e);
+		if (pweapon->GetBulletUse(e) == true) {
+			VECTOR2 bullet_pos = pweapon->GetBulletPos(e);
 			bullet_pos = MakeVirtualPos(pos, bullet_pos, rotate);
-			d_vertex[0] = HitDetection(n_vertex[0], n_vertex[1], pplayer->GetBulletPos(e));
-			d_vertex[1] = HitDetection(n_vertex[1], n_vertex[2], pplayer->GetBulletPos(e));
-			d_vertex[2] = HitDetection(n_vertex[2], n_vertex[3], pplayer->GetBulletPos(e));
-			d_vertex[3] = HitDetection(n_vertex[3], n_vertex[0], pplayer->GetBulletPos(e));
+			d_vertex[0] = HitDetection(n_vertex[0], n_vertex[1], pweapon->GetBulletPos(e));
+			d_vertex[1] = HitDetection(n_vertex[1], n_vertex[2], pweapon->GetBulletPos(e));
+			d_vertex[2] = HitDetection(n_vertex[2], n_vertex[3], pweapon->GetBulletPos(e));
+			d_vertex[3] = HitDetection(n_vertex[3], n_vertex[0], pweapon->GetBulletPos(e));
 			if (d_vertex[0] == true && d_vertex[1] == true && d_vertex[2] == true && d_vertex[3] == true) {
-				pplayer->SetBulletUse(e);
+				pweapon->SetBulletUnuse(e);
 				pticket->SetTicket();
 				exist = false;
 			}

@@ -13,6 +13,7 @@
 #include "Clear.h"
 #include "FirstClear.h"
 #include "TicketPlayGame.h"
+#include "Weapon.h"
 
 #define TIGER_MAX	(3)	//虎の出現数
 #define CROW_MAX	(4)	//カラスの出現数
@@ -26,6 +27,7 @@ private:
 	CROW crow[CROW_MAX];
 	UFO ufo;
 	Ticket* pticket = new Ticket;
+	WEAPON* pweapon;
 	float ufoInitTime;	//UFOを出現させる巻子
 
 public:

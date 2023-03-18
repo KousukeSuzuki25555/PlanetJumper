@@ -2,6 +2,7 @@
 #include "Block.h"
 #include "TicketPlayGame.h"
 #include "MyTime.h"
+#include "Weapon.h"
 
 struct VECTOR3 {
 	VECTOR2 p1;
@@ -17,6 +18,7 @@ private:
 	VECTOR2 p_vertex[4];	//playerの中心からの座標
 	MY_TIME* ptime;
 	Ticket* pticket;
+	WEAPON* pweapon;
 	int move_speed[2];		//移動スピード
 	int move_pt;			//歩いているかは知っているか　0=歩き　1=走り
 	int hp;					//hp
@@ -28,8 +30,8 @@ private:
 
 public:
 	TIGER();				//コンストラクタ
-	void PointerInit(DRAW* pdraw, PLAYER* pplayer,MY_TIME* ptime);
-	void PointerInit(DRAW* pdraw, PLAYER* pplayer,Ticket* pticket,MY_TIME* ptime);
+	void PointerInit(DRAW* pdraw, PLAYER* pplayer,MY_TIME* ptime, WEAPON* pweapon);
+	void PointerInit(DRAW* pdraw, PLAYER* pplayer,Ticket* pticket,MY_TIME* ptime, WEAPON* pweapon);
 	void GuideInit(bool jump);	//Guideで使う際の初期化
 	void Update();	//虎のアップデート関数
 	void GuideUpdate();	//ガイドで使うアップデート関数

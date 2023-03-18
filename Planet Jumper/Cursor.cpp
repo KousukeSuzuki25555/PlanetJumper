@@ -5,6 +5,7 @@
 CURSOR::CURSOR() {
 	pos = { 0.0f,0.0f };
 	rot = 0.0f;
+	camera = { 0.0f,0.0f };
 	posArray[0] = {  PLAYER_SIZE_Y / 2 + PLAYER_DISTANCE,0.0f };
 	posArray[1] = { cosf(0.175f * PI) * (PLAYER_SIZE_Y / 2 + PLAYER_DISTANCE),
 		sinf(0.175f * PI) * (PLAYER_SIZE_Y / 2 + PLAYER_DISTANCE) };
@@ -15,6 +16,10 @@ CURSOR::CURSOR() {
 void CURSOR::Init() {
 	rot = 0.0f;
 	changeRot = false;
+}
+
+void CURSOR::PointerInit(DRAW* pdraw) {
+	this->pdraw = pdraw;
 }
 
 void CURSOR::Update(VECTOR2 ppos) {
@@ -46,4 +51,10 @@ void CURSOR::KeyGet() {	//キー取得
 		}
 		changeRot = true;
 	}
+}
+
+void CURSOR::Draw(float camera) {
+	this->camera = pos;
+	this->pos.y += camera;
+	pdraw->CursorDraw(rot, this->camera);
 }

@@ -2,6 +2,7 @@
 #include "Main.h"
 #include "Draw.h"
 #include "Player.h"
+#include "Weapon.h"
 
 class BLOCK {	//建物のclass　継承してENEMYを作る
 protected:
@@ -15,6 +16,7 @@ protected:
 	PLAYER* pplayer;
 	DRAW* pdraw;
 	I_VECTOR2 size;	//	Boxサイズ
+	WEAPON* pweapon;
 	int radius;	//円の中心からの半径
 	int bulletNum;	//playerの銃弾数を言える
 	float rotate;	//どれだけ回転しているか
@@ -26,7 +28,7 @@ public:
 	BLOCK();	//コンストラクタ
 	void Init(float speed, float rotate, I_VECTOR2 size, int u, int v, int bulletNum);	//初期化
 	void Init(float speed, float rotate, I_VECTOR2 size, int bulletNum);	//初期化をより楽に　uv値を入れなくても使用できるようにする
-	void PointerInit(DRAW* pdraw,PLAYER* pplayer);	//Pointerの初期化
+	void PointerInit(DRAW* pdraw,PLAYER* pplayer,WEAPON* pweapon);	//Pointerの初期化
 	void Draw(float camera);	//描画
 	void Update(float now);	//アップデート関数
 	bool Hit();	//playerとの当たり判定

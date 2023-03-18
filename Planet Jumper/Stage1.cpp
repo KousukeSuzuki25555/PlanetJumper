@@ -37,9 +37,10 @@ void STAGE1::PointerInit(DRAW* pdraw,PLAYER* pplayer,MY_TIME* ptime, GAME_STATUS
 	this->pdraw = pdraw;
 	this->ptime = ptime;
 	this->pstatus = pstatus;
-	pplayer->DrawPointerInit(pdraw);
+	pplayer->PointerInit(pstatus,pdraw/*,pplayer*/,ptime);
+	pweapon = pplayer->GetPweapon();
 	for (int e = 0; e < 10; e++) {
-		block[e].PointerInit(pdraw,pplayer);
+		block[e].PointerInit(pdraw,pplayer,pweapon);
 	}
 	police.PointerInit(pdraw,pplayer,ptime);
 	icon.PointerInit(pdraw);
@@ -51,7 +52,7 @@ void STAGE1::PointerInit(DRAW* pdraw,PLAYER* pplayer,MY_TIME* ptime, GAME_STATUS
 void STAGE1::Init() {
 	time = ptime->GetTime();
 	meter_time = ptime->GetTime();
-	pplayer->Init(pstatus);
+	pplayer->Init(0);
 	police.Init();
 	ticket.PointerInit(pdraw,pstatus);
 	rot = 0.0f;
@@ -210,7 +211,7 @@ void STAGE1::Draw() {
 	pplayer->HartDraw();
 	icon.Draw();
 	ticket.Draw(false);
-	pdraw->BulletDisp(pplayer->BulletNotUse());
+	//pdraw->BulletDisp(pplayer->BulletNotUse());
 }
 
 bool STAGE1::GetMap() {

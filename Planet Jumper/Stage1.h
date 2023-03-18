@@ -13,6 +13,7 @@
 #include "FirstClear.h"
 #include "TicketPlayGame.h"
 #include "MyTime.h"
+#include "Weapon.h"
 
 class STAGE1 {	//簡単にチュートリアルをなぞるように
 private:
@@ -32,6 +33,7 @@ protected:	//継承する変数	敵のみ宣言すればよいようにする
 	Ticket* pticket;
 	GAME_STATUS* pstatus;
 	MY_TIME* ptime;
+	WEAPON* pweapon;
 	unsigned short int state;	//ステージ上での状態
 	float camera;	//カメラ
 	//float now;	//時間
