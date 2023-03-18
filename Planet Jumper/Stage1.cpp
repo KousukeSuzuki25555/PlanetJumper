@@ -211,7 +211,7 @@ void STAGE1::Draw() {
 	pplayer->HartDraw();
 	icon.Draw();
 	ticket.Draw(false);
-	//pdraw->BulletDisp(pplayer->BulletNotUse());
+	pdraw->BulletDisp(pweapon->GetNotUseBullet());
 }
 
 bool STAGE1::GetMap() {

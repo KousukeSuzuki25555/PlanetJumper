@@ -278,5 +278,5 @@ void STAGE3::Draw() {	//描画関数
 	pplayer->HartDraw();
 	icon.Draw();
 	pticket->Draw(false);
-	//pdraw->BulletDisp(pplayer->BulletNotUse());
+	pdraw->BulletDisp(pweapon->GetNotUseBullet());
 }

@@ -156,7 +156,7 @@ void BossSt::Draw() {	//描画処理関数
 	pplayer->HartDrawBoss();
 	icon.Draw();
 	pticket->Draw(true);
-	//pdraw->BulletDisp(pplayer->BulletNotUse());
+	pdraw->BulletDisp(pweapon->GetNotUseBullet());
 }
 
 bool BossSt::GetMap() {	//Mapに戻るかどうかを返す関数　true:mapへ　false:bossステージのまま

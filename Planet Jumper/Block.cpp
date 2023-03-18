@@ -23,7 +23,7 @@ BLOCK::BLOCK() {
 	pdraw = 0;
 }
 
-void BLOCK::PointerInit(DRAW* pdraw,PLAYER*, WEAPON* pweapon) {
+void BLOCK::PointerInit(DRAW* pdraw,PLAYER* pplayer, WEAPON* pweapon) {
 	this->pdraw = pdraw;
 	this->pplayer = pplayer;
 	this->pweapon = pweapon;

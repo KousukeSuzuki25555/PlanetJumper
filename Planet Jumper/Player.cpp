@@ -20,9 +20,10 @@ PLAYER::PLAYER() {
 	hit_flag = false;		//ヒットしたらtrueとなる
 	anm_flag = false;
 	draw_flag = true;
-	for (int e = 0; e < 5; e++) {
-		attack_flag[e] = false;	//球を打っているかの判定に使う　ダン数を増やす場合配列にする
-	}
+	//for (int e = 0; e < 5; e++) {
+	//	attack_flag[e] = false;	//球を打っているかの判定に使う　ダン数を増やす場合配列にする
+	//}
+	attack_flag = false;
 	hit_num = 0;
 	hit_time = 0.0f;
 	g_time = 0.0f;
@@ -220,7 +221,7 @@ void PLAYER::Anm() {
 				}
 				anm_time.t1 = anm_time.t2;
 			}
-			switch (attack_flag[newBullet]) {
+			switch (attack_flag) {
 			case true: {	//攻撃中
 				if (attack_time.t2 - attack_time.t1 > 0.1) {
 					bust_uv.u++;
@@ -258,7 +259,7 @@ void PLAYER::Anm() {
 			if (uv.u != 2) {
 				uv.u++;
 			}
-			switch (attack_flag[newBullet]) {
+			switch (attack_flag) {
 			case true: {
 				if (attack_time.t2 - attack_time.t1 > 0.1) {
 					bust_uv.u++;
@@ -270,7 +271,7 @@ void PLAYER::Anm() {
 				break;
 			}
 			case false: {
-				bust_uv.u = uv.u;
+				bust_uv.u = uv.u;  
 				break;
 			}
 			}
@@ -284,8 +285,9 @@ void PLAYER::AttackSet(float now) {
 	attack_time.t1 = now;
 	bust_uv.u = 3;
 	bust_uv.v = 3;
-	float a = power * 10 + pstatus->GetBulletPower() * 10;
-	weapon.Shot(pos, a, gravity);
+	float a = (power+ pstatus->GetBulletPower())*10;
+	weapon.Shot(pos, (int)a, gravity);
+	attack_flag = true;
 	//if (GetUnuseBullet() != -1) {
 	//	float a = power * 10 + pstatus->GetBulletPower() * 10;
 	//	weapon.Shot(pos, power, gravity);
@@ -294,7 +296,7 @@ void PLAYER::AttackSet(float now) {
 	//}
 }
 void PLAYER::AttackUninit() {
-	attack_flag[newBullet] = false;
+	attack_flag = false;
 	bust_uv.u = uv.u;
 	bust_uv.v = 1;
 }
@@ -413,13 +415,13 @@ void PLAYER::SetJumpLimit(unsigned short int limit) {
 void PLAYER::SetWeaponPower(unsigned short int power) {
 	switch(power) {
 	case STRONG:
-		this->power = 1.0f;
+		this->power = 2.0f;
 		break;
 	case NORMAL:
-		this->power = 0.0f;
+		this->power = 0.5f;
 		break;
 	case WEAK:
-		this->power = -0.5f;
+		this->power = 0.0f;
 		break;
 	}
 }

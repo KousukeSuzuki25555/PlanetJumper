@@ -146,7 +146,7 @@ Resource(rom/EdogSeat.png)
 	Resource(rom/bullet20_32.png)
 	Resource(rom/Ufo.png)
 	Resource(rom/Laser.png)
-	Resource(rom/Cursor.png)
+//	Resource(rom/Cursor.png)
 
 /* examples 
 

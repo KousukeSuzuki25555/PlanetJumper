@@ -28,5 +28,6 @@ public:
 	int NotUseBulletNum();		//使われていない銃弾の数を返す
 	bool GetBulletUse(int num);	//その銃弾が使われているか
 	float GetBulletPower(int num);	//銃弾の攻撃力を取得できる
+	int GetNotUseBullet();	//使われていない銃弾の数を取得
 	void Draw(float camera);
 };

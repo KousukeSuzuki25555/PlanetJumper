@@ -109,6 +109,16 @@ float WEAPON::GetBulletPower(int num) {	//銃弾の攻撃力を取得できる
 	return bullet[num].GetPower();
 }
 
+int WEAPON::GetNotUseBullet() {	//使われていない銃弾の数を取得
+	int num = 0;
+	for (int e = 0; e < bulletNum; e++) {
+		if (bullet[e].GetExist() == false) {
+			num++;
+		}
+	}
+	return num;
+}
+
 void WEAPON::Draw(float camera) {
 	if (weaponNum == CURSOR_GUN) {
 		cursor.Draw(camera);

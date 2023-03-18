@@ -26,7 +26,7 @@ private:
 	float power;	//攻撃力　銃弾に渡す
 	int ground;	//地面の高さ
 	int bulletNum;	//銃弾の使用できる最大数
-	int newBullet;	//新しい銃弾を記憶する
+	//int newBullet;	//新しい銃弾を記憶する
 	unsigned short int jump_limit;	////ジャンプできる回数
 	unsigned short int jump_limit_define;	//地面着地時にjump_limitの初期化に用いる変数
 	unsigned short int action;	//playerが何をしているか
@@ -38,7 +38,7 @@ private:
 	float hp;	//hp
 	float gravity_source;	//重力のもとにになる値
 	float speed_source;	//スピードのもとになる値
-	bool attack_flag[5];		//球を打っているかの判定に使う　ダン数を増やす場合配列にする
+	bool attack_flag;		//球を打っているかの判定に使う　ダン数を増やす場合配列にする
 	bool hit_flag;	//ヒットしたか
 	bool draw_flag;	//描画するか
 	bool anm_flag;	//アニメーションのフラグ

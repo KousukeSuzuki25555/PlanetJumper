@@ -28,7 +28,7 @@ public:
 	void Init(VECTOR2 pos, float gravity);	//enemyからの初期化
 	void Update();
 	void Move();	//移動の実働部
-	void MakeRotMs(float rot);	//発射角が渡されると毎秒どのくらい角度を更新するかを求める関数
+	void MakeRotMs(/*float rot*/);	//発射角が渡されると毎秒どのくらい角度を更新するかを求める関数
 	void GravityAct();		//重力の実働部
 	void PlayerHit();	//playerとの当たり判定
 	void LandHit();	//地面に接したかどうか

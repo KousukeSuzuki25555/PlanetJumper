@@ -216,7 +216,10 @@ void TIGER::BulletHit() {		//銃弾との当たり判定
 				hp -= pweapon->GetBulletPower(e);
 				if (hp <= 0) {
 					exist = false;
-					pticket->SetTicket();
+					if (pticket != NULL) {
+						pticket->SetTicket();
+
+					}
 				}
 				else {
 					HitSet();
