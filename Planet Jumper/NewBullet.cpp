@@ -1,7 +1,7 @@
 ﻿#include "NewBullet.h"
 #include <Math.h>
 
-#define MOVE_SPEED	(3)
+#define MOVE_SPEED	(3.0f)
 
 NEW_BULLET::NEW_BULLET() {
 	pos = { 0.0f,0.0f };
@@ -37,47 +37,47 @@ void NEW_BULLET::Init(VECTOR2 pos, float gravity, int power,float rot) {	//playe
 	this->gravity = gravity;
 	this->power = power;
 	//MakeRotMs(rot);	//発射角が渡されると毎秒どのくらい角度を更新するかを求める関数
-	rotMs = 1.0f;
+	rotMs = 0.3f;
 	this->rot = 1.5f;	//playerから呼ばれるときはrotが固定
 	exist = true;
+	haight = CENTER_Y - RADIUS - pos.y;
+	gravityAdd = 0.0f;
+	time = ptime->GetTime();
 }
 
 void NEW_BULLET::Init(VECTOR2 pos, float gravity) {	//enemyからの初期化
 	this->pos = pos;
 	this->gravity = gravity;
 	VECTOR2 start = { CENTER_X,CENTER_Y };
-	MakeRotMs(0.0f);
+	MakeRotMs();
 	rot = atan2f(start.x - pos.x, start.y - pos.y);	//enemyから呼ばれる際は位置が毎回変わるため計算する
 }
 
 void NEW_BULLET::Update() {
 	Move();	//移動
-	//if (useColision == true) {
-	//	PlayerHit();	//playerとの当たり判定
-	//}
 	LandHit();	//地面についたか
 	time = ptime->GetTime();
 }
 
 void NEW_BULLET::Move() {	//移動の実働部
-	rot += rotMs * (time - ptime->GetTime());
+	rot -= rotMs * (time - ptime->GetTime());
 	GravityAct();
-	pos={cosf(rot*PI)*}
+	pos = { cosf(rot * PI) * (RADIUS + haight) + CENTER_X,sinf(rot * PI) * (RADIUS + haight) + CENTER_Y };
 }
 
-void NEW_BULLET::MakeRotMs(float rot) {	//発射角が渡されると毎秒どのくらい角度を更新するかを求める関数
-	float ans = tan(rot);
+void NEW_BULLET::MakeRotMs() {	//発射角が渡されると毎秒どのくらい角度を更新するかを求める関数
+	float ans = tan(1.0f);
 	ans *= MOVE_SPEED;	//横への移動量を求める
 	//一周が2πr r=RADIUS
-	rotMs = ans / (2 * PI * RADIUS);
+	rotMs = ans / (2.0f * PI * RADIUS);
 }
 
 void NEW_BULLET::GravityAct() {		//重力の実働部
 	//簡易的な積分で落ちるときの距離を求める
-	int repeat = (time - ptime->GetTime()) / 0.01;
+	int repeat = (ptime->GetTime()-time) / 0.005;
 	for (int e = 0; e < repeat; e++) {
-		gravityAdd -= gravity;
-		pos.y -= gravityAdd;
+		gravityAdd += gravity;
+		haight -= gravityAdd/10;
 	}
 }
 
@@ -91,7 +91,7 @@ void NEW_BULLET::GravityAct() {		//重力の実働部
 
 void NEW_BULLET::LandHit() {	//地面に接したかどうか
 	VECTOR2 start = { CENTER_X,CENTER_Y };
-	if (Diagonal(start, pos) < CENTER_Y - pos.y) {
+	if (haight<0) {
 		exist = false;
 	}
 }
