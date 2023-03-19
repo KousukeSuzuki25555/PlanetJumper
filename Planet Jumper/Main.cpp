@@ -67,9 +67,13 @@ void Main()
 	ゲームループを抜けた後の処理
 	******************************************************************/
 
-	delete pstatus;
+
+	delete pgameContinue;
+	delete pground;
 	delete pplayer;
 	delete pdraw;
+	delete ptime;
+	delete pstatus;
 }
 
 bool HitDetection(VECTOR2 a, VECTOR2 b, VECTOR2 c) {	//当たり判定を外積で求める a:始点 b:同矩形状の終点 c:player等の他矩形上の点

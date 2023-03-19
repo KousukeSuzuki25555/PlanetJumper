@@ -38,7 +38,7 @@ private:
 	float hp;	//hp
 	float gravity_source;	//重力のもとにになる値
 	float speed_source;	//スピードのもとになる値
-	bool attack_flag[5];		//球を打っているかの判定に使う　ダン数を増やす場合配列にする
+	bool attack_flag;		//球を打っているかの判定に使う　ダン数を増やす場合配列にする
 	bool hit_flag;	//ヒットしたか
 	bool draw_flag;	//描画するか
 	bool anm_flag;	//アニメーションのフラグ

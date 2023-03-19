@@ -8,7 +8,7 @@ NEW_BULLET::NEW_BULLET() {
 	camera = { 0.0f,0.0f };
 	pdraw = 0;
 	//pplayer = 0;
-	power = 0;
+	power = 0.0f;
 	time = 0.0f;
 	rot = 0.0f;		//回転
 	rotMs = 0.0f;	//毎秒の回転
@@ -35,7 +35,7 @@ void NEW_BULLET::PointerInit(DRAW* pdraw, MY_TIME* ptime) {	//playerから呼び
 void NEW_BULLET::Init(VECTOR2 pos, float gravity, int power,float rot) {	//playerからの初期化関数
 	this->pos = pos;
 	this->gravity = gravity;
-	this->power = power;
+	this->power = (float)power/10;
 	//MakeRotMs(rot);	//発射角が渡されると毎秒どのくらい角度を更新するかを求める関数
 	rotMs = 0.3f;
 	this->rot = 1.5f;	//playerから呼ばれるときはrotが固定
@@ -108,7 +108,7 @@ void NEW_BULLET::SetExist(bool state) {	//existが変化するとき
 	exist = state;
 }
 
-int NEW_BULLET::GetPower() {	//powerのゲッター
+float NEW_BULLET::GetPower() {	//powerのゲッター
 	return power;
 }
 

@@ -36,7 +36,7 @@ TIGER::TIGER() {
 	p_vertex[2] = { 0.0f,0.0f };
 	p_vertex[3] = { 0.0f,0.0f };
 
-	hp = 3;
+	hp = 3.0f;
 
 	uv = { 0,1 };
 }
@@ -50,7 +50,7 @@ void TIGER::GuideInit(bool jump) {
 	}
 	rotate = 1.5f;
 	time = ptime->GetTime();
-	hp = 3;
+	hp = 3.0f;
 	uv = { 0,1 };
 }
 

@@ -10,7 +10,7 @@ class NEW_BULLET {
 	MY_TIME* ptime;
 	DRAW* pdraw;
 	//PLAYER* pplayer;
-	int power;
+	float power;
 	float time;
 	float rot;		//回転
 	float rotMs;	//毎秒の回転
@@ -30,11 +30,11 @@ public:
 	void Move();	//移動の実働部
 	void MakeRotMs(/*float rot*/);	//発射角が渡されると毎秒どのくらい角度を更新するかを求める関数
 	void GravityAct();		//重力の実働部
-	void PlayerHit();	//playerとの当たり判定
+	//void PlayerHit();	//playerとの当たり判定
 	void LandHit();	//地面に接したかどうか
 	VECTOR2 GetPos();	//ほかのclassから銃弾の座標を求めるときに使う
 	bool GetExist();	//existのゲッター
 	void SetExist(bool state);	//existが変化するとき
-	int GetPower();	//powerのゲッター
+	float GetPower();	//powerのゲッター
 	void Draw(float camera);	//描画(float)
 };

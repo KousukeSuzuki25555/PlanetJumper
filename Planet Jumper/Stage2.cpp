@@ -255,5 +255,5 @@ void  STAGE2::Draw() {
 	pplayer->HartDraw();
 	icon.Draw();
 	pticket->Draw(false);
-	//pdraw->BulletDisp(pplayer->BulletNotUse());
+	pdraw->BulletDisp(pweapon->GetNotUseBullet());
 }

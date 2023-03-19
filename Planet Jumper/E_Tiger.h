@@ -21,7 +21,7 @@ private:
 	WEAPON* pweapon;
 	int move_speed[2];		//移動スピード
 	int move_pt;			//歩いているかは知っているか　0=歩き　1=走り
-	int hp;					//hp
+	float hp;					//hp
 	float time;				//移動などに使う時間関数
 	float anm_time;			//アニメーションに用いる時間変数
 	float hit_time;			//ヒット演出に用いる時間変数
