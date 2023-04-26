@@ -9,9 +9,9 @@ private:
 	VECTOR2 camera;	//カメラ座標
 	VECTOR2 target;	//player座標
 	VECTOR2 vertex;	//頂点座標
-	VECTOR2 p_vertex[4];	//playerの頂点座標
+	VECTOR2 pVertex[4];	//playerの頂点座標
 	I_VECTOR2 size;	//画像サイズ
-	I_VECTOR2 p_size;	//プレイヤーのサイズ
+	I_VECTOR2 pSize;	//プレイヤーのサイズ
 	DRAW* pdraw;	
 	float rot;	//回転
 	float time;	//時間変数

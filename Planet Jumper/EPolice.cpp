@@ -7,12 +7,12 @@ POLICE::POLICE() {
 	pos = { 0.0f,0.0f };
 	uv.u = 0;
 	uv.v = 0;
-	bust_uv = { 0,2 };
-	anm_time = 0.0f;
-	run_time = anm_time;
-	attack_time = 0.0f;
-	attack_flag = false;
-	bullet_hit = false;		//bulletがplayerと当たったらtrue
+	bustUv = { 0,2 };
+	anmTime = 0.0f;
+	runTime = anmTime;
+	attackTime = 0.0f;
+	attackFlag = false;
+	bulletHit = false;		//bulletがplayerと当たったらtrue
 	gravity = GRAVITY_NOR;	//ジャンプの抵抗
 	ppos = 0.0f;
 	pdraw = 0;
@@ -31,16 +31,16 @@ void POLICE::Init() {
 	rotate = 1.4f;
 	pos.x = cosf(rotate * PI) * (16 + 1024) + X_MAX / 2 - 200;
 	pos.y = sinf(rotate * PI) * (16 + 1024) + 240 + 16 + 2048 / 2;
-	attack_time = ptime->GetTime();
-	anm_time = attack_time;
+	attackTime = ptime->GetTime();
+	anmTime = attackTime;
 }
 
 void POLICE::Update(float speed) {
 	/************************************************************************
 	攻撃をするかどうか
 	*************************************************************************/
-	if (ptime->GetTime() - attack_time > 3.0f) {
-		attack_flag = true;
+	if (ptime->GetTime() - attackTime > 3.0f) {
+		attackFlag = true;
 		AttackSet();
 	}
 
@@ -50,18 +50,18 @@ void POLICE::Update(float speed) {
 	if (speed - 30.0f != 0.0f) {	//スピードが通常時のスピードでないとき前後に移動する
 		if (speed - 30.0f < 0) {	//後ろ
 			if (rotate > 1.3) {		//rotateが1.3より小さくなる場合それ以下にならないようにする
-				rotate -= (ptime->GetTime() - run_time) / (200.0f);
+				rotate -= (ptime->GetTime() - runTime) / (200.0f);
 			}
 		}
 		else if(speed - 30.0f > 0) {	//前
 			if (rotate < 1.5) {		//rotateが1.5より大きくなる場合それ以上にならないようにする
-				rotate += (ptime->GetTime() - run_time) / (200.0f);
+				rotate += (ptime->GetTime() - runTime) / (200.0f);
 			}
 		}
 		pos.x = cosf(rotate * PI) * (16 + 1024) + X_MAX / 2 - 200;			//前後移動
 		pos.y = sinf(rotate * PI) * (16 + 1024) + 240 + 16 + 2048 / 2;
 	}
-	run_time = ptime->GetTime();		//時間の経過を入れることで次のフレームで計算できるようにする
+	runTime = ptime->GetTime();		//時間の経過を入れることで次のフレームで計算できるようにする
 
 
 	/************************************************************************
@@ -88,52 +88,52 @@ void POLICE::Update(float speed) {
 }
 
 void POLICE::Anm() {
-	switch (attack_flag) {
+	switch (attackFlag) {
 	case true:
-		if (ptime->GetTime() - anm_time > 0.1) {
+		if (ptime->GetTime() - anmTime > 0.1) {
 			uv.u++;
 			if (uv.u == 8) {
 				uv.u = 0;
 			}
-			anm_time = ptime->GetTime();
+			anmTime = ptime->GetTime();
 		}
-		if (ptime->GetTime() - attack_time > 0.5) {
-			bust_uv.u++;
-			if (bust_uv.u == 4) {
+		if (ptime->GetTime() - attackTime > 0.5) {
+			bustUv.u++;
+			if (bustUv.u == 4) {
 				if (bullet.GetUse() == false)
 				{
 					bullet.Init(pos, gravity,rotate);
 				}
 			}
-			if (bust_uv.u == 5) {
+			if (bustUv.u == 5) {
 				AttackFin();
 			}
-			attack_time = ptime->GetTime();
+			attackTime = ptime->GetTime();
 		}
 		break;
 	case false:
-		if (ptime->GetTime() - anm_time > 0.1) {
+		if (ptime->GetTime() - anmTime > 0.1) {
 			uv.u++;
 			if (uv.u == 8) {
 				uv.u = 0;
 			}
-			bust_uv.u = uv.u;
-			anm_time = ptime->GetTime();
+			bustUv.u = uv.u;
+			anmTime = ptime->GetTime();
 		}
 		break;
 	}
 }
 
 void POLICE::AttackFin() {		//攻撃の終了処理
-	bust_uv = { uv.u,2 };		//胸の位置を体と同じにする
-	attack_flag = false;
-	attack_time = ptime->GetTime();
+	bustUv = { uv.u,2 };		//胸の位置を体と同じにする
+	attackFlag = false;
+	attackTime = ptime->GetTime();
 }
 
 void POLICE::AttackSet() {	//攻撃の開始処理
-	bullet_hit = false;
-	attack_flag = true;
-	bust_uv = { 2,1 };
+	bulletHit = false;
+	attackFlag = true;
+	bustUv = { 2,1 };
 }
 
 void POLICE::SetGravity(unsigned short int strength) {
@@ -151,7 +151,7 @@ void POLICE::SetGravity(unsigned short int strength) {
 void POLICE::Draw(float camera) {		//描画をする関数
 	this->camera = pos;
 	this->camera.y += camera;
-	pdraw->PoliceDraw(bust_uv, this->camera);
+	pdraw->PoliceDraw(bustUv, this->camera);
 	pdraw->PoliceDraw(uv, this->camera);
 	if (bullet.GetUse() == true) {
 		bullet.Draw(camera);
@@ -167,7 +167,7 @@ float POLICE::GetRot() {
 }
 
 bool POLICE::GetBulletHit() {
-	return bullet_hit;
+	return bulletHit;
 
 }
 
@@ -184,7 +184,7 @@ I_VECTOR2 POLICE::GetUv() {
 }
 
 I_VECTOR2 POLICE::GetBustUv() {
-	return bust_uv;
+	return bustUv;
 }
 
 void POLICE::PlayerHit() {

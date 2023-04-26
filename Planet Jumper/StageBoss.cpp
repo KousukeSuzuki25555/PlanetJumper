@@ -3,8 +3,8 @@
 BossSt::BossSt() {	//コンストラクタ
 	//pplayer = &player;
 	camera = { 0.0f,0.0f };
-	speed_value = SPEED_NOR;
-	bullet_hit = false;
+	speedValue = SPEED_NOR;
+	bulletHit = false;
 	state = PLAY;
 	pdraw = 0;
 	pplayer = 0;
@@ -51,7 +51,7 @@ void BossSt::Update(GAME_STATUS* pstatus,float now) {
 		ICONの処理
 		*******************************************************************************/
 		icon.Update();						//アイコンのアップデート
-		speed_value = icon.GetSpeedValue();
+		speedValue = icon.GetSpeedValue();
 
 		/******************************************************************************
 		PLAYERの処理
@@ -64,7 +64,7 @@ void BossSt::Update(GAME_STATUS* pstatus,float now) {
 
 		pplayer->Update(now);				//playerのアップデート
 
-		dragon.SetSpeed(speed_value);
+		dragon.SetSpeed(speedValue);
 		dragon.Update();
 
 		/******************************************************************************

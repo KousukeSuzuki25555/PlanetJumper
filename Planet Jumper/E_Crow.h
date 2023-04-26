@@ -7,11 +7,11 @@
 class CROW :public BLOCK {
 	bool exist;	//存在しているか
 	float time;	//時間変数
-	float anm_time;	//アニメーションに用いる時間変数
+	float anmTime;	//アニメーションに用いる時間変数
 	//int gra;	//何番目の絵を使うか
 	Ticket* pticket;
 	MY_TIME* ptime;
-	VECTOR2 p_vertex[4];	//プレイヤーの頂点座標
+	VECTOR2 pVertex[4];	//プレイヤーの頂点座標
 	WEAPON* pweapon;
 
 public:

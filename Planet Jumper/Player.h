@@ -16,9 +16,9 @@ private:
 	VECTOR2 pos;	//座標
 	VECTOR2 camera;	//カメラ
 	I_VECTOR2 uv;	//g_v 0:上半身以外 1:歩き上半身
-	I_VECTOR2 bust_uv;	//上半身のuv値
-	CLOCK2 anm_time;	//アニメーションに用いる時間変数
-	CLOCK2 attack_time;	//攻撃アニメーションに用いる時間変数
+	I_VECTOR2 bustUv;	//上半身のuv値
+	CLOCK2 anmTime;	//アニメーションに用いる時間変数
+	CLOCK2 attackTime;	//攻撃アニメーションに用いる時間変数
 	DRAW* pdraw;	
 	//BULLET bullet[BULLETS_MAX];	//銃弾　上限:5
 	WEAPON weapon;
@@ -27,22 +27,22 @@ private:
 	int ground;	//地面の高さ
 	int bulletNum;	//銃弾の使用できる最大数
 	int newBullet;	//新しい銃弾を記憶する
-	unsigned short int jump_limit;	////ジャンプできる回数
-	unsigned short int jump_limit_define;	//地面着地時にjump_limitの初期化に用いる変数
+	unsigned short int jumpLimit;	////ジャンプできる回数
+	unsigned short int jumpLimitDefine;	//地面着地時にjump_limitの初期化に用いる変数
 	unsigned short int action;	//playerが何をしているか
-	unsigned short int hit_num;	//ヒットしたときに描画するかを決める
+	unsigned short int hitNum;	//ヒットしたときに描画するかを決める
 	float gravity;	//ジャンプの抵抗
 	float jstrength;	//ジャンプの力
-	float hit_time;	//ヒット演出に使う
-	float g_time;	//アニメーションに使う時間変数
+	float hitTime;	//ヒット演出に使う
+	float gTime;	//アニメーションに使う時間変数
 	float hp;	//hp
-	float gravity_source;	//重力のもとにになる値
-	float speed_source;	//スピードのもとになる値
-	bool attack_flag;		//球を打っているかの判定に使う　ダン数を増やす場合配列にする
-	bool hit_flag;	//ヒットしたか
-	bool draw_flag;	//描画するか
-	bool anm_flag;	//アニメーションのフラグ
-	bool bossFlag;	//ボス戦かどうか
+	float gravitySource;	//重力のもとにになる値
+	float speedSource;	//スピードのもとになる値
+	bool attackFlag;		//球を打っているかの判定に使う　ダン数を増やす場合配列にする
+	bool hitFlag;	//ヒットしたか
+	bool drawFlag;	//描画するか
+	bool anmFlag;	//アニメーションのフラグ
+	bool bossFlag;	//ボス戦だと挙動が変わるため、ボス戦かどうか
 
 public:
 	PLAYER();	//コンストラクタ

@@ -27,8 +27,8 @@ class BossSt {
 	GAME_STATUS* pstatus;
 	MY_TIME* ptime;
 	WEAPON* pweapon;
-	float speed_value;	//スピードの実数値
-	bool bullet_hit;	//銃弾がヒットしたか
+	float speedValue;	//スピードの実数値
+	bool bulletHit;	//銃弾がヒットしたか
 	unsigned short int state;	//ステージの状態
 
 public:

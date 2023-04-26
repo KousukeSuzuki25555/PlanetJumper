@@ -8,8 +8,8 @@ class LASER {
 	VECTOR2 pos;
 	VECTOR2 camera;
 	VECTOR2 moveNormalize;	//移動時の基準となる数値
-	VECTOR2 n_vertex[4];		//blockの頂点
-	VECTOR2 p_vertex[4];	//playerの中心からの座標
+	VECTOR2 nVertex[4];		//blockの頂点
+	VECTOR2 pVertex[4];	//playerの中心からの座標
 	PLAYER* pplayer;
 	MY_TIME* ptime;
 	DRAW* pdraw;
@@ -20,7 +20,7 @@ class LASER {
 	float speed;
 	int anm;				//どっちの絵を使用するか
 	bool exist;
-	bool d_vertex[4];			//各頂点の外積が内側にあるか判定
+	bool dVertex[4];			//各頂点の外積が内側にあるか判定
 
 public:
 	LASER();	//コンストラクタ

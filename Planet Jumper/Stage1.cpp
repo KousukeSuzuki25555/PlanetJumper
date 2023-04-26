@@ -3,11 +3,11 @@
 STAGE1::STAGE1() {
 	camera = 0.0f;
 	//now = (float)clock() / 1000;
-	meter_time = 0.0f;
+	meterTime = 0.0f;
 	rot = 0.0f;
 	time = 0.0f;
-	meter_anm = false;
-	bullet_hit = false;
+	meterAnm = false;
+	bulletHit = false;
 	block_size[0] = {32,32};
 	block_size[1] = { 32,32 };
 	block_size[2] = { 32,32 };
@@ -45,13 +45,13 @@ void STAGE1::PointerInit(DRAW* pdraw,PLAYER* pplayer,MY_TIME* ptime, GAME_STATUS
 	police.PointerInit(pdraw,pplayer,ptime);
 	icon.PointerInit(pdraw);
 	ground.PointerInit(pdraw);
-	f_clear.PointerInit(pdraw);
+	fClear.PointerInit(pdraw);
 	clear.Init(pticket);
 }
 
 void STAGE1::Init() {
 	time = ptime->GetTime();
-	meter_time = ptime->GetTime();
+	meterTime = ptime->GetTime();
 	pplayer->Init(0);
 	police.Init();
 	ticket.PointerInit(pdraw,pstatus);
@@ -110,17 +110,17 @@ void STAGE1::Update() {
 		/******************************************************************************
 		WINDOWの処理
 		*******************************************************************************/
-		if (ptime->GetTime() - meter_time > 0.5f) {
-			switch (meter_anm) {
+		if (ptime->GetTime() - meterTime > 0.5f) {
+			switch (meterAnm) {
 			case true:
-				meter_anm = false;
+				meterAnm = false;
 				break;
 
 			case false:
-				meter_anm = true;
+				meterAnm = true;
 				break;
 			}
-			meter_time = ptime->GetTime();
+			meterTime = ptime->GetTime();
 		}
 
 		/******************************************************************************
@@ -185,7 +185,7 @@ void STAGE1::Update() {
 		初クリア時の処理
 		*******************************************************************************/
 	case ST_FIRST_CLEAR:
-		f_clear.Update();
+		fClear.Update();
 		if (KeyEnter.down()) {
 			state = ST_MAP;
 		}
@@ -207,7 +207,7 @@ void STAGE1::Draw() {
 	for (int e = 0; e < 10; e++) {
 		block[e].Draw(camera);
 	}
-	pdraw->WindowDraw(meter_anm, police.GetRot());			//ウィンドウの描画
+	pdraw->WindowDraw(meterAnm, police.GetRot());			//ウィンドウの描画
 	pplayer->HartDraw();
 	icon.Draw();
 	ticket.Draw(false);

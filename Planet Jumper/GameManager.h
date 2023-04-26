@@ -31,10 +31,10 @@ private:
 	bool* pgameContinue;
 	const Font font{ 32 };
 	int select;		//どのステージをプレイしているか
-	int old_select;	//ステージが変更された時などに気づくための変数
-	bool st_start;					///ステージスタート演出を行う
-	float perf_time;				//演出に使う変数
-	float perf_x;					//演出の背景の移動に用いる
+	int oldSelect;	//ステージが変更された時などに気づくための変数
+	bool stStart;					///ステージスタート演出を行う
+	float perfTime;				//演出に使う変数
+	float perfX;					//演出の背景の移動に用いる
 
 public:
 	GAMEMANAGER();	//コンストラクタ

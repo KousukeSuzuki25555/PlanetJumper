@@ -40,27 +40,27 @@ public:
 	BLOCK block;
 	GAME_STATUS* pstatus;
 	WEAPON* pweapon;
-	I_VECTOR2 build_size[2];
+	I_VECTOR2 buildSize[2];
 	int speed;	//スピード
 	float now;	//時間
 	float rot;	//回転
-	float speed_value;	//スピードの実数値
-	float meter_time;	//メーターに用いる時間
-	float t_time;	//時間変数
-	float enemy_time;	//敵に用いる時間変数
-	bool meter_anm;	//メーターのアニメーションを用いるか
-	bool bullet_hit;	//銃弾がヒットしたか
+	float speedValue;	//スピードの実数値
+	float meterTime;	//メーターに用いる時間
+	float tTime;	//時間変数
+	float enemyTime;	//敵に用いる時間変数
+	bool meterAnm;	//メーターのアニメーションを用いるか
+	bool bulletHit;	//銃弾がヒットしたか
 	bool key_get;	//キーを取得したか
-	bool build_init_flag;	//建物を初期化したか
-	bool enemy_init_flag;	//敵を初期化したか
-	bool use_police;	//警察を使うか
-	bool use_tiger;	//虎を用いるか
-	bool use_block;	//建物を用いるか
+	bool buildInitFlag;	//建物を初期化したか
+	bool enemyInitFlag;	//敵を初期化したか
+	bool usePolice;	//警察を使うか
+	bool useTiger;	//虎を用いるか
+	bool useBlock;	//建物を用いるか
 	const Font font{ 32 };
 	int text;	//テキストの座標
-	int exp_icon;	//アイコンの説明
+	int expIcon;	//アイコンの説明
 	float camera;	//カメラの座標
-	bool t_flag;	//チュートリアルを終えるかのフラグ
+	bool tFlag;	//チュートリアルを終えるかのフラグ
 
 public:
 	TUTORIAL();	//コンストラクタ

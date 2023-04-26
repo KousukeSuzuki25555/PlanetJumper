@@ -15,7 +15,7 @@ struct DragonBox {	//DragonのBox毎の情報を入れる構造体
 	VECTOR2 pos;
 	I_VECTOR2 size;
 	float rot;
-	float before_rot;
+	float beforeRot;
 	float hp;
 	int g_v;	//上から何枚目の絵を使うか
 	bool exist;

@@ -3,17 +3,17 @@
 #define STAGE_MAX	(4)
 
 struct STATUS {				//セーブする項目の構造体
-	int player_hp;			//playerのhp
+	int playerHp;			//playerのhp
 	float gravity;			//重力
 	float speed;			//スピード
-	float bullets_power;	//銃弾の攻撃力
-	int bullets_num;		//playerが打つことができる弾の数
+	float bulletsPower;	//銃弾の攻撃力
+	int bulletsNum;		//playerが打つことができる弾の数
 	bool cursorGun;			//カーソル銃が解放されているか
 };
 
 struct MAP_STATUS {			//Map上で用いる変数の構造体
-	bool tutorial_flag;		//チュートリアルが終わっているかのフラグ
-	bool stage_flag[STAGE_MAX];		//ステージが解放されているかのフラグ
+	bool tutorialFlag;		//チュートリアルが終わっているかのフラグ
+	bool stageFlag[STAGE_MAX];		//ステージが解放されているかのフラグ
 	int money;				//所持金変数
 };
 
@@ -23,8 +23,8 @@ class GAME_STATUS {
 private:
 	STATUS status;
 	MAP_STATUS map_status;
-	FILE* save_file;
-	char file_name[13] = "SaveFile.bin";
+	FILE* saveFile;
+	char fileName[13] = "SaveFile.bin";
 	const Font font{ 32 };
 
 public:
@@ -39,7 +39,7 @@ public:
 	float GetGravity();	//重力のゲッター
 	void SetSpeed(float speed);	//スピードのセッター
 	float GetSpeed();	//スピードのゲッター
-	void SetBulletsNum(int bullets_num);	//弾数のセッター
+	void SetBulletsNum(int bulletsNum);	//弾数のセッター
 	int GetBulletsNum();	//弾数のゲッター
 	void SetBulletPower(float power);	//銃弾の強さのセッター
 	float GetBulletPower();	//銃弾の強さのゲッター
@@ -47,7 +47,7 @@ public:
 	bool GetCursorGun();	//カーソル銃のゲッター
 	void SetTicket(int money);	//所持チケット数のセッター
 	int GetTicket();	//所持チケット数のゲッター
-	void SetTutorialFlag(bool tutorial_flag);	//チュートリアルをクリアしたかセッター
+	void SetTutorialFlag(bool tutorialFlag);	//チュートリアルをクリアしたかセッター
 	bool getTutorialFlag();	//チュートリアルをクリアしたかのゲッター
 	void SetStageFlag(bool st_flag,int st_num);	//ステージのフラグのセッター
 	bool GetStageFlag(int st_num);	//ステージのフラグのゲッター

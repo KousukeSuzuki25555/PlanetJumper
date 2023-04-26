@@ -15,16 +15,16 @@ private:
 	VECTOR3 point1;			//中心点から各頂点までの距離 []=v,[]=x
 	VECTOR2 bullet_pos;		//座標
 	VECTOR2 camera;			//cameraのpos
-	VECTOR2 p_vertex[4];	//playerの中心からの座標
+	VECTOR2 pVertex[4];	//playerの中心からの座標
 	MY_TIME* ptime;
 	Ticket* pticket;
 	WEAPON* pweapon;
-	int move_speed[2];		//移動スピード
-	int move_pt;			//歩いているかは知っているか　0=歩き　1=走り
+	int moveSpeed[2];		//移動スピード
+	int movePt;			//歩いているかは知っているか　0=歩き　1=走り
 	float hp;					//hp
 	float time;				//移動などに使う時間関数
-	float anm_time;			//アニメーションに用いる時間変数
-	float hit_time;			//ヒット演出に用いる時間変数
+	float anmTime;			//アニメーションに用いる時間変数
+	float hitTime;			//ヒット演出に用いる時間変数
 	bool exist;				//存在するか
 	bool hit;				//攻撃を食らったか
 

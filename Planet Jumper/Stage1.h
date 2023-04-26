@@ -28,7 +28,7 @@ protected:	//継承する変数	敵のみ宣言すればよいようにする
 	GROUND ground;
 	GAMEOVER gameover;
 	CLEAR clear;
-	FirstClear f_clear;
+	FirstClear fClear;
 	Ticket ticket;
 	Ticket* pticket;
 	GAME_STATUS* pstatus;
@@ -37,11 +37,11 @@ protected:	//継承する変数	敵のみ宣言すればよいようにする
 	unsigned short int state;	//ステージ上での状態
 	float camera;	//カメラ
 	//float now;	//時間
-	float meter_time;	//メーターで使う時間
+	float meterTime;	//メーターで使う時間
 	float rot;	//回転
 	float time;	//時間変数
-	bool meter_anm;	//メーターのアニメーションで用いる
-	bool bullet_hit;	//銃弾がヒットしたか
+	bool meterAnm;	//メーターのアニメーションで用いる
+	bool bulletHit;	//銃弾がヒットしたか
 
 public:
 	STAGE1();	//コンストラクタ

@@ -23,7 +23,7 @@ private:
 	CROW crow[CROW_MAX];
 	TIGER tiger[TIGER_MAX];
 	BLOCK block[BLOCK_MAX];
-	I_VECTOR2 block_size[BLOCK_MAX];
+	I_VECTOR2 blockSize[BLOCK_MAX];
 	Ticket* pticket = new Ticket;
 	WEAPON* pweapon;
 

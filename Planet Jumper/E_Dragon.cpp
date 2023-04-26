@@ -316,7 +316,7 @@ void Dragon::Anm() {	//アニメーション
 	}
 	if (state != DST_ATTACK2) {
 		for (int e = firstBox + 1; e < 11; e++) {
-			d_box[e].rot = sinf(ptime->GetTime() + 2 / e) / e / WAVE_DIV;	//逓減するsin波で波打つアニメーションを作る
+			d_box[e].rot = sinf(ptime->GetTime() + 2.0f / e) / e / WAVE_DIV;	//逓減するsin波で波打つアニメーションを作る
 		}
 	}
 	for (int e = firstBox+1; e < 11; e++) {
@@ -494,7 +494,7 @@ void Dragon::Attack1Act() {
 	case DST2:
 		switch (attackTradition) {
 		case true:
-			float remainder;
+			//float remainder;
 			d_box[attack1FirstBox].rot -= rotMs * (ptime->GetTime() - attack_time)*2.5f;
 			attack_time = ptime->GetTime();
 			if (ptime->GetTime() >timeMs) {

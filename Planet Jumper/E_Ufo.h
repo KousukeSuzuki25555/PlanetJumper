@@ -15,8 +15,8 @@ class UFO {
 	DRAW* pdraw;
 	GAME_STATUS* pstatus;
 	VECTOR2 camera;			//cameraのpos
-	VECTOR2 n_vertex[4];		//blockの頂点
-	VECTOR2 p_vertex[4];	//playerの中心からの座標
+	VECTOR2 nVertex[4];		//blockの頂点
+	VECTOR2 pVertex[4];	//playerの中心からの座標
 	VECTOR2 bulletPos;		//銃弾の座標
 	LASER laser;
 	WEAPON* pweapon;
@@ -30,7 +30,7 @@ class UFO {
 	float speed;			//移動スピード
 	bool exist;				//存在するか
 	bool hit;				//攻撃を食らったか
-	bool d_vertex[4];			//各頂点の外積が内側にあるか判定
+	bool dVertex[4];			//各頂点の外積が内側にあるか判定
 
 public:
 	UFO();

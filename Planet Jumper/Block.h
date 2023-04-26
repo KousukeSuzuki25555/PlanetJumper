@@ -7,11 +7,11 @@
 class BLOCK {	//建物のclass　継承してENEMYを作る
 protected:
 	VECTOR2 pos;	//座標
-	VECTOR2 n_vertex[4];		//blockの頂点
+	VECTOR2 nVertex[4];		//blockの頂点
 	VECTOR2 ppos;	//playerの位置
 	VECTOR2 camera;	//描画で用いる
-	VECTOR2 p_vertex[4];	//playerの頂点座標を入れる
-	I_VECTOR2 p_size;	//playerのサイズ
+	VECTOR2 pVertex[4];	//playerの頂点座標を入れる
+	I_VECTOR2 pSize;	//playerのサイズ
 	I_VECTOR2 uv;	//uv値
 	PLAYER* pplayer;
 	DRAW* pdraw;
@@ -20,7 +20,7 @@ protected:
 	int radius;	//円の中心からの半径
 	int bulletNum;	//playerの銃弾数を言える
 	float rotate;	//どれだけ回転しているか
-	float rotate_gap;	//初期化で現在との差を入れる
+	float rotateGap;	//初期化で現在との差を入れる
 	float speed;	//移動の速さ
 	bool d_vertex[4];			//各頂点の外積が内側にあるか判定
 

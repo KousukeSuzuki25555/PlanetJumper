@@ -6,22 +6,22 @@ TUTORIAL::TUTORIAL() {		//チュートリアルのコンストラクタ
 	speed = NORMAL;				//ステージのスピード(iconから変更できる)
 	//gravity = NORMAL;			//ステージの重力(iconから変更できる)
 	//jump = NORMAL;				//ステージのジャンプ(iconから変更できる)
-	speed_value = SPEED_NOR;	//スピードの実数値を入れる
-	meter_time = (float)clock() / 1000;	//メーターのアニメーションに使う時間を入れる
-	meter_anm = true;			//メーターのアニメーションに使う
+	speedValue = SPEED_NOR;	//スピードの実数値を入れる
+	meterTime = (float)clock() / 1000;	//メーターのアニメーションに使う時間を入れる
+	meterAnm = true;			//メーターのアニメーションに使う
 	text = START;
-	t_time= (float)clock() / 1000;
+	tTime= (float)clock() / 1000;
 	key_get = false;
-	build_size[0] = {64,64};
-	build_size[1] = { 128,128 };
-	build_init_flag = false;
+	buildSize[0] = {64,64};
+	buildSize[1] = { 128,128 };
+	buildInitFlag = false;
 	//pplayer = &player;
-	enemy_init_flag = false;
-	bullet_hit = false;
-	use_police = false;
-	use_tiger = false;
-	use_block = false;
-	t_flag = true;
+	enemyInitFlag = false;
+	bulletHit = false;
+	usePolice = false;
+	useTiger = false;
+	useBlock = false;
+	tFlag = true;
 	//cloud.Init(1, 1200, 1.6);
 }
 
@@ -41,7 +41,7 @@ void TUTORIAL::PointerInit(GAME_STATUS* pstatus,DRAW* pdraw,PLAYER* pplayer,MY_T
 
 void TUTORIAL::Update() {
 	if (KeyEnter.down()) {
-		t_flag = false;
+		tFlag = false;
 	}
 	/******************************************************************************
 	ICONの処理
@@ -49,16 +49,16 @@ void TUTORIAL::Update() {
 	icon.Update();						//アイコンのアップデート
 	//jump = icon.GetJump();				//jumpにplayerのジャンプ力を入れる
 	//gravity = icon.GetGravity();		//gravityにステージの重力を入力
-	if (icon.GetSpeed() != speed) {		//speedが異なったらspeed_valueにスピードの値を入れる
+	if (icon.GetSpeed() != speed) {		//speedが異なったらspeedValueにスピードの値を入れる
 		speed = icon.GetSpeed();
 		if (speed == STRONG) {
-			speed_value = SPEED_FAST;
+			speedValue = SPEED_FAST;
 		}
 		else if (speed == NORMAL) {
-			speed_value = SPEED_NOR;
+			speedValue = SPEED_NOR;
 		}
 		else {
-			speed_value = SPEED_SLOW;
+			speedValue = SPEED_SLOW;
 		}
 	}
 
@@ -75,13 +75,13 @@ void TUTORIAL::Update() {
 	*******************************************************************************/
 	police.SetGravity(icon.GetGravity());
 	police.SetPpos(pplayer->GetPos_y());
-	if (use_police == true) {
-		police.Update(speed_value);
+	if (usePolice == true) {
+		police.Update(speedValue);
 	}
-	bullet_hit=police.GetBulletHit();
-	if (bullet_hit == true) {
+	bulletHit=police.GetBulletHit();
+	if (bulletHit == true) {
 		pplayer->Hit();
-		bullet_hit = false;
+		bulletHit = false;
 	}
 
 	//police.BulletDraw();
@@ -90,23 +90,23 @@ void TUTORIAL::Update() {
 	フレームごとのステージの標準的な処理
 	*******************************************************************************/
 	ptime->Update();				//時間の更新
-	rot -= (ptime->GetTime() - now) / speed_value;		//ステージで使う回転の基準
+	rot -= (ptime->GetTime() - now) / speedValue;		//ステージで使う回転の基準
 	now = ptime->GetTime();		//変数に今の時間を保存
 
 	/******************************************************************************
 	WINDOWの処理
 	*******************************************************************************/
-	if (now - meter_time > 0.5f) {
-		switch (meter_anm) {
+	if (now - meterTime > 0.5f) {
+		switch (meterAnm) {
 		case true:
-			meter_anm = false;
+			meterAnm = false;
 			break;
 
 		case false:
-			meter_anm = true;
+			meterAnm = true;
 			break;
 		}
-		meter_time = now;
+		meterTime = now;
 	}
 
 	//tdraw.Update();
@@ -115,24 +115,24 @@ void TUTORIAL::Update() {
 }
 
 void TUTORIAL::T_BlockInit1() {
-	block.Init(speed_value, 1.7f, build_size[0], 256, 0, pstatus->GetBulletsNum());
-	build_init_flag = true;
-	use_block = true;
+	block.Init(speedValue, 1.7f, buildSize[0], 256, 0, pstatus->GetBulletsNum());
+	buildInitFlag = true;
+	useBlock = true;
 	rot = 0.0f;
 }
 
 void TUTORIAL::T_BlockInit2() {
-	block.Init(speed_value, 1.7f, build_size[1],0, 0, pstatus->GetBulletsNum());
-	use_block = true;
-	build_init_flag = true;
+	block.Init(speedValue, 1.7f, buildSize[1],0, 0, pstatus->GetBulletsNum());
+	useBlock = true;
+	buildInitFlag = true;
 	rot = 0.0f;
 }
 
 void TUTORIAL::T_EnemyInit() {
-	enemy_time = now;
+	enemyTime = now;
 	tiger.Init(1.65f/*,now-enemy_time*/, pstatus->GetBulletsNum());
-	enemy_init_flag = true;
-	use_tiger = true;
+	enemyInitFlag = true;
+	useTiger = true;
 	//tdraw.TigerUse();
 }
 
@@ -147,19 +147,19 @@ void TUTORIAL::Draw() {
 	ground.Draw(camera);
 	pplayer->Draw(camera);
 	//player.BulletDraw();
-	if (use_police == true) {
+	if (usePolice == true) {
 		police.Draw(camera);
 		//police.BulletDraw();
 	}
-	if (use_tiger == true) {
+	if (useTiger == true) {
 		tiger.Draw(camera);
 	}
-	if (use_block == true) {
+	if (useBlock == true) {
 		block.Draw(camera);
 	}
 	pplayer->HartDraw();
 	//cloud.Draw(camera);
-	pdraw->WindowDraw(meter_anm, police.GetRot());			//ウィンドウの描画
+	pdraw->WindowDraw(meterAnm, police.GetRot());			//ウィンドウの描画
 	icon.Draw();
 }
 
@@ -175,9 +175,9 @@ void TUTORIAL::TutorialAct() {
 	switch (text) {
 	case START:
 		font(U"これからチュートリアルを始めるよ").draw(0, 0);
-		if (now - t_time > 2) {
+		if (now - tTime > 2) {
 			text = EXP_JUMP;
-			t_time = now;
+			tTime = now;
 		}
 		break;
 
@@ -187,21 +187,21 @@ void TUTORIAL::TutorialAct() {
 			font(U"まずはJを押してくれるかな？ジャンプができるよ").draw(0, 0);
 			if (KeyJ.down()) {
 				key_get = true;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 
 		case true:
-			if (now - t_time < 2.0f) {
+			if (now - tTime < 2.0f) {
 				font(U"よくできたね").draw(0, 0);
 			}
-			else if (now - t_time < 4.0f) {
+			else if (now - tTime < 4.0f) {
 				font(U"前から建物が近づいてくるよ!ジャンプしてよけてみよう").draw(0, 0);
 			}
 			else {
 				font(U"空中でもう一度Jを押すことで二段ジャンプができるよ").draw(0, 0);
 			}
-			switch (build_init_flag) {
+			switch (buildInitFlag) {
 			case false:	//blockのInit
 				T_BlockInit1();
 				break;
@@ -209,14 +209,14 @@ void TUTORIAL::TutorialAct() {
 			case true:	//blockをジャンプでよける
 				block.Update(rot);
 				if (pplayer->GetHitFlag() == true) {
-					build_init_flag = false;
+					buildInitFlag = false;
 				}
 				if (1.8f + rot < 1.47) {	//playerがよけれたら次のチュートリアルへ移る
 					text = EXP_ATTACK;
-					t_time = now;
+					tTime = now;
 					key_get = false;
-					build_init_flag = false;
-					use_block = false;
+					buildInitFlag = false;
+					useBlock = false;
 				}
 
 				break;
@@ -231,14 +231,14 @@ void TUTORIAL::TutorialAct() {
 			font(U"次は攻撃だよ！SPACEを押してみてね").draw(0, 0);
 			if (KeySpace.down()) {
 				key_get = true;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 
 		case true:
 			font(U"前から敵が来るから倒してみよう 2回攻撃を充てると倒せるよ").draw(0, 0);
 
-			switch (enemy_init_flag) {
+			switch (enemyInitFlag) {
 			case false:
 				T_EnemyInit();
 				break;
@@ -249,14 +249,14 @@ void TUTORIAL::TutorialAct() {
 				}
 			}
 			if (tiger.GetRotate() < 1.45) {
-				enemy_init_flag = false;
+				enemyInitFlag = false;
 			}
 			else if (tiger.GetExist() == false) {	//倒すことができたら
 				text = EXP_ICON;
-				t_time = now;
+				tTime = now;
 				key_get = false;
-				enemy_init_flag = false;
-				use_tiger = false;
+				enemyInitFlag = false;
+				useTiger = false;
 				//tdraw.TigerUse();
 			}
 
@@ -267,25 +267,25 @@ void TUTORIAL::TutorialAct() {
 	case EXP_ICON:	//アイコンの説明
 	{
 
-		if (now - t_time < 3) {
+		if (now - tTime < 3) {
 			font(U"次は外面下の説明をするね").draw(0, 0);
 		}
-		else if (now - t_time < 7.5) {
+		else if (now - tTime < 7.5) {
 			font(U"まずは右下のアイコンからだよ").draw(0, 0);
 		}
 
-		if (now - t_time > 6 && now - t_time < 6.5) {
+		if (now - tTime > 6 && now - tTime < 6.5) {
 			pdraw->TutorialHighlight();
 		}
-		else if (now - t_time > 7 && now - t_time < 7.5) {
+		else if (now - tTime > 7 && now - tTime < 7.5) {
 			pdraw->TutorialHighlight();
 		}
-		else if (now - t_time > 7.5 && now - t_time < 10.5) {
+		else if (now - tTime > 7.5 && now - tTime < 10.5) {
 			font(U"アイコンはプレイヤーのステータスを変化させるよ").draw(0, 0);
 		}
-		else if (now - t_time > 10.5) {
+		else if (now - tTime > 10.5) {
 			text = EXP_Y;
-			t_time = now;
+			tTime = now;
 		}
 		break;
 	}
@@ -298,17 +298,17 @@ void TUTORIAL::TutorialAct() {
 
 			if (KeyY.down()) {
 				key_get = true;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		case true:
-			if (now - t_time < 3) {
+			if (now - tTime < 3) {
 				font(U"このアイコンは攻撃力を上げる力を持っているよ").draw(0, 0);
 			}
 			else {
 				font(U"前から敵が来るよ!攻撃力を上げて倒してみよう").draw(0, 0);
 			}
-			switch (enemy_init_flag) {
+			switch (enemyInitFlag) {
 			case false:
 				T_EnemyInit();
 				break;
@@ -324,14 +324,14 @@ void TUTORIAL::TutorialAct() {
 
 				if (tiger.GetExist() == false && icon.GetWeapon() == STRONG) {	//playerがよけれたら次のチュートリアルへ移る
 					text = EXP_U;
-					t_time = now;
+					tTime = now;
 					key_get = false;
-					use_tiger = false;
+					useTiger = false;
 					//tdraw.TigerUse();
 				}
 
 				if (tiger.GetRotate() < 1.45) {	//倒すことができなかったらもう一度
-					enemy_init_flag = false;
+					enemyInitFlag = false;
 					//tdraw.TigerUse();
 				}
 
@@ -349,17 +349,17 @@ void TUTORIAL::TutorialAct() {
 
 			if (KeyU.down()) {
 				key_get = true;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		case true:
-			if (now - t_time < 3) {
+			if (now - tTime < 3) {
 				font(U"このアイコンは攻撃力を通常通りにするよ").draw(0, 0);
 			}
 			else {
 				text = EXP_I;
 				key_get = false;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		}
@@ -373,17 +373,17 @@ void TUTORIAL::TutorialAct() {
 
 			if (KeyI.down()) {
 				key_get = true;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		case true:
-			if (now - t_time < 3) {
+			if (now - tTime < 3) {
 				font(U"このアイコンは重力を弱める力を持っているよ").draw(0, 0);
 			}
-			else if (/*now - t_time > 3 &&*/ now - t_time < 6) {
+			else if (/*now - tTime > 3 &&*/ now - tTime < 6) {
 				font(U"ジャンプして体感してみよう").draw(0, 0);
 			}
-			switch (build_init_flag) {
+			switch (buildInitFlag) {
 			case false:	//blockのInit
 				T_BlockInit2();
 				break;
@@ -391,14 +391,14 @@ void TUTORIAL::TutorialAct() {
 			case true:	//blockをジャンプでよける
 				block.Update(rot);
 				if (pplayer->GetHitFlag() == true) {
-					build_init_flag = false;
+					buildInitFlag = false;
 				}
 				if (1.8f + rot < 1.47) {	//playerがよけれたら次のチュートリアルへ移る
 					text = EXP_K;
-					t_time = now;
+					tTime = now;
 					key_get = false;
-					build_init_flag = false;
-					use_block = false;
+					buildInitFlag = false;
+					useBlock = false;
 				}
 
 				break;
@@ -416,17 +416,17 @@ void TUTORIAL::TutorialAct() {
 
 			if (KeyK.down()) {
 				key_get = true;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		case true:
-			if (now - t_time < 3) {
+			if (now - tTime < 3) {
 				font(U"このアイコンは重力をを通常通りにするよ").draw(0, 0);
 			}
 			else {
 				text = EXP_N;
 				key_get = false;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		}
@@ -441,20 +441,20 @@ void TUTORIAL::TutorialAct() {
 
 			if (KeyN.down()) {
 				key_get = true;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		case true:
-			if (now - t_time < 3) {
+			if (now - tTime < 3) {
 				font(U"このアイコンはジャンプ回数を3回にする力を持っているよ").draw(0, 0);
 			}
-			else if (/*now - t_time > 3 &&*/ now - t_time < 6) {
+			else if (/*now - tTime > 3 &&*/ now - tTime < 6) {
 				font(U"ジャンプ中にJボタンを2回押してみよう").draw(0, 0);
 			}
 			else {
 				text = EXP_H;
 				key_get = false;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		}
@@ -468,17 +468,17 @@ void TUTORIAL::TutorialAct() {
 
 			if (KeyH.down()) {
 				key_get = true;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		case true:
-			if (now - t_time < 3) {
+			if (now - tTime < 3) {
 				font(U"このアイコンは二段ジャンプにするよ").draw(0, 0);
 			}
 			else {
 				text = EXP_COMMA;
 				key_get = false;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		}
@@ -493,16 +493,16 @@ void TUTORIAL::TutorialAct() {
 
 			if (KeyComma.down()) {
 				key_get = true;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		case true:
-			if (now - t_time < 3) {
+			if (now - tTime < 3) {
 				font(U"このアイコンは走るスピードを速くする力を持っているよ").draw(0, 0);
 			}
-			else if (/*now - t_time > 3 &&*/ now - t_time < 6) {
+			else if (/*now - tTime > 3 &&*/ now - tTime < 6) {
 				font(U"後ろから追いかけてくる敵から逃げてみよう").draw(0, 0);
-				use_police = true;
+				usePolice = true;
 				//tdraw.PoliceUse();
 				police.PointerInit(pdraw, pplayer,ptime);
 				police.RotInit();
@@ -510,7 +510,7 @@ void TUTORIAL::TutorialAct() {
 			else {
 				text = EXP_M;
 				key_get = false;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		}
@@ -524,17 +524,17 @@ void TUTORIAL::TutorialAct() {
 
 			if (KeyM.down()) {
 				key_get = true;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		case true:
-			if (now - t_time < 3) {
+			if (now - tTime < 3) {
 				font(U"このアイコンは普通のスピードにするよ").draw(0, 0);
 			}
 			else {
 				text = EXP_CNC;
 				key_get = false;
-				t_time = now;
+				tTime = now;
 			}
 			break;
 		}
@@ -542,38 +542,38 @@ void TUTORIAL::TutorialAct() {
 	}
 	case EXP_CNC: {	//iconまとめ
 
-		if (now - t_time < 3) {
+		if (now - tTime < 3) {
 			font(U"実はアイコンは一つの列に一つしか選択できないんだ...").draw(0, 0);
 		}
-		else if (now - t_time < 6) {
+		else if (now - tTime < 6) {
 			font(U"もし選択されていないステータスがあるとそのステータスは弱体化されるよ").draw(0, 0);
 		}
 		else {
 			font(U"Nを押してみて!スピードが弱体化して後ろにいる敵に追いつかれるよ").draw(0, 0);
 			if (KeyN.down()) {
 				text = EXP_METER;
-				t_time = now;
+				tTime = now;
 			}
 		}
 		break;
 	}
 	case EXP_METER: {
-		if (now - t_time < 3) {
+		if (now - tTime < 3) {
 			font(U"次に左下のメーターについて説明するね").draw(0, 0);
 		}
-		else if (now - t_time < 8) {
+		else if (now - tTime < 8) {
 			font(U"このメーターは後ろの敵との距離を表しているよ").draw(0, 0);
 		}
-		else if (now - t_time < 13) {
+		else if (now - tTime < 13) {
 			font(U"主人公は後ろの敵から攻撃を食らうとHPが減ってしまうよ").draw(0, 0);
 		}
-		else if (now - t_time < 18) {
+		else if (now - tTime < 18) {
 			font(U"あと後ろの敵から追いつかれてしまうとその時点でゲームオーバーだよ!").draw(0, 0);
 		}
 		else {
 			font(U"これでチュートリアルは終了だよ!終了する場合はEnterを押してね");
 			if (KeyEnter.down()) {
-				t_flag = false;
+				tFlag = false;
 			}
 		}
 
@@ -585,5 +585,5 @@ void TUTORIAL::TutorialAct() {
 }
 
 bool TUTORIAL::GetContinue() {
-	return t_flag;
+	return tFlag;
 }

@@ -962,9 +962,6 @@
     <ClInclude Include="Laser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Block.h">
-      <Filter>Header Files\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="Weapon.h">
       <Filter>Header Files\Weapon</Filter>
     </ClInclude>
@@ -993,6 +990,9 @@
       <Filter>Header Files\Stage</Filter>
     </ClInclude>
     <ClInclude Include="DragonSpine.h">
+      <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
       <Filter>Header Files\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

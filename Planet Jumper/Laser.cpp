@@ -17,9 +17,9 @@ LASER::LASER() {	//コンストラクタ
 	exist = false;
 	anm = false;
 	for (int e = 0; e < 4; e++) {
-		n_vertex[e] = { 0.0f,0.0f };
-		p_vertex[e] = { 0.0f,0.0f };
-		d_vertex[e] = false;
+		nVertex[e] = { 0.0f,0.0f };
+		pVertex[e] = { 0.0f,0.0f };
+		dVertex[e] = false;
 	}
 	speedTime = 0.0f;
 	initSpeed = 0.0f;
@@ -53,27 +53,27 @@ void LASER::Update() {	//アップデート関数
 
 void LASER::PlayerHit() {	//プレイヤーとの当たり判定
 	//playerの各頂点の座標を取得
-	p_vertex[3] = pplayer->GetPos();
-	p_vertex[0] = { p_vertex[3].x - 10 / 2,p_vertex[3].y - G_SIZE / 2 };
-	p_vertex[1] = { p_vertex[3].x + 10 / 2,p_vertex[3].y - G_SIZE / 2 };
-	p_vertex[2] = { p_vertex[3].x + 10 / 2,p_vertex[3].y + G_SIZE / 2 };
-	p_vertex[3] = { p_vertex[0].x ,p_vertex[2].y };
+	pVertex[3] = pplayer->GetPos();
+	pVertex[0] = { pVertex[3].x - 10 / 2,pVertex[3].y - G_SIZE / 2 };
+	pVertex[1] = { pVertex[3].x + 10 / 2,pVertex[3].y - G_SIZE / 2 };
+	pVertex[2] = { pVertex[3].x + 10 / 2,pVertex[3].y + G_SIZE / 2 };
+	pVertex[3] = { pVertex[0].x ,pVertex[2].y };
 
 	//UFO自体の頂点座標
-	n_vertex[0] = { pos.x - LASER_SIZE_X / 2,pos.y - LASER_SIZE_Y / 2 };
-	n_vertex[1] = { pos.x + LASER_SIZE_X / 2,pos.y - LASER_SIZE_Y / 2 };
-	n_vertex[2] = { pos.x + LASER_SIZE_X / 2,pos.y + LASER_SIZE_Y / 2 };
-	n_vertex[3] = { pos.x - LASER_SIZE_X / 2,pos.y + LASER_SIZE_Y / 2 };
+	nVertex[0] = { pos.x - LASER_SIZE_X / 2,pos.y - LASER_SIZE_Y / 2 };
+	nVertex[1] = { pos.x + LASER_SIZE_X / 2,pos.y - LASER_SIZE_Y / 2 };
+	nVertex[2] = { pos.x + LASER_SIZE_X / 2,pos.y + LASER_SIZE_Y / 2 };
+	nVertex[3] = { pos.x - LASER_SIZE_X / 2,pos.y + LASER_SIZE_Y / 2 };
 
 	for (int e = 0; e < 4; e++) {
 		//外積での当たり判定
-		d_vertex[0] = HitDetection(p_vertex[0],p_vertex[1],n_vertex[e]);
-		d_vertex[1] = HitDetection(p_vertex[1], p_vertex[2], n_vertex[e]);
-		d_vertex[2] = HitDetection(p_vertex[2], p_vertex[3], n_vertex[e]);
-		d_vertex[3] = HitDetection(p_vertex[3], p_vertex[0], n_vertex[e]);
+		dVertex[0] = HitDetection(pVertex[0],pVertex[1],nVertex[e]);
+		dVertex[1] = HitDetection(pVertex[1], pVertex[2], nVertex[e]);
+		dVertex[2] = HitDetection(pVertex[2], pVertex[3], nVertex[e]);
+		dVertex[3] = HitDetection(pVertex[3], pVertex[0], nVertex[e]);
 
 		//外積で求めたflagを用いて当たり判定を行う
-		if (d_vertex[0] == true && d_vertex[1] == true && d_vertex[2] == true && d_vertex[3] == true) {
+		if (dVertex[0] == true && dVertex[1] == true && dVertex[2] == true && dVertex[3] == true) {
 			pplayer->Hit(0.2f);
 			exist = false;
 			break;
@@ -151,7 +151,7 @@ bool LASER::GetExist() {	//existのゲッター
 
 void LASER::DetectReset() {
 	for (int e = 0; e < 4; e++) {
-		d_vertex[e] = false;
+		dVertex[e] = false;
 	}
 }
 

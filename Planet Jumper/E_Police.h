@@ -9,18 +9,18 @@ class POLICE {
 	VECTOR2 pos;	//座標
 	VECTOR2 camera;	//カメラ座標
 	I_VECTOR2 uv;	//uv値
-	I_VECTOR2 bust_uv;	//上体のuv値
+	I_VECTOR2 bustUv;	//上体のuv値
 	DRAW* pdraw;	
 	PLAYER* pplayer;	
 	BULLET bullet;
 	MY_TIME* ptime;
-	bool attack_flag;	//攻撃中か
-	bool bullet_hit;	//銃弾が当たったか
+	bool attackFlag;	//攻撃中か
+	bool bulletHit;	//銃弾が当たったか
 	float gravity;	//重力
-	float anm_time;	//アニメーションに用いる時間変数
+	float anmTime;	//アニメーションに用いる時間変数
 	float rotate;	//回転
-	float attack_time;	//攻撃に用いる時間関数
-	float run_time;	//走りアニメーションに用いる変数
+	float attackTime;	//攻撃に用いる時間関数
+	float runTime;	//走りアニメーションに用いる変数
 	float ppos;	//プレイヤーの座標
 public:
 	POLICE();	//コンストラクタ

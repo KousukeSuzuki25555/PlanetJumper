@@ -2,10 +2,10 @@
 
 GAMEMANAGER::GAMEMANAGER() {
 	select = MAP;
-	old_select = select;
-	st_start = false;	//stage開始演出
-	perf_x = X_MAX;
-	perf_time = 0.0f;
+	oldSelect = select;
+	stStart = false;	//stage開始演出
+	perfX = X_MAX;
+	perfTime = 0.0f;
 	pdraw = 0;
 	pplayer = 0;
 	pground = 0;
@@ -104,24 +104,24 @@ void GAMEMANAGER:: Update() {
 		break;
 	}
 
-	if (old_select != select) {
+	if (oldSelect != select) {
 		switch (select) {
 		case ST1:
 			stage1.Init();
-			st_start = true;
-			perf_time = ptime->GetTime() + 2.0f;
+			stStart = true;
+			perfTime = ptime->GetTime() + 2.0f;
 			break;
 
 		case ST2:
 			stage2.Init();
-			st_start = true;
-			perf_time = ptime->GetTime() + 2.0f;
+			stStart = true;
+			perfTime = ptime->GetTime() + 2.0f;
 			break;
 
 		case ST3:
 			stage3.Init();
-			st_start = true;
-			perf_time = ptime->GetTime() + 2.0f;
+			stStart = true;
+			perfTime = ptime->GetTime() + 2.0f;
 			break;
 
 		case ST_BOSS:
@@ -146,13 +146,13 @@ void GAMEMANAGER:: Update() {
 		}
 	}
 
-	if (old_select == ST_BOSS && select != ST_BOSS) {
+	if (oldSelect == ST_BOSS && select != ST_BOSS) {
 		stageBoss.Uninit();
 	}
-	if (st_start == true) {
+	if (stStart == true) {
 		StageStartPerf(select);
 	}
-	old_select = select;
+	oldSelect = select;
 }
 
 void GAMEMANAGER::MapInit() {	//stage変数をリセットする
@@ -160,9 +160,9 @@ void GAMEMANAGER::MapInit() {	//stage変数をリセットする
 }
 
 void GAMEMANAGER::StageStartPerf(int select) {	//stage1の文字をスタート時に流す
-	perf_x = X_MAX * (perf_time - ptime->GetTime()) / 2.0f;
-	pdraw->StageSt(perf_x);
-	if (perf_x < X_MAX / 2 - 32 * 3) {
+	perfX = X_MAX * (perfTime - ptime->GetTime()) / 2.0f;
+	pdraw->StageSt(perfX);
+	if (perfX < X_MAX / 2 - 32 * 3) {
 		switch (select) {
 		case ST1:
 			font(U"STAGE1").draw(X_MAX / 2 - 32 * 3, Y_MAX / 2 - 64);
@@ -173,7 +173,7 @@ void GAMEMANAGER::StageStartPerf(int select) {	//stage1の文字をスタート�
 			break;
 		}
 	}
-	if (perf_x < 0.0f) {
-		st_start = false;
+	if (perfX < 0.0f) {
+		stStart = false;
 	}
 }

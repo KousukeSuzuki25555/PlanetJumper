@@ -8,7 +8,7 @@ SPINE::SPINE() {								//棘のコンストラクタ
 	time = 0.0f;				//移動量の計算などに用いる時間
 	atk = 0.1f;					//攻撃力
 	vertex = { 0.0f,0.0f };		//棘の頂点	
-	p_size = { 20,G_SIZE };		//playerのボックスサイズ
+	pSize = { 20,G_SIZE };		//playerのボックスサイズ
 	exist = false;				//存在しているか
 	/*d_vertex[0] = false;
 	d_vertex[1] = false;
@@ -50,7 +50,7 @@ void SPINE::PlayerHit(PLAYER* pplayer,float now) {	//playerとの当たり判定
 	//棘の頂点座標を入れる
 	vertex = { cosf((1+rot) * PI) * size.u / 2+pos.x,sinf((1*rot) * PI) * size.u / 2+pos.y };
 	//当たり判定
-	if (PlayerHitDetection(pplayer->GetPos(),vertex,p_size)==true) {
+	if (PlayerHitDetection(pplayer->GetPos(),vertex,pSize)==true) {
 		pplayer->BossstHit(atk,now);
 
 		exist = false;

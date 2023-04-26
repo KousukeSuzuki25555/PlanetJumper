@@ -22,7 +22,7 @@
 class STAGE3 :public STAGE1 {
 private:
 	BLOCK block[BLOCK_MAX];
-	I_VECTOR2 block_size[BLOCK_MAX];
+	I_VECTOR2 blockSize[BLOCK_MAX];
 	TIGER tiger[TIGER_MAX];
 	CROW crow[CROW_MAX];
 	UFO ufo;

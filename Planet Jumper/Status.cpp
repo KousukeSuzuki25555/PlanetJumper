@@ -11,50 +11,50 @@ GAME_STATUS::~GAME_STATUS() {				//デストラクタ
 }
 
 void GAME_STATUS::SaveData() {				//データをセーブする関数
-	fopen_s(&save_file, file_name, "wb");
-	if (save_file == NULL) {				//ファイルが開けないとき
+	fopen_s(&saveFile, fileName, "wb");
+	if (saveFile == NULL) {				//ファイルが開けないとき
 		font(U"セーブファイルが開けませんでした");
 	}
 	else {
-		fwrite(&status, sizeof(STATUS), 1, save_file);
-		fwrite(&map_status, sizeof(MAP_STATUS), 1, save_file);
+		fwrite(&status, sizeof(STATUS), 1, saveFile);
+		fwrite(&map_status, sizeof(MAP_STATUS), 1, saveFile);
 	}
-	fclose(save_file);
+	fclose(saveFile);
 }
 
 void GAME_STATUS::LoadSave() {				//データをロードする関数
-	fopen_s(&save_file, file_name, "rb");
-	if (save_file == NULL) {				//ファイルが開けないとき　新しいセーブデータを生成する
+	fopen_s(&saveFile, fileName, "rb");
+	if (saveFile == NULL) {				//ファイルが開けないとき　新しいセーブデータを生成する
 		Init();
 		SaveData();
 	}
 	else {
-		fread(&status, sizeof(STATUS), 1, save_file);
-		fread(&map_status, sizeof(MAP_STATUS), 1, save_file);
+		fread(&status, sizeof(STATUS), 1, saveFile);
+		fread(&map_status, sizeof(MAP_STATUS), 1, saveFile);
 	}
-	fclose(save_file);
+	fclose(saveFile);
 }
 
 void GAME_STATUS::Init() {					//初めてセーブデータを生成するときに呼び出す関数　
-	status.player_hp = 3;					//playerのhp
+	status.playerHp = 3;					//playerのhp
 	status.gravity = 0.25f;					//重力
 	status.speed = 20.0f;					//スピード
-	status.bullets_num = 1;					//playerが打つことができる弾の数
-	status.bullets_power = 1;
+	status.bulletsNum = 1;					//playerが打つことができる弾の数
+	status.bulletsPower = 1;
 	status.cursorGun = false;			//カーソル銃が解放されているか
-	map_status.tutorial_flag = false;		//チュートリアルが終わっているかのフラグ
+	map_status.tutorialFlag = false;		//チュートリアルが終わっているかのフラグ
 	for (int e = 0; e < STAGE_MAX; e++) {
-		map_status.stage_flag[e] = false;		//ステージが解放されているかのフラグ
+		map_status.stageFlag[e] = false;		//ステージが解放されているかのフラグ
 	}
 	map_status.money = 0;					//所持金変数
 }
 
 void GAME_STATUS::SetHp(int hp) {			//player HPのセッター
-	status.player_hp = hp;
+	status.playerHp = hp;
 }
 
 int GAME_STATUS::GetHp() {					//player HPのゲッター
-	return status.player_hp;
+	return status.playerHp;
 }
 
 void GAME_STATUS::SetGravity(float gravity) {	//ジャンプの際などに用いる重力のセッター
@@ -73,16 +73,16 @@ float GAME_STATUS::GetSpeed() {				//speedのゲッター
 	return status.speed;
 }
 
-void GAME_STATUS::SetBulletsNum(int bullets_num) {	//playerの打てる銃弾の数のセッター
-	status.bullets_num = bullets_num;
+void GAME_STATUS::SetBulletsNum(int bulletsNum) {	//playerの打てる銃弾の数のセッター
+	status.bulletsNum = bulletsNum;
 }
 
 int GAME_STATUS::GetBulletsNum() {			//弾数のゲッター
-	return status.bullets_num;
+	return status.bulletsNum;
 }
 
 void GAME_STATUS::SetBulletPower(float power) {
-	status.bullets_power = power;
+	status.bulletsPower = power;
 }
 
 void GAME_STATUS::SetCursorGun() {	//呼び出されたら銃をゲットできる
@@ -95,7 +95,7 @@ bool GAME_STATUS::GetCursorGun() {	//カーソル銃のゲッター
 
 
 float GAME_STATUS::GetBulletPower() {
-	return status.bullets_power;
+	return status.bulletsPower;
 }
 
 void GAME_STATUS::SetTicket(int money) {		//所持金のセッター
@@ -106,18 +106,18 @@ int GAME_STATUS::GetTicket() {				//所持金のゲッター
 	return map_status.money;
 }
 
-void GAME_STATUS::SetTutorialFlag(bool tutorial_flag) {	//チュートリアルが終了しているかどうかのセッター
-	map_status.tutorial_flag = tutorial_flag;
+void GAME_STATUS::SetTutorialFlag(bool tutorialFlag) {	//チュートリアルが終了しているかどうかのセッター
+	map_status.tutorialFlag = tutorialFlag;
 }
 
 bool GAME_STATUS::getTutorialFlag() {		//チュートリアルのゲッター
-	return map_status.tutorial_flag;
+	return map_status.tutorialFlag;
 }
 
-void GAME_STATUS::SetStageFlag(bool st_flag, int st_num) {	//どこのステージまで開放しているかのセッター
-	map_status.stage_flag[st_num] = st_flag;
+void GAME_STATUS::SetStageFlag(bool stFlag, int stNum) {	//どこのステージまで開放しているかのセッター
+	map_status.stageFlag[stNum] = stFlag;
 }
 
 bool GAME_STATUS::GetStageFlag(int st_num) {	//ステージ解放のゲッター
-	return map_status.stage_flag[st_num];
+	return map_status.stageFlag[st_num];
 }

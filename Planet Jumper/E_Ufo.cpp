@@ -9,9 +9,9 @@ UFO::UFO() {	//コンストラクタ
 	drawNum = 0;
 	camera = { 0.0f,0.0f };			//cameraのpos
 	for (int e = 0; e < 4; e++) {
-		n_vertex[e] = { 0.0f,0.0f };		//blockの頂点
-		p_vertex[e] = { 0.0f,0.0f };	//playerの中心からの座標
-		d_vertex[e] = false;			//各頂点の外積が内側にあるか判定
+		nVertex[e] = { 0.0f,0.0f };		//blockの頂点
+		pVertex[e] = { 0.0f,0.0f };	//playerの中心からの座標
+		dVertex[e] = false;			//各頂点の外積が内側にあるか判定
 	}
 	bulletPos = { 0.0f,0.0f };		//銃弾の座標
 	bulletNum = 0;			//銃弾の使用できる最大数
@@ -110,27 +110,27 @@ void UFO::MakeAttackTime() {	//攻撃する時間を作る
 
 void UFO::PlayerHit() {	//プレイヤー小野当たり判定
 	//playerの各頂点の座標を取得
-	p_vertex[3] = pplayer->GetPos();
-	p_vertex[0] = { p_vertex[3].x - 10 / 2,p_vertex[3].y - G_SIZE / 2 };
-	p_vertex[1] = { p_vertex[3].x + 10 / 2,p_vertex[3].y - G_SIZE / 2 };
-	p_vertex[2] = { p_vertex[3].x + 10 / 2,p_vertex[3].y + G_SIZE / 2 };
-	p_vertex[3] = { p_vertex[0].x ,p_vertex[2].y };
+	pVertex[3] = pplayer->GetPos();
+	pVertex[0] = { pVertex[3].x - 10 / 2,pVertex[3].y - G_SIZE / 2 };
+	pVertex[1] = { pVertex[3].x + 10 / 2,pVertex[3].y - G_SIZE / 2 };
+	pVertex[2] = { pVertex[3].x + 10 / 2,pVertex[3].y + G_SIZE / 2 };
+	pVertex[3] = { pVertex[0].x ,pVertex[2].y };
 
 	//UFO自体の頂点座標
-	n_vertex[0] = { pos.x - G_SIZE / 2,pos.y + G_SIZE / 2 };
-	n_vertex[1] = { pos.x + G_SIZE / 2,pos.y + G_SIZE / 2 };
-	n_vertex[2] = { pos.x + G_SIZE / 2,pos.y - G_SIZE / 2 };
-	n_vertex[3] = { pos.x - G_SIZE / 2,pos.y - G_SIZE / 2 };
+	nVertex[0] = { pos.x - G_SIZE / 2,pos.y + G_SIZE / 2 };
+	nVertex[1] = { pos.x + G_SIZE / 2,pos.y + G_SIZE / 2 };
+	nVertex[2] = { pos.x + G_SIZE / 2,pos.y - G_SIZE / 2 };
+	nVertex[3] = { pos.x - G_SIZE / 2,pos.y - G_SIZE / 2 };
 
 	for (int e = 0; e < 4; e++) {
 		//外積での当たり判定
-		d_vertex[0] = HitDetection(n_vertex[0], n_vertex[1], p_vertex[e]);
-		d_vertex[1] = HitDetection(n_vertex[1], n_vertex[2], p_vertex[e]);
-		d_vertex[2] = HitDetection(n_vertex[2], n_vertex[3], p_vertex[e]);
-		d_vertex[3] = HitDetection(n_vertex[3], n_vertex[0], p_vertex[e]);
+		dVertex[0] = HitDetection(nVertex[0], nVertex[1], pVertex[e]);
+		dVertex[1] = HitDetection(nVertex[1], nVertex[2], pVertex[e]);
+		dVertex[2] = HitDetection(nVertex[2], nVertex[3], pVertex[e]);
+		dVertex[3] = HitDetection(nVertex[3], nVertex[0], pVertex[e]);
 
 		//外積で求めたflagを用いて当たり判定を行う
-		if (d_vertex[0] == true && d_vertex[1] == true && d_vertex[2] == true&&d_vertex[3]==true) {
+		if (dVertex[0] == true && dVertex[1] == true && dVertex[2] == true&&dVertex[3]==true) {
 			pplayer->Hit();
 			//exist = false;
 			break;
@@ -144,11 +144,11 @@ void UFO::BulletHit() {		//銃弾との当たり判定
 		if (pweapon->GetBulletUse(e) == true) {
 			bulletPos = pweapon->GetBulletPos(e);
 
-			d_vertex[0] = HitDetection(n_vertex[0], n_vertex[1], bulletPos);
-			d_vertex[1] = HitDetection(n_vertex[1], n_vertex[2], bulletPos);
-			d_vertex[2] = HitDetection(n_vertex[2], n_vertex[0], bulletPos);
+			dVertex[0] = HitDetection(nVertex[0], nVertex[1], bulletPos);
+			dVertex[1] = HitDetection(nVertex[1], nVertex[2], bulletPos);
+			dVertex[2] = HitDetection(nVertex[2], nVertex[0], bulletPos);
 			//外積で求めたflagを用いて当たり判定を行う
-			if (d_vertex[0] == true && d_vertex[1] == true && d_vertex[2] == true) {
+			if (dVertex[0] == true && dVertex[1] == true && dVertex[2] == true) {
 				pweapon->SetBulletUnuse(e);
 				exist = false;
 				pticket->SetTicket();
@@ -178,7 +178,7 @@ bool UFO::GetExist() {		//existのゲッター
 
 void UFO::DetectReset() {
 	for (int e = 0; e < 4; e++) {
-		d_vertex[e] = false;
+		dVertex[e] = false;
 	}
 }
 

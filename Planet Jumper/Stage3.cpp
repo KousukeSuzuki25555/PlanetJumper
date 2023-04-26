@@ -1,21 +1,21 @@
 ﻿#include "Stage3.h"
 
 STAGE3::STAGE3() {
-	block_size[0] = { 64,64 };
-	block_size[1] = { 32,32 };
-	block_size[2] = { 64,64 };
-	block_size[3] = { 128,64 };
-	block_size[4] = { 128,64 };
-	block_size[5] = { 32,32 };
-	block_size[6] = { 64,64 };
-	block_size[7] = { 128,64 };
-	block_size[8] = { 32,32 };
-	block_size[9] = { 64,64 };/*
-	block_size[10] = { 32,32 };
-	block_size[11] = { 32,32 };
-	block_size[12] = { 128,64 };
-	block_size[13] = { 128,64 };
-	block_size[14] = { 128,128 };*/
+	blockSize[0] = { 64,64 };
+	blockSize[1] = { 32,32 };
+	blockSize[2] = { 64,64 };
+	blockSize[3] = { 128,64 };
+	blockSize[4] = { 128,64 };
+	blockSize[5] = { 32,32 };
+	blockSize[6] = { 64,64 };
+	blockSize[7] = { 128,64 };
+	blockSize[8] = { 32,32 };
+	blockSize[9] = { 64,64 };/*
+	blockSize[10] = { 32,32 };
+	blockSize[11] = { 32,32 };
+	blockSize[12] = { 128,64 };
+	blockSize[13] = { 128,64 };
+	blockSize[14] = { 128,128 };*/
 	ufoInitTime = 0.0f;
 }
 
@@ -33,7 +33,7 @@ void STAGE3::PointerInit(DRAW* pdraw, PLAYER* pplayer, MY_TIME* ptime, GAME_STAT
 	police.PointerInit(pdraw, pplayer, ptime);
 	icon.PointerInit(pdraw);
 	ground.PointerInit(pdraw);
-	f_clear.PointerInit(pdraw);
+	fClear.PointerInit(pdraw);
 	for (int e = 0; e < CROW_MAX; e++) {
 		crow[e].PointerInit(pdraw, pplayer, pticket, ptime,pweapon);
 	}
@@ -50,26 +50,26 @@ void STAGE3::PointerInit(DRAW* pdraw, PLAYER* pplayer, MY_TIME* ptime, GAME_STAT
 
 void STAGE3::Init() {	//初期化関数
 	time = ptime->GetTime();
-	meter_time = ptime->GetTime();
+	meterTime = ptime->GetTime();
 	pplayer->Init(0);
 	pticket->PointerInit(pdraw, pstatus);
 	police.Init();
 	rot = 0.0f;
-	block[0].Init(SPEED_NOR, 1.7f, block_size[0],  pstatus->GetBulletsNum());
-	block[1].Init(SPEED_NOR, 2.0f, block_size[1],  pstatus->GetBulletsNum());
-	block[2].Init(SPEED_NOR, 2.3f, block_size[2], pstatus->GetBulletsNum());
-	block[3].Init(SPEED_NOR, 2.5f, block_size[3],  pstatus->GetBulletsNum());
-	block[4].Init(SPEED_NOR, 2.6f, block_size[4], pstatus->GetBulletsNum());
-	block[5].Init(SPEED_NOR, 2.8f, block_size[5],  pstatus->GetBulletsNum());
-	block[6].Init(SPEED_NOR, 3.0f, block_size[6], pstatus->GetBulletsNum());
-	block[7].Init(SPEED_NOR, 3.1f, block_size[7],  pstatus->GetBulletsNum());
-	block[8].Init(SPEED_NOR, 3.2f, block_size[8],  pstatus->GetBulletsNum());
-	block[9].Init(SPEED_NOR, 3.4f, block_size[9],  pstatus->GetBulletsNum());/*
-	block[10].Init(SPEED_NOR, 0.7f, block_size[10], pstatus->GetBulletsNum());
-	block[11].Init(SPEED_NOR, 0.8f, block_size[11],  pstatus->GetBulletsNum());
-	block[12].Init(SPEED_NOR, 0.9f, block_size[12],  pstatus->GetBulletsNum());
-	block[13].Init(SPEED_NOR, 1.0f, block_size[13],  pstatus->GetBulletsNum());
-	block[14].Init(SPEED_NOR, 1.1f, block_size[14],  pstatus->GetBulletsNum());*/
+	block[0].Init(SPEED_NOR, 1.7f, blockSize[0],  pstatus->GetBulletsNum());
+	block[1].Init(SPEED_NOR, 2.0f, blockSize[1],  pstatus->GetBulletsNum());
+	block[2].Init(SPEED_NOR, 2.3f, blockSize[2], pstatus->GetBulletsNum());
+	block[3].Init(SPEED_NOR, 2.5f, blockSize[3],  pstatus->GetBulletsNum());
+	block[4].Init(SPEED_NOR, 2.6f, blockSize[4], pstatus->GetBulletsNum());
+	block[5].Init(SPEED_NOR, 2.8f, blockSize[5],  pstatus->GetBulletsNum());
+	block[6].Init(SPEED_NOR, 3.0f, blockSize[6], pstatus->GetBulletsNum());
+	block[7].Init(SPEED_NOR, 3.1f, blockSize[7],  pstatus->GetBulletsNum());
+	block[8].Init(SPEED_NOR, 3.2f, blockSize[8],  pstatus->GetBulletsNum());
+	block[9].Init(SPEED_NOR, 3.4f, blockSize[9],  pstatus->GetBulletsNum());/*
+	block[10].Init(SPEED_NOR, 0.7f, blockSize[10], pstatus->GetBulletsNum());
+	block[11].Init(SPEED_NOR, 0.8f, blockSize[11],  pstatus->GetBulletsNum());
+	block[12].Init(SPEED_NOR, 0.9f, blockSize[12],  pstatus->GetBulletsNum());
+	block[13].Init(SPEED_NOR, 1.0f, blockSize[13],  pstatus->GetBulletsNum());
+	block[14].Init(SPEED_NOR, 1.1f, blockSize[14],  pstatus->GetBulletsNum());*/
 
 	tiger[0].Init(2.0f, pstatus->GetBulletsNum());
 	tiger[1].Init(2.8f, pstatus->GetBulletsNum());
@@ -162,17 +162,17 @@ void STAGE3::Update() {	//アップデート関数
 		/******************************************************************************
 		WINDOWの処理
 		*******************************************************************************/
-		if (ptime->GetTime() - meter_time > 0.5f) {
-			switch (meter_anm) {
+		if (ptime->GetTime() - meterTime > 0.5f) {
+			switch (meterAnm) {
 			case true:
-				meter_anm = false;
+				meterAnm = false;
 				break;
 
 			case false:
-				meter_anm = true;
+				meterAnm = true;
 				break;
 			}
-			meter_time = ptime->GetTime();
+			meterTime = ptime->GetTime();
 		}
 		/******************************************************************************
 		GameOver,Clearか
@@ -237,7 +237,7 @@ void STAGE3::Update() {	//アップデート関数
 		初クリア時の処理
 		*******************************************************************************/
 	case ST_FIRST_CLEAR:
-		f_clear.Update();
+		fClear.Update();
 		if (KeyEnter.down()) {
 			state = ST_MAP;
 		}
@@ -274,7 +274,7 @@ void STAGE3::Draw() {	//描画関数
 		ufo.Draw(camera);
 	}
 
-	pdraw->WindowDraw(meter_anm, police.GetRot());			//ウィンドウの描画
+	pdraw->WindowDraw(meterAnm, police.GetRot());			//ウィンドウの描画
 	pplayer->HartDraw();
 	icon.Draw();
 	pticket->Draw(false);

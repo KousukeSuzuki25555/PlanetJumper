@@ -8,25 +8,25 @@
 PLAYER::PLAYER() {
 	pos = { PLAYER_POS_X,PLAYER_POS_Y };		//playerの座標
 	uv = { 2,0 };			//g_v 0:上半身以外 1:歩き上半身
-	bust_uv = { 2,1 };		//上半身のuv値
-	anm_time = { 0.0f,0.0f };	//アニメーションに用いる時間変数
-	attack_time = { 0.0f,0.0f };	//攻撃アニメーションに用いる時間変数
+	bustUv = { 2,1 };		//上半身のuv値
+	anmTime = { 0.0f,0.0f };	//アニメーションに用いる時間変数
+	attackTime = { 0.0f,0.0f };	//攻撃アニメーションに用いる時間変数
 	action = RUN;			//playerが何をしているか
 	jstrength = 0.0f;		//ジャンプの力
 	gravity = GRAVITY_NOR;	//ジャンプの抵抗
-	jump_limit = 2;			//ジャンプできる回数
-	jump_limit_define = 2;	//地面着地時にjump_limitの初期化に用いる変数
+	jumpLimit = 2;			//ジャンプできる回数
+	jumpLimitDefine = 2;	//地面着地時にjumpLimitの初期化に用いる変数
 	//g_plus = 1;
-	hit_flag = false;		//ヒットしたらtrueとなる
-	anm_flag = false;
-	draw_flag = true;
+	hitFlag = false;		//ヒットしたらtrueとなる
+	anmFlag = false;
+	drawFlag = true;
 	//for (int e = 0; e < 5; e++) {
-	//	attack_flag[e] = false;	//球を打っているかの判定に使う　ダン数を増やす場合配列にする
+	//	attackFlag[e] = false;	//球を打っているかの判定に使う　ダン数を増やす場合配列にする
 	//}
-	attack_flag = false;
-	hit_num = 0;
-	hit_time = 0.0f;
-	g_time = 0.0f;
+	attackFlag = false;
+	hitNum = 0;
+	hitTime = 0.0f;
+	gTime = 0.0f;
 	hp = 3.0f;
 	//foothold = 0.0f;	//足場があるときに足場の高さを入れる
 	bulletNum = 0;
@@ -50,21 +50,21 @@ WEAPON* PLAYER::GetPweapon() {	//武器クラスのゲッター
 
 void PLAYER::Init(int weaponNum) {
 	this->hp = (float)pstatus->GetHp();
-	gravity_source = pstatus->GetGravity();
+	gravitySource = pstatus->GetGravity();
 	bulletNum = (unsigned short)pstatus->GetBulletsNum();
-	hit_flag = false;
+	hitFlag = false;
 	pos = { PLAYER_POS_X,PLAYER_POS_Y };
 	ground = GROUND_Y;
-	draw_flag = true;
+	drawFlag = true;
 	power = 0.0f;
-	attack_flag = false;
+	attackFlag = false;
 	weapon.Init(weaponNum, pstatus->GetBulletsNum());
 }
 
 void PLAYER::BossInit() {
 	bossFlag = true;
-	hit_flag = false;
-	draw_flag = true;
+	hitFlag = false;
+	drawFlag = true;
 }
 
 void PLAYER::BossUninit() {
@@ -80,8 +80,8 @@ void PLAYER::GuideInit(bool jump) {
 		pos = { GUIDE_X,NOT_JUMP_GROUND };
 		ground = NOT_JUMP_GROUND;
 	}
-	hit_flag = false;
-	draw_flag = true;
+	hitFlag = false;
+	drawFlag = true;
 }
 
 void PLAYER::GuideUninit() {
@@ -90,8 +90,8 @@ void PLAYER::GuideUninit() {
 
 void PLAYER::Update(float now) {
 	Anm();
-	anm_time.t2 = now;
-	attack_time.t2 = now;
+	anmTime.t2 = now;
+	attackTime.t2 = now;
 	if (KeyJ.down()) {
 		JumpSet();
 	}
@@ -100,10 +100,10 @@ void PLAYER::Update(float now) {
 	}
 
 	if (bossFlag == true) {	//ダメージ演出
-		if (hit_flag == true) BossstHitAct(now);
+		if (hitFlag == true) BossstHitAct(now);
 	}
 	else {
-		if (hit_flag == true) HitAct(now);
+		if (hitFlag == true) HitAct(now);
 	}
 	//for (int e = 0; e < bulletNum; e++) {
 	//	if (bullet[e].GetUse() == true) {
@@ -115,10 +115,10 @@ void PLAYER::Update(float now) {
 
 void PLAYER::Draw() {
 	VECTOR2 tempCamera = { 0.0f,0.0f };
-	switch (draw_flag) {
+	switch (drawFlag) {
 	case true:
 		pdraw->PlayerDraw(uv, pos);
-		pdraw->PlayerDraw(bust_uv, pos);
+		pdraw->PlayerDraw(bustUv, pos);
 		weapon.Draw(tempCamera.y);
 		/*for (int e = 0; e < bulletNum; e++) {
 			if (bullet[e].GetUse() == true) {
@@ -138,12 +138,12 @@ void PLAYER::Draw() {
 }
 
 void PLAYER::Draw(float camera) {
-	switch (draw_flag) {
+	switch (drawFlag) {
 	case true:
 		this->camera = pos;
 		this->camera.y += camera;
 		pdraw->PlayerDraw(uv, this->camera);
-		pdraw->PlayerDraw(bust_uv, this->camera);
+		pdraw->PlayerDraw(bustUv, this->camera);
 		weapon.Draw(camera);
 		/*for (int e = 0; e < bulletNum; e++) {
 			if (bullet[e].GetUse() == true) {
@@ -163,12 +163,12 @@ void PLAYER::Draw(float camera) {
 }
 
 void PLAYER::Draw(VECTOR2 camera) {
-	switch (draw_flag) {
+	switch (drawFlag) {
 	case true:
 		this->camera = pos;
 		this->camera = this->camera - camera;
 		pdraw->PlayerDraw(uv, this->camera);
-		pdraw->PlayerDraw(bust_uv, this->camera);
+		pdraw->PlayerDraw(bustUv, this->camera);
 		weapon.Draw(camera.y);
 		/*for (int e = 0; e < bulletNum; e++) {
 			if (bullet[e].GetUse() == true) {
@@ -195,7 +195,7 @@ void PLAYER::Anm() {
 		case 0:
 		case 1:
 		{
-			if (anm_time.t2 - anm_time.t1 > 0.1) {
+			if (anmTime.t2 - anmTime.t1 > 0.1) {
 				if (uv.u == 0) {
 					uv.u++;
 				}
@@ -214,31 +214,31 @@ void PLAYER::Anm() {
 		case 8:
 		case 9:
 		{
-			if (anm_time.t2 - anm_time.t1 > 0.1) {
+			if (anmTime.t2 - anmTime.t1 > 0.1) {
 				uv.u ++;
-				anm_flag = true;
+				anmFlag = true;
 				if (uv.u >= 10) {
 					uv.u = 2;
 				}
-				anm_time.t1 = anm_time.t2;
+				anmTime.t1 = anmTime.t2;
 			}
-			switch (attack_flag) {
+			switch (attackFlag) {
 			case true: {	//攻撃中
-				if (attack_time.t2 - attack_time.t1 > 0.1) {
-					bust_uv.u++;
-					attack_time.t1 = attack_time.t2;
+				if (attackTime.t2 - attackTime.t1 > 0.1) {
+					bustUv.u++;
+					attackTime.t1 = attackTime.t2;
 				}
-				if (bust_uv.u >= 6) {
+				if (bustUv.u >= 6) {
 					AttackUninit();
 				}
-				anm_flag = false;
+				anmFlag = false;
 				break;
 			}
 			case false: {
-				if (anm_flag == true) {
-					bust_uv.u = uv.u;
+				if (anmFlag == true) {
+					bustUv.u = uv.u;
 				}
-				anm_flag = false;
+				anmFlag = false;
 				break;
 			}
 			}
@@ -249,30 +249,30 @@ void PLAYER::Anm() {
 		return;
 	case JUMP:
 		//数値積分で落ちるときの距離を求める
-		int repeat = (anm_time.t2-g_time) / 0.01;
+		int repeat = (anmTime.t2-gTime) / 0.01;
 		for (int e = 0; e < repeat; e++) {
 			pos.y -= jstrength;
 			jstrength -= gravity;
 		}
-		g_time = anm_time.t2;
+		gTime = anmTime.t2;
 		Land();
-		if (anm_time.t2 - anm_time.t1 > 0.1) {
+		if (anmTime.t2 - anmTime.t1 > 0.1) {
 			if (uv.u != 2) {
 				uv.u++;
 			}
-			switch (attack_flag) {
+			switch (attackFlag) {
 			case true: {
-				if (attack_time.t2 - attack_time.t1 > 0.1) {
-					bust_uv.u++;
-					attack_time.t1 = attack_time.t2;
+				if (attackTime.t2 - attackTime.t1 > 0.1) {
+					bustUv.u++;
+					attackTime.t1 = attackTime.t2;
 				}
-				if (bust_uv.u >= 6) {
+				if (bustUv.u >= 6) {
 					AttackUninit();
 				}
 				break;
 			}
 			case false: {
-				bust_uv.u = uv.u;
+				bustUv.u = uv.u;
 				break;
 			}
 			}
@@ -283,23 +283,23 @@ void PLAYER::Anm() {
 }
 
 void PLAYER::AttackSet(float now) {
-	attack_time.t1 = now;
-	bust_uv.u = 3;
-	bust_uv.v = 3;
+	attackTime.t1 = now;
+	bustUv.u = 3;
+	bustUv.v = 3;
 	float a = power * 10 + pstatus->GetBulletPower() * 10;
 	weapon.Shot(pos, a, gravity);
-	attack_flag = true;
+	attackFlag = true;
 	//if (GetUnuseBullet() != -1) {
 	//	float a = power * 10 + pstatus->GetBulletPower() * 10;
 	//	weapon.Shot(pos, power, gravity);
 	//	//bullet[GetUnuseBullet()].Init(pos, gravity, (int)a);
-	//	//attack_flag[GetUnuseBullet()] = true;
+	//	//attackFlag[GetUnuseBullet()] = true;
 	//}
 }
 void PLAYER::AttackUninit() {
-	attack_flag = false;
-	bust_uv.u = uv.u;
-	bust_uv.v = 1;
+	attackFlag = false;
+	bustUv.u = uv.u;
+	bustUv.v = 1;
 }
 
 void PLAYER::JumpSet() {
@@ -307,24 +307,24 @@ void PLAYER::JumpSet() {
 	case RUN:
 		uv.v = 2;
 		uv.u = 0;
-		bust_uv = { 0,3 };
+		bustUv = { 0,3 };
 		jstrength = 8.5f;
 		action = JUMP;
-		jump_limit = jump_limit_define;
-		jump_limit--;
-		g_time = (float)clock() / 1000;
+		jumpLimit = jumpLimitDefine;
+		jumpLimit--;
+		gTime = (float)clock() / 1000;
 		break;
 
 	case JUMP:
-		if (jump_limit > 0) {
+		if (jumpLimit > 0) {
 			uv.v = 2;
 			uv.u = 0;
-			bust_uv.u = 0;
-			bust_uv.v = 3;
+			bustUv.u = 0;
+			bustUv.v = 3;
 			jstrength = 5.5f;
 			action = JUMP;
-			jump_limit--;
-			g_time = (float)clock() / 1000;
+			jumpLimit--;
+			gTime = (float)clock() / 1000;
 		}
 		break;
 	}
@@ -344,8 +344,8 @@ void PLAYER::Land() {				//着地したか 着地したらRUNに戻るように�
 		pos.y = ground;
 		action = RUN;
 		uv = { 2,0 };
-		bust_uv.u = 2;
-		bust_uv.v = 1;
+		bustUv.u = 2;
+		bustUv.v = 1;
 	}
 }
 
@@ -362,7 +362,7 @@ I_VECTOR2 PLAYER::GetUv() {
 }
 
 I_VECTOR2 PLAYER::GetBustUv() {
-	return bust_uv;
+	return bustUv;
 }
 
 void PLAYER::SetStageStatus(int power, unsigned short int limit, unsigned short int strength) {
@@ -377,13 +377,13 @@ void PLAYER::SetStageStatus(int power, unsigned short int limit, unsigned short 
 	}
 
 	if (limit == STRONG) {
-		jump_limit_define = 3;
+		jumpLimitDefine = 3;
 	}
 	else if (limit == NORMAL) {
-		jump_limit_define = 2;
+		jumpLimitDefine = 2;
 	}
 	else {
-		jump_limit_define = 1;
+		jumpLimitDefine = 1;
 	}
 
 	SetWeaponPower(power);
@@ -403,13 +403,13 @@ void PLAYER::SetGravity(unsigned short int strength) {
 
 void PLAYER::SetJumpLimit(unsigned short int limit) {
 	if (limit == STRONG) {
-		jump_limit_define = 3;
+		jumpLimitDefine = 3;
 	}
 	else if (limit == NORMAL) {
-		jump_limit_define = 2;
+		jumpLimitDefine = 2;
 	}
 	else {
-		jump_limit_define = 1;
+		jumpLimitDefine = 1;
 	}
 }
 
@@ -432,55 +432,55 @@ float PLAYER::GetGrvity() {
 }
 
 void PLAYER::Hit() {
-	hit_time= (float)clock() / TIME_DIVIDER;
-	hit_num = 0;
-	draw_flag = false;
-	if (hit_flag == false) {
+	hitTime= (float)clock() / TIME_DIVIDER;
+	hitNum = 0;
+	drawFlag = false;
+	if (hitFlag == false) {
 		hp--;
 	}
-	hit_flag = true;
+	hitFlag = true;
 }
 
 void PLAYER::Hit(float atk) {
-	hit_time = (float)clock() / TIME_DIVIDER;
-	draw_flag = false;
-	hit_num = 0;
-	if (hit_flag == false) {
+	hitTime = (float)clock() / TIME_DIVIDER;
+	drawFlag = false;
+	hitNum = 0;
+	if (hitFlag == false) {
 		hp -= atk;
 	}
-	hit_flag = true;
+	hitFlag = true;
 }
 
 void PLAYER::BossstHit(float atk,float now) {
-	hit_time = now;
+	hitTime = now;
 	hp -= atk;
-	hit_flag = true;
-	draw_flag = false;
+	hitFlag = true;
+	drawFlag = false;
 }
 
 void PLAYER::HitAct(float now) {
-	if (now - hit_time > 0.1) {
-		hit_num++;
-		hit_time = now;
-		switch (draw_flag) {
+	if (now - hitTime > 0.1) {
+		hitNum++;
+		hitTime = now;
+		switch (drawFlag) {
 		case true:
-			draw_flag = false;
+			drawFlag = false;
 			break;
 		case false:
-			draw_flag = true;
+			drawFlag = true;
 			break;
 		}
-		if (hit_num == 3) {
-			hit_flag = false;
-			draw_flag = true;
+		if (hitNum == 3) {
+			hitFlag = false;
+			drawFlag = true;
 		}
 	}
 }
 
 void PLAYER::BossstHitAct(float now) {
- 	if (now - hit_time > 0.1) {
-		draw_flag = true;
-		hit_flag = false;
+ 	if (now - hitTime > 0.1) {
+		drawFlag = true;
+		hitFlag = false;
 	}
 }
 
@@ -493,7 +493,7 @@ float PLAYER::GetPos_y() {
 }
 
 bool PLAYER::GetHitFlag() {
-	return hit_flag;
+	return hitFlag;
 }
 
 //int PLAYER::GetBulletPower(int e) {
@@ -507,7 +507,7 @@ float PLAYER::GetHp() {
 //int PLAYER::GetUnuseBullet() {	//使っていない銃弾を返す
 // 	for (int e = 0; e < bulletNum; e++) {
 //		if (bullet[e].GetUse() == false) {
-//			attack_flag[e] = true;
+//			attackFlag[e] = true;
 //			newBullet = e;
 //			return e;
 //		}
